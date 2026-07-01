@@ -1,63 +1,42 @@
+import Image from "next/image";
+
 const workCards = [
   {
     number: "01",
     title: "Processo Comercial",
     body: "Criamos um processo comercial para que cada oportunidade tenha direção, acompanhamento e o próximo passo definido.",
-    icon: "process",
+    icon: "/icons/sessao-5-processo-comercial.png",
   },
   {
     number: "02",
     title: "Geração de Demanda",
     body: "Ajustamos a geração de demanda para atrair contatos com mais intenção de compra, e não apenas volume.",
-    icon: "demand",
+    icon: "/icons/sessao-5-geracao-demanda.png",
   },
   {
     number: "03",
     title: "Atendimento e Follow-up",
     body: "Organizamos a forma como a sua empresa atende, conduz propostas e faz follow-up para aumentar as chances de fechamento.",
-    icon: "followup",
+    icon: "/icons/sessao-5-atendimento.png.png",
   },
   {
     number: "04",
     title: "Dados, Rotina e Tecnologia",
     body: "Conectamos dados, rotina comercial e tecnologia para que fique claro o que está funcionando, onde a venda trava e o que precisa ser corrigido primeiro.",
-    icon: "data",
+    icon: "/icons/sessao-5-dados-rotina.png.png",
   },
 ] as const;
 
-function WorkflowIcon({ kind }: { kind: (typeof workCards)[number]["icon"] }) {
+function WorkflowIcon({ src }: { src: (typeof workCards)[number]["icon"] }) {
   return (
     <span className="work-card-icon" aria-hidden="true">
-      <svg viewBox="0 0 64 64">
-        {kind === "process" && (
-          <>
-            <circle cx="18" cy="18" r="6" />
-            <circle cx="46" cy="18" r="6" />
-            <circle cx="32" cy="46" r="6" />
-            <path d="M24 18h16M21 24l8 16M43 24l-8 16" />
-          </>
-        )}
-        {kind === "demand" && (
-          <>
-            <circle cx="32" cy="32" r="20" />
-            <circle cx="32" cy="32" r="11" />
-            <circle cx="32" cy="32" r="3" />
-            <path d="M44 20l8-8M44 12h8v8" />
-          </>
-        )}
-        {kind === "followup" && (
-          <>
-            <path d="M12 16h40v28H30l-11 8v-8h-7z" />
-            <path d="M20 26h24M20 34h16" />
-          </>
-        )}
-        {kind === "data" && (
-          <>
-            <path d="M14 48V30M26 48V20M38 48V34M50 48V12" />
-            <path d="M10 48h44M14 24l12-10 12 12 12-18" />
-          </>
-        )}
-      </svg>
+      <Image
+        src={src}
+        alt=""
+        width={68}
+        height={68}
+        className="work-card-icon-image"
+      />
     </span>
   );
 }
@@ -182,7 +161,7 @@ export function WorkSection() {
           <div className="work-card-grid">
             {workCards.map((card) => (
               <article key={card.number} className="work-card">
-                <WorkflowIcon kind={card.icon} />
+                <WorkflowIcon src={card.icon} />
                 <div className="work-card-content">
                   <div className="work-card-heading">
                     <p className="work-card-number">{card.number}</p>

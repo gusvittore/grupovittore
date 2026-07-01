@@ -66,7 +66,11 @@ test("section 5 preserves all code-native charts", () => {
     assert.match(workSection, new RegExp(`<${chart} \\/>`));
   }
 
-  assert.doesNotMatch(workSection, /<Image|<img/);
+  assert.doesNotMatch(
+    workSection,
+    /sessao5-(?:evolucao-de-oportunidades|distribuicao-de-funil|indicadores-chave|desempenho-comercial)/,
+  );
+  assert.match(workSection, /className="work-card-icon-image"/);
   assert.match(
     css,
     /\.work-chart-grid\s*{[^}]*grid-template-columns:\s*repeat\(4,\s*minmax\(0,\s*1fr\)\);/s,

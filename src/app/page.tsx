@@ -6,39 +6,60 @@ import { TechnologySection } from "./_components/technology-section";
 import { WorkSection } from "./_components/work-section";
 
 const heroPillars = [
-  "Diagnóstico Estratégico",
-  "Método Comercial",
-  "Clareza e Controle",
+  {
+    label: "Diagnóstico Estratégico",
+    icon: "/icons/hero-icon-diagnostico-comercial.png.png",
+  },
+  {
+    label: "Método Comercial",
+    icon: "/icons/hero-icon-metodo-comercial.png.png",
+  },
+  {
+    label: "Clareza e Controle",
+    icon: "/icons/hero-icon-clareza-controle.png.png",
+  },
 ];
 
 const heroProofItems = [
-  "+100 EMPRESAS IMPACTADAS",
-  "FOCO EM RESULTADOS E RECEITA PREVISÍVEL",
-  "METODOLOGIA PRÓPRIA E COMPROVADA",
-  "SIGILO, ÉTICA E PARCERIA DE VERDADE",
+  {
+    label: "+100 EMPRESAS IMPACTADAS",
+    icon: "/icons/hero-icon-empresas-impactadas.png.png",
+  },
+  {
+    label: "FOCO EM RESULTADOS E RECEITA PREVISÍVEL",
+    icon: "/icons/hero-icon-foco-resultado.png.png",
+  },
+  {
+    label: "METODOLOGIA PRÓPRIA E COMPROVADA",
+    icon: "/icons/hero-icon-metodologia-propria.png.png",
+  },
+  {
+    label: "SIGILO, ÉTICA E PARCERIA DE VERDADE",
+    icon: "/icons/hero-icon-sigilo-etica.png.png",
+  },
 ];
 
 const diagnosticMetrics = [
   {
-    icon: "$",
+    icon: "/icons/sessao-3-receita-prevista.png.png",
     title: "Receita prevista",
     value: "R$ 8,72M",
     delta: "▼ 28,4%",
   },
   {
-    icon: "◎",
+    icon: "/icons/sessao-3-oportunidades.png.png",
     title: "Oportunidades",
     value: "142",
     delta: "▼ 31,5%",
   },
   {
-    icon: "%",
+    icon: "/icons/sessao-3-taxa-conversao.png.png",
     title: "Taxa de conversão",
     value: "24,7%",
     delta: "▼ 18,6%",
   },
   {
-    icon: "◇",
+    icon: "/icons/sessao-3-ticket-medio.png.png",
     title: "Ticket médio",
     value: "R$ 36,8K",
     delta: "▼ 22,1%",
@@ -72,13 +93,34 @@ const funnelStages = [
 ];
 
 const journeySteps = [
-  ["Descoberta", "⌕"],
-  ["Atração", "◉"],
-  ["Consideração", "▦"],
-  ["Compra", "▱"],
-  ["Experiência", "☆"],
-  ["Recompra", "⟳"],
-  ["Indicação", "♙"],
+  {
+    label: "Descoberta",
+    icon: "/icons/Jornada do Cliente/jornada-cliente-descoberta.png.png",
+  },
+  {
+    label: "Atração",
+    icon: "/icons/Jornada do Cliente/jornada-cliente-atracao.png.png",
+  },
+  {
+    label: "Consideração",
+    icon: "/icons/Jornada do Cliente/jornada-cliente-consideracao.png.png",
+  },
+  {
+    label: "Compra",
+    icon: "/icons/Jornada do Cliente/jornada-cliente-compra.png.png",
+  },
+  {
+    label: "Experiência",
+    icon: "/icons/Jornada do Cliente/jornada-cliente-experiencia.png.png",
+  },
+  {
+    label: "Recompra",
+    icon: "/icons/Jornada do Cliente/jornada-cliente-recompra.png.png",
+  },
+  {
+    label: "Indicação",
+    icon: "/icons/Jornada do Cliente/jornada-cliente-indicacao.png.png",
+  },
 ];
 
 const demandLegend = [
@@ -93,6 +135,21 @@ const bottlenecks = [
   ["Falta de follow-up", "31"],
   ["Proposta sem aderência", "16"],
   ["Objeções mal tratadas", "11"],
+];
+
+const diagnosticInsights = [
+  {
+    icon: "/icons/sessao-3-baixa-conversao.png.png",
+    text: "Baixa conversão causada por falhas de qualificação e follow-up.",
+  },
+  {
+    icon: "/icons/sessao-3-receita-instavel.png.png",
+    text: "Receita instável e sem previsibilidade de crescimento.",
+  },
+  {
+    icon: "/icons/sessao-3-processo-comercial-reativo.png.png",
+    text: "Processo comercial reativo, sem método e sem dados.",
+  },
 ];
 
 const clientLogos = [
@@ -281,7 +338,17 @@ function MetricCard({
 }) {
   return (
     <article className="diagnostic-metric-card">
-      <span className="diagnostic-metric-icon" aria-hidden="true">{icon}</span>
+      <span className="diagnostic-metric-icon" aria-hidden="true">
+        {icon ? (
+          <Image
+            src={icon}
+            alt=""
+            width={22}
+            height={22}
+            className="diagnostic-metric-icon-image"
+          />
+        ) : null}
+      </span>
       <p>{title}</p>
       <strong>{value}</strong>
       <em>{delta}</em>
@@ -359,11 +426,17 @@ function CustomerJourney() {
     <article className="diagnostic-panel diagnostic-journey-panel">
       <h3>Jornada do cliente</h3>
       <div className="journey-track">
-        {journeySteps.map(([label, icon], index) => (
-          <div key={label} className="journey-step">
+        {journeySteps.map((step, index) => (
+          <div key={step.label} className="journey-step">
             <strong>{index + 1}</strong>
-            <span>{icon}</span>
-            <p>{label}</p>
+            <Image
+              src={step.icon}
+              alt=""
+              width={44}
+              height={44}
+              className="journey-step-icon-image"
+            />
+            <p>{step.label}</p>
           </div>
         ))}
       </div>
@@ -452,9 +525,20 @@ function SectionThreeDashboard() {
         <CommercialMaturityRadar />
       </div>
       <div className="diagnostic-insights">
-        <p><span aria-hidden="true">!</span> Baixa conversão causada por falhas de qualificação e follow-up.</p>
-        <p><span aria-hidden="true">↗</span> Receita instável e sem previsibilidade de crescimento.</p>
-        <p><span aria-hidden="true">◎</span> Processo comercial reativo, sem método e sem dados.</p>
+        {diagnosticInsights.map((item) => (
+          <p key={item.text}>
+            <span aria-hidden="true">
+              <Image
+                src={item.icon}
+                alt=""
+                width={20}
+                height={20}
+                className="diagnostic-insight-icon-image"
+              />
+            </span>
+            {item.text}
+          </p>
+        ))}
       </div>
       <div className="diagnostic-dashboard-footer">
         <span aria-hidden="true" />
@@ -658,10 +742,18 @@ export default function Home() {
                 <HeroPrimaryButton />
               </div>
               <div className="hero-pillars" aria-label="Pilares da assessoria">
-                {heroPillars.map((item, index) => (
-                  <div key={item} className="hero-pillar">
-                    <span aria-hidden="true">{index + 1}</span>
-                    <p>{item}</p>
+                {heroPillars.map((item) => (
+                  <div key={item.label} className="hero-pillar">
+                    <span aria-hidden="true">
+                      <Image
+                        src={item.icon}
+                        alt=""
+                        width={32}
+                        height={32}
+                        className="hero-benefit-icon-image"
+                      />
+                    </span>
+                    <p>{item.label}</p>
                   </div>
                 ))}
               </div>
@@ -671,10 +763,18 @@ export default function Home() {
           </div>
 
           <div className="hero-proof-grid" aria-label="Diferenciais do Grupo Vittore">
-            {heroProofItems.map((item, index) => (
-              <div key={item} className="hero-proof-item">
-                <span aria-hidden="true">{index + 1}</span>
-                <p>{item}</p>
+            {heroProofItems.map((item) => (
+              <div key={item.label} className="hero-proof-item">
+                <span aria-hidden="true">
+                  <Image
+                    src={item.icon}
+                    alt=""
+                    width={32}
+                    height={32}
+                    className="hero-benefit-icon-image"
+                  />
+                </span>
+                <p>{item.label}</p>
               </div>
             ))}
           </div>
@@ -685,8 +785,11 @@ export default function Home() {
         <div className="form-section-grid">
           <div className="form-copy">
             <h2 className="section-title section-title-left">
-              Receba um diagnóstico comercial e descubra onde sua empresa pode
-              estar <span>perdendo vendas</span> dentro do próprio processo.
+              <span className="form-title-line">Agende uma reunião online,</span>
+              <span className="form-title-line">receba um diagnóstico comercial</span>
+              <span className="form-title-line">e descubra onde a sua empresa</span>
+              <span className="form-title-line">pode estar <span className="form-title-highlight">perdendo vendas</span></span>
+              <span className="form-title-line">dentro do próprio processo.</span>
             </h2>
             <Ornament className="my-9 justify-start" />
             <div className="form-info-grid">

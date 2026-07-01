@@ -109,6 +109,6 @@ test("section 5 renders all four charts in code without chart images", async () 
     `${page}\n${workSection}`,
     /sessao5-(?:evolucao-de-oportunidades|distribuicao-de-funil|indicadores-chave|desempenho-comercial)/,
   );
-  assert.doesNotMatch(workSection, /<Image|<img/);
+  assert.match(workSection, /className="work-card-icon-image"/);
   assert.match(css, /\.work-section\s*{[^}]*background-image:\s*url\("\/brand\/3\/background-sessao-5\.png\.png"\);/s);
 });

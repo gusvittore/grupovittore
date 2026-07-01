@@ -43,3 +43,5 @@ next-env.d.ts
 .edge-*/
 .edge-cdp-*/
 .edge-readability*/
+
+public/zips/

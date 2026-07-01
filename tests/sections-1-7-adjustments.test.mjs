@@ -39,7 +39,11 @@ test("section 5 retains code-native charts and gains reference-aligned framing",
   assert.match(workSection, /FunnelDistributionChart/);
   assert.match(workSection, /KeyIndicatorsChart/);
   assert.match(workSection, /CommercialPerformanceBars/);
-  assert.doesNotMatch(workSection, /<Image|<img/);
+  assert.match(workSection, /className="work-card-icon-image"/);
+  assert.doesNotMatch(
+    workSection,
+    /sessao5-(?:evolucao-de-oportunidades|distribuicao-de-funil|indicadores-chave|desempenho-comercial)/,
+  );
   assert.match(css, /\.work-section\s*{[^}]*background-size:\s*100% auto;/s);
 });
 

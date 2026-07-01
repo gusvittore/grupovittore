@@ -251,15 +251,17 @@ summary::-webkit-details-marker {
 
 .hero-pillar span,
 .hero-proof-item span {
-  display: grid;
-  width: 40px;
-  height: 40px;
+  display: flex;
   flex: 0 0 auto;
-  place-items: center;
-  border: 1px solid #b29157;
-  border-radius: 50%;
-  color: #b29157;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.hero-benefit-icon-image {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
 }
 
 .hero-pillar p {
@@ -419,6 +421,11 @@ summary::-webkit-details-marker {
     padding-left: 0;
   }
 
+  .hero-benefit-icon-image {
+    width: 38px;
+    height: 38px;
+  }
+
   .hero-visual {
     right: -260px;
     top: 154px;
@@ -556,6 +563,31 @@ summary::-webkit-details-marker {
 .form-section .section-title {
   font-size: clamp(2.75rem, 3.25vw, 3.35rem);
   font-weight: 600;
+}
+
+.form-copy .section-title {
+  max-width: 640px;
+  font-size: clamp(2.12rem, 2.6vw, 2.88rem);
+  line-height: 1.06;
+}
+
+.form-copy .form-title-line {
+  display: block;
+  color: #090e1f;
+}
+
+.form-copy .form-title-line:first-child {
+  white-space: nowrap;
+}
+
+.form-copy .form-title-highlight {
+  color: #960000;
+}
+
+@media (min-width: 1024px) {
+  .form-copy .form-title-line {
+    white-space: nowrap;
+  }
 }
 
 .diagnostic-section .section-title {
@@ -862,16 +894,17 @@ summary::-webkit-details-marker {
 }
 
 .diagnostic-metric-icon {
-  display: grid;
-  width: 28px;
-  height: 28px;
+  display: flex;
   margin: 0 auto 8px;
-  place-items: center;
-  border: 1px solid #b29157;
-  border-radius: 50%;
-  color: #b29157;
-  font-weight: 800;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
+}
+
+.diagnostic-metric-icon-image {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
 }
 
 .diagnostic-metric-card p,
@@ -1094,16 +1127,12 @@ summary::-webkit-details-marker {
   font-size: 0.78rem;
 }
 
-.journey-step span {
-  display: grid;
+.journey-step-icon-image {
+  display: block;
   width: 44px;
   height: 44px;
   margin: 8px auto;
-  place-items: center;
-  border: 1px solid rgba(178, 145, 87, 0.56);
-  border-radius: 50%;
-  color: #001a44;
-  font-size: 1.24rem;
+  object-fit: contain;
 }
 
 .journey-step p {
@@ -1228,15 +1257,17 @@ summary::-webkit-details-marker {
 }
 
 .diagnostic-insights span {
-  display: grid;
-  width: 38px;
-  height: 38px;
+  display: flex;
   flex: 0 0 auto;
-  place-items: center;
-  border: 2px solid #001a44;
-  border-radius: 50%;
-  color: #001a44;
-  font-weight: 900;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.diagnostic-insight-icon-image {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
 }
 
 .diagnostic-insights p {
@@ -1588,25 +1619,17 @@ summary::-webkit-details-marker {
 }
 
 .work-card-icon {
-  display: grid;
-  width: 76px;
-  height: 76px;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   justify-self: center;
-  border: 1px solid #c78a35;
-  border-radius: 50%;
-  background: rgba(178, 145, 87, 0.035);
-  box-shadow: inset 0 0 24px rgba(178, 145, 87, 0.06);
+  line-height: 0;
 }
 
-.work-card-icon svg {
-  width: 44px;
-  height: 44px;
-  fill: none;
-  stroke: #c78a35;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.7;
+.work-card-icon-image {
+  width: 86px;
+  height: 86px;
+  object-fit: contain;
 }
 
 .work-card h3 {
@@ -2951,6 +2974,15 @@ summary::-webkit-details-marker {
     font-size: 2.05rem;
   }
 
+  .form-copy .section-title {
+    font-size: clamp(1.88rem, 7.45vw, 2.18rem);
+    line-height: 1.1;
+  }
+
+  .form-copy .form-title-line:first-child {
+    white-space: normal;
+  }
+
   .form-section-grid,
   .diagnostic-section-grid {
     gap: 42px;
@@ -3035,6 +3067,21 @@ summary::-webkit-details-marker {
 
   .diagnostic-insights p:first-child {
     border-top: 0;
+  }
+
+  .diagnostic-metric-icon-image {
+    width: 24px;
+    height: 24px;
+  }
+
+  .diagnostic-insight-icon-image {
+    width: 30px;
+    height: 30px;
+  }
+
+  .journey-step-icon-image {
+    width: 38px;
+    height: 38px;
   }
 
   .method-revenue-shell,
@@ -3155,6 +3202,11 @@ summary::-webkit-details-marker {
 
   .work-card-icon {
     margin: 0 auto;
+  }
+
+  .work-card-icon-image {
+    width: 62px;
+    height: 62px;
   }
 
   .work-card-rule {
