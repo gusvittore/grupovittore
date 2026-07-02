@@ -23,10 +23,11 @@ test("mobile headings use the shared mobile sizing pattern without desktop chang
   assert.match(mobileCss, /overflow-wrap:\s*normal;/);
 });
 
-test("hero and form titles have mobile-specific manual line groupings", () => {
+test("hero title keeps approved lines and form title uses balanced mobile text", () => {
   assert.match(page, /className="hero-title-mobile"[\s\S]*Seu comercial n[\s\S]*perde vendas[\s\S]*para[\s\S]*concorrentes\.[\s\S]*Ele tamb[\s\S]*m perde para[\s\S]*o pr[\s\S]*prio processo\./);
   assert.match(page, /className="hero-title-desktop"/);
-  assert.match(page, /className="section-title section-title-left form-title-mobile"[\s\S]*Agende uma reuni[\s\S]*o online,[\s\S]*receba um diagn[\s\S]*stico comercial[\s\S]*e descubra onde sua empresa pode[\s\S]*estar[\s\S]*perdendo vendas[\s\S]*dentro[\s\S]*do pr[\s\S]*prio processo\./);
+  assert.match(page, /className="section-title section-title-left form-title-mobile"[\s\S]*Agende uma reuni[\s\S]*o online,[\s\S]*receba um diagn[\s\S]*stico comercial[\s\S]*descubra onde sua empresa pode estar[\s\S]*perdendo vendas[\s\S]*dentro do pr[\s\S]*prio processo\./);
+  assert.doesNotMatch(page, /className="section-title section-title-left form-title-mobile"[\s\S]*form-title-line[\s\S]*<\/h2>/);
   assert.match(page, /className="section-title section-title-left form-title-desktop"/);
 });
 

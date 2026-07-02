@@ -8,13 +8,27 @@ const workSection = await readFile(
   new URL("../src/app/_components/work-section.tsx", import.meta.url),
   "utf8",
 );
+const technology = await readFile(
+  new URL("../src/app/_components/technology-section.tsx", import.meta.url),
+  "utf8",
+);
 
 const mobileCss = css.slice(css.indexOf("@media (max-width: 640px)"));
+const formMobileHeading = page.slice(
+  page.indexOf('className="section-title section-title-left form-title-mobile"'),
+  page.indexOf("<Ornament", page.indexOf('className="section-title section-title-left form-title-mobile"')),
+);
 
-test("mobile hero and method visuals reduce portrait zoom and keep dashboards contained", () => {
+test("mobile hero and method visuals use controlled background layers", () => {
+  assert.match(page, /className="hero-mobile-background"/);
+  assert.match(page, /className="method-revenue-background"/);
   assert.match(
     mobileCss,
-    /\.hero-mobile-visual\s*{[^}]*height:\s*clamp\(430px,\s*118vw,\s*540px\);[^}]*background-size:\s*100% 100%,\s*100% auto;/s,
+    /\.hero-mobile-visual\s*{[^}]*height:\s*clamp\(430px,\s*118vw,\s*540px\);[^}]*background-image:\s*none;/s,
+  );
+  assert.match(
+    mobileCss,
+    /\.hero-mobile-background\s*{(?=[^}]*width:\s*min\(960px,\s*210vw\);)(?=[^}]*height:\s*100%;)(?=[^}]*background-image:\s*url\("\/brand\/3\/background-hero\.png\.png"\);)(?=[^}]*background-size:\s*100% auto;)[^}]*}/s,
   );
   assert.match(
     mobileCss,
@@ -22,7 +36,11 @@ test("mobile hero and method visuals reduce portrait zoom and keep dashboards co
   );
   assert.match(
     mobileCss,
-    /\.method-revenue-mobile-visual \.method-revenue-visual\s*{[^}]*min-height:\s*clamp\(430px,\s*118vw,\s*560px\);[^}]*background-size:\s*100% auto;/s,
+    /\.method-revenue-mobile-visual \.method-revenue-visual\s*{[^}]*min-height:\s*clamp\(430px,\s*118vw,\s*560px\);[^}]*background-image:\s*none;/s,
+  );
+  assert.match(
+    mobileCss,
+    /\.method-revenue-mobile-visual \.method-revenue-background\s*{(?=[^}]*width:\s*min\(990px,\s*212vw\);)(?=[^}]*height:\s*100%;)(?=[^}]*background-image:\s*url\("\/brand\/3\/background-sessao-4\.png\.png"\);)(?=[^}]*background-size:\s*100% auto;)[^}]*}/s,
   );
   assert.match(
     mobileCss,
@@ -41,16 +59,19 @@ test("mobile form and internal section titles use wider controlled compositions"
   );
   assert.match(
     mobileCss,
-    /\.form-title-mobile\s*{[^}]*display:\s*block;[^}]*width:\s*100%;[^}]*max-width:\s*calc\(100vw - 40px\);/s,
+    /\.form-copy \.form-title-mobile\s*{(?=[^}]*display:\s*block;)(?=[^}]*width:\s*calc\(100% \+ 16px\);)(?=[^}]*max-width:\s*calc\(100vw - 24px\);)(?=[^}]*font-size:\s*clamp\(25px,\s*6\.35vw,\s*30px\);)[^}]*}/s,
   );
+  assert.doesNotMatch(formMobileHeading, /form-title-line/);
+  assert.match(formMobileHeading, /perdendo vendas/);
   assert.match(
     mobileCss,
     /\.method-revenue-title\s*{[^}]*max-width:\s*calc\(100vw - 40px\);[^}]*font-size:\s*var\(--mobile-long-title\);/s,
   );
   assert.match(
     mobileCss,
-    /\.sales-title-block > h2\s*{[^}]*max-width:\s*calc\(100vw - 40px\);/s,
+    /\.sales-title-block > h2\s*{(?=[^}]*max-width:\s*min\(calc\(100vw - 84px\),\s*306px\);)(?=[^}]*font-size:\s*clamp\(28px,\s*6\.7vw,\s*30px\);)(?=[^}]*line-height:\s*1\.12;)[^}]*}/s,
   );
+  assert.match(mobileCss, /\.sales-title-line\s*{[^}]*display:\s*inline;/s);
 });
 
 test("section 5 title casing is normal and mobile card numbers sit in the card corner", () => {
@@ -62,7 +83,11 @@ test("section 5 title casing is normal and mobile card numbers sit in the card c
   );
   assert.match(
     mobileCss,
-    /\.work-card-number\s*{[^}]*position:\s*absolute;[^}]*top:\s*20px;[^}]*left:\s*20px;[^}]*z-index:\s*2;/s,
+    /\.work-card-number-inline\s*{[^}]*display:\s*none;[^}]*}/s,
+  );
+  assert.match(
+    mobileCss,
+    /\.work-card-number-mobile\s*{(?=[^}]*position:\s*absolute;)(?=[^}]*top:\s*20px;)(?=[^}]*left:\s*20px;)(?=[^}]*z-index:\s*2;)(?=[^}]*display:\s*block;)(?=[^}]*text-align:\s*left;)[^}]*}/s,
   );
   assert.match(
     mobileCss,
@@ -72,22 +97,24 @@ test("section 5 title casing is normal and mobile card numbers sit in the card c
 
 test("personalized radar and technology image are enlarged only on mobile without divider lines", () => {
   assert.doesNotMatch(css, /personalized-description-mobile::before|personalized-radar::after/);
+  assert.match(mobileCss, /\.personalized-shell\s*{[^}]*gap:\s*18px;/s);
   assert.match(
     mobileCss,
-    /\.personalized-radar\s*{[^}]*width:\s*min\(calc\(100vw - 16px\),\s*430px\);[^}]*min-height:\s*390px;[^}]*margin:\s*4px auto 0;/s,
+    /\.personalized-radar\s*{(?=[^}]*width:\s*min\(calc\(100vw - 8px\),\s*450px\);)(?=[^}]*min-height:\s*400px;)(?=[^}]*margin:\s*0 auto -8px;)(?=[^}]*transform:\s*translateX\(-8px\);)[^}]*}/s,
   );
   assert.match(
     mobileCss,
-    /\.personalized-description-mobile\s*{[^}]*border-top:\s*0;[^}]*padding-top:\s*8px;[^}]*font-size:\s*1\.02rem;/s,
+    /\.personalized-description-mobile\s*{(?=[^}]*width:\s*min\(calc\(100vw - 24px\),\s*420px\);)(?=[^}]*border-top:\s*0;)(?=[^}]*padding-top:\s*0;)(?=[^}]*line-height:\s*1\.62;)[^}]*}/s,
   );
   assert.match(
     mobileCss,
-    /\.personalized-close\s*{[^}]*font-size:\s*clamp\(20px,\s*5\.15vw,\s*24px\);[^}]*line-height:\s*1\.22;/s,
+    /\.personalized-close\s*{(?=[^}]*width:\s*min\(calc\(100vw - 24px\),\s*430px\);)(?=[^}]*font-size:\s*clamp\(18px,\s*4\.65vw,\s*22px\);)(?=[^}]*line-height:\s*1\.18;)[^}]*}/s,
   );
   assert.match(
     mobileCss,
-    /\.technology-flow-image\s*{[^}]*width:\s*min\(100vw,\s*500px\);[^}]*max-width:\s*calc\(100vw - 16px\);/s,
+    /\.technology-flow-image\s*{[^}]*width:\s*min\(calc\(100vw - 4px\),\s*540px\);[^}]*max-width:\s*none;/s,
   );
+  assert.match(technology, /sizes="\(max-width: 640px\) 100vw,/);
 });
 
 test("protected areas remain untouched by this mobile correction", () => {

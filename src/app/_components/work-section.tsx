@@ -161,10 +161,13 @@ export function WorkSection() {
           <div className="work-card-grid">
             {workCards.map((card) => (
               <article key={card.number} className="work-card">
+                <p className="work-card-number work-card-number-mobile" aria-hidden="true">
+                  {card.number}
+                </p>
                 <WorkflowIcon src={card.icon} />
                 <div className="work-card-content">
                   <div className="work-card-heading">
-                    <p className="work-card-number">{card.number}</p>
+                    <p className="work-card-number work-card-number-inline">{card.number}</p>
                     <h3>{card.title}</h3>
                   </div>
                   <span className="work-card-rule" />

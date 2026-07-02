@@ -356,19 +356,31 @@ summary::-webkit-details-marker {
     height: clamp(430px, 118vw, 540px);
     overflow: hidden;
     background-color: #000717;
-    background-image:
-      linear-gradient(180deg, rgba(0, 7, 23, 0.08) 0%, rgba(0, 7, 23, 0.1) 62%, #000717 100%),
-      url("/brand/3/background-hero.png.png");
-    background-position: center top, center top;
+    background-image: none;
+  }
+
+  .hero-mobile-background {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 0;
+    width: min(960px, 210vw);
+    height: 100%;
+    background-image: url("/brand/3/background-hero.png.png");
+    background-position: 51% top;
     background-repeat: no-repeat;
-    background-size: 100% 100%, 100% auto;
+    background-size: 100% auto;
+    transform: translateX(-49%);
+    transform-origin: center top;
   }
 
   .hero-mobile-visual::before {
     content: "";
     position: absolute;
     inset: 0;
+    z-index: 1;
     background:
+      linear-gradient(180deg, rgba(0, 7, 23, 0.04) 0%, rgba(0, 7, 23, 0.08) 62%, #000717 100%),
       radial-gradient(circle at 55% 28%, rgba(178, 145, 87, 0.18), transparent 36%),
       linear-gradient(90deg, rgba(0, 7, 23, 0.18), rgba(0, 7, 23, 0) 42%, rgba(0, 7, 23, 0.2));
     pointer-events: none;
@@ -377,6 +389,7 @@ summary::-webkit-details-marker {
   .hero-mobile-statue {
     position: absolute;
     inset: 0;
+    z-index: 2;
     background-image: url("/brand/3/marco%20aurelio%20hero%20sem%20fundo.png");
     background-position: center bottom;
     background-repeat: no-repeat;
@@ -1495,6 +1508,10 @@ summary::-webkit-details-marker {
   min-height: 720px;
 }
 
+.method-revenue-background {
+  display: none;
+}
+
 .method-revenue-statue {
   position: absolute;
   right: clamp(-330px, -19vw, -250px);
@@ -1688,6 +1705,10 @@ summary::-webkit-details-marker {
   font-size: 2.75rem;
   letter-spacing: -0.04em;
   line-height: 0.9;
+}
+
+.work-card-number-mobile {
+  display: none;
 }
 
 .work-card-icon {
@@ -3516,10 +3537,18 @@ summary::-webkit-details-marker {
     display: none;
   }
 
-  .form-title-mobile {
+  .form-copy .form-title-mobile {
     display: block;
-    width: 100%;
-    max-width: calc(100vw - 40px);
+    width: calc(100% + 16px);
+    max-width: calc(100vw - 24px);
+    margin-left: -8px;
+    font-size: clamp(25px, 6.35vw, 30px);
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  .form-title-mobile .form-title-highlight {
+    white-space: nowrap;
   }
 
   .form-copy .form-title-line,
@@ -3594,13 +3623,28 @@ summary::-webkit-details-marker {
   }
 
   .method-revenue-mobile-visual .method-revenue-visual {
+    position: relative;
+    isolation: isolate;
     min-height: clamp(430px, 118vw, 560px);
     overflow: hidden;
     background-color: #fbf8f4;
+    background-image: none;
+  }
+
+  .method-revenue-mobile-visual .method-revenue-background {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 0;
+    display: block;
+    width: min(990px, 212vw);
+    height: 100%;
     background-image: url("/brand/3/background-sessao-4.png.png");
-    background-position: center top;
+    background-position: 50% top;
     background-repeat: no-repeat;
     background-size: 100% auto;
+    transform: translateX(-50%);
+    transform-origin: center top;
   }
 
   .method-revenue-mobile-visual .method-revenue-statue {
@@ -3608,6 +3652,7 @@ summary::-webkit-details-marker {
     right: auto;
     bottom: auto;
     left: 50%;
+    z-index: 2;
     width: min(720px, 154vw);
     transform: translateX(-50%);
   }
@@ -3676,14 +3721,20 @@ summary::-webkit-details-marker {
     position: static;
   }
 
-  .work-card-number {
+  .work-card-number-inline {
+    display: none;
+  }
+
+  .work-card-number-mobile {
     position: absolute;
     top: 20px;
     left: 20px;
     z-index: 2;
+    display: block;
     font-size: 1.02rem;
     letter-spacing: 0.14em;
     line-height: 1;
+    text-align: left;
   }
 
   .work-card h3,
@@ -3718,15 +3769,25 @@ summary::-webkit-details-marker {
   }
 
   .sales-title-block > h2 {
-    max-width: calc(100vw - 40px);
+    max-width: min(calc(100vw - 84px), 306px);
     margin-right: auto;
     margin-left: auto;
+    font-size: clamp(28px, 6.7vw, 30px);
     line-height: 1.12;
+  }
+
+  .sales-title-line {
+    display: inline;
+  }
+
+  .sales-title-line + .sales-title-line::before {
+    content: " ";
   }
 
   .personalized-shell {
     display: flex;
     flex-direction: column;
+    gap: 18px;
   }
 
   .personalized-copy {
@@ -3744,22 +3805,23 @@ summary::-webkit-details-marker {
   .personalized-description-mobile {
     order: 3;
     display: grid;
-    width: 100%;
-    max-width: 390px;
+    width: min(calc(100vw - 24px), 420px);
+    max-width: none;
     margin: 0 auto;
     border-top: 0;
-    padding-top: 8px;
+    padding-top: 0;
     font-size: 1.02rem;
-    line-height: 1.68;
+    line-height: 1.62;
   }
 
   .personalized-radar {
     order: 2;
-    width: min(calc(100vw - 16px), 430px);
+    width: min(calc(100vw - 8px), 450px);
     max-width: none;
-    min-height: 390px;
-    margin: 4px auto 0;
+    min-height: 400px;
+    margin: 0 auto -8px;
     overflow: visible;
+    transform: translateX(-8px);
   }
 
   .personalized-radar-svg {
@@ -3770,10 +3832,22 @@ summary::-webkit-details-marker {
 
   .personalized-close {
     order: 4;
-    margin-top: 6px;
-    padding: 22px 16px;
-    font-size: clamp(20px, 5.15vw, 24px);
-    line-height: 1.22;
+    width: min(calc(100vw - 24px), 430px);
+    max-width: none;
+    min-height: 0;
+    margin-top: 2px;
+    padding: 20px 14px;
+    font-size: clamp(18px, 4.65vw, 22px);
+    line-height: 1.18;
+  }
+
+  .personalized-close-line {
+    display: inline;
+    white-space: normal;
+  }
+
+  .personalized-close-line + .personalized-close-line::before {
+    content: " ";
   }
 
   .technology-visual-desktop {
@@ -3785,13 +3859,13 @@ summary::-webkit-details-marker {
     min-height: auto;
     width: 100vw;
     margin: 24px calc(50% - 50vw) 0;
-    padding: 0 8px;
+    padding: 0 2px;
     overflow: visible;
   }
 
   .technology-flow-image {
-    width: min(100vw, 500px);
-    max-width: calc(100vw - 16px);
+    width: min(calc(100vw - 4px), 540px);
+    max-width: none;
   }
 
   .technology-copy h3 {

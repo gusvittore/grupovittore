@@ -552,6 +552,7 @@ function SectionThreeDashboard() {
 function MethodRevenueVisual() {
   return (
     <div className="method-revenue-visual">
+      <div className="method-revenue-background" aria-hidden="true" />
       <Image
         src="/brand/3/marco-aurelio-sessao4.png.png"
         alt=""
@@ -714,6 +715,7 @@ export default function Home() {
     <main className="min-h-screen bg-[#FBF8F4] text-[#090E1F]">
       <section id="topo" className="hero-section">
         <div className="hero-mobile-visual" aria-hidden="true">
+          <div className="hero-mobile-background" />
           <div className="hero-mobile-statue" />
         </div>
         <div className="hero-shell">
@@ -813,11 +815,10 @@ export default function Home() {
               <span className="form-title-line">dentro do próprio processo.</span>
             </h2>
             <h2 className="section-title section-title-left form-title-mobile">
-              <span className="form-title-line">Agende uma reunião online,</span>
-              <span className="form-title-line">receba um diagnóstico comercial</span>
-              <span className="form-title-line">e descubra onde sua empresa pode</span>
-              <span className="form-title-line">estar <span className="form-title-highlight">perdendo vendas</span> dentro</span>
-              <span className="form-title-line">do próprio processo.</span>
+              Agende uma reunião online, receba um diagnóstico comercial e
+              descubra onde sua empresa pode estar{" "}
+              <span className="form-title-highlight">perdendo vendas</span>{" "}
+              dentro do próprio processo.
             </h2>
             <Ornament className="my-9 justify-start" />
             <div className="form-info-grid">
