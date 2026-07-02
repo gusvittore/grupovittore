@@ -815,9 +815,9 @@ export default function Home() {
             <h2 className="section-title section-title-left form-title-mobile">
               <span className="form-title-line">Agende uma reunião online,</span>
               <span className="form-title-line">receba um diagnóstico comercial</span>
-              <span className="form-title-line">e descubra onde a sua empresa</span>
-              <span className="form-title-line">pode estar <span className="form-title-highlight">perdendo vendas</span></span>
-              <span className="form-title-line">dentro do próprio processo.</span>
+              <span className="form-title-line">e descubra onde sua empresa pode</span>
+              <span className="form-title-line">estar <span className="form-title-highlight">perdendo vendas</span> dentro</span>
+              <span className="form-title-line">do próprio processo.</span>
             </h2>
             <Ornament className="my-9 justify-start" />
             <div className="form-info-grid">

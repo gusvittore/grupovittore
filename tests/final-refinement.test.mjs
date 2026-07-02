@@ -87,7 +87,7 @@ test("description font sizes are lightly increased without targeting titles or c
     [/\.clients-title-block > div\s*{[^}]*font-size:\s*1\.32rem !important;/s, "section 6 support"],
     [/\.sales-title-block > div\s*{[^}]*font-size:\s*1\.38rem !important;/s, "section 7 support"],
     [/\.service-card-copy > p:not\(\.service-card-number\)\s*{[^}]*font-size:\s*1\.22rem;/s, "section 7 card descriptions"],
-    [/\.personalized-copy div\s*{[^}]*font-size:\s*1\.26rem;/s, "section 8 paragraphs"],
+    [/\.personalized-description\s*{[^}]*font-size:\s*1\.26rem;/s, "section 8 paragraphs"],
     [/\.technology-intro\s*{[^}]*font-size:\s*1\.24rem;/s, "section 9 intro"],
     [/\.technology-application p\s*{[^}]*font-size:\s*1\.24rem;/s, "section 9 applications"],
     [/\.faq-item summary\s*{[^}]*font-size:\s*1\.72rem;/s, "FAQ questions"],

@@ -15,7 +15,7 @@ test("hero mobile renders a separate visual cover before the text block", () => 
   assert.notEqual(shellIndex, -1);
   assert.ok(visualIndex < shellIndex);
   assert.match(css, /\.hero-mobile-visual\s*\{[\s\S]*?display:\s*none;/);
-  assert.match(mobileCss, /\.hero-mobile-visual\s*\{[\s\S]*?display:\s*block;[\s\S]*?height:\s*clamp\(420px,\s*132vw,\s*520px\);/);
+  assert.match(mobileCss, /\.hero-mobile-visual\s*\{[\s\S]*?display:\s*block;[\s\S]*?height:\s*clamp\(430px,\s*118vw,\s*540px\);/);
   assert.match(mobileCss, /\.hero-visual\s*\{[\s\S]*?display:\s*none;/);
 });
 
@@ -38,7 +38,7 @@ test("method mobile places the section visual before the copy while preserving d
   assert.match(page, /<MethodRevenueVisual \/>\s*<\/div>\s*<div className="method-revenue-copy">/);
   assert.match(page, /<\/div>\s*<MethodRevenueVisual \/>\s*<\/div>\s*<\/div>\s*<\/section>/);
   assert.match(mobileCss, /\.method-revenue-shell > \.method-revenue-visual\s*\{[\s\S]*?display:\s*none;/);
-  assert.match(mobileCss, /\.method-revenue-mobile-visual \.method-revenue-visual\s*\{[\s\S]*?min-height:\s*clamp\(520px,\s*152vw,\s*680px\);/);
+  assert.match(mobileCss, /\.method-revenue-mobile-visual \.method-revenue-visual\s*\{[\s\S]*?min-height:\s*clamp\(430px,\s*118vw,\s*560px\);/);
 });
 
 test("method mobile uses separate title lines for the approved mobile composition", () => {

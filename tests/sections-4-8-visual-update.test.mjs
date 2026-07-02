@@ -67,11 +67,12 @@ test("section 6 renders every client logo in one continuous original-color marqu
   assert.doesNotMatch(css, /\.client-logo-image\s*{[^}]*filter:/s);
 });
 
-test("section 7 shows two full cards plus a partial card and advances by two", () => {
-  assert.match(carousel, /const CAROUSEL_STEP = 2;/);
-  assert.match(carousel, /activeIndex \+ direction \* CAROUSEL_STEP/);
-  assert.match(carousel, /const CAROUSEL_STATES = \[0, 2, 4, 6, 7\] as const;/);
-  assert.match(carousel, /const lastStartIndex = 7;/);
+test("section 7 shows two full desktop cards and advances responsively", () => {
+  assert.match(carousel, /const CAROUSEL_DESKTOP_STEP = 2;/);
+  assert.match(carousel, /activeIndex \+ direction \* getCarouselStep\(\)/);
+  assert.match(carousel, /const CAROUSEL_DESKTOP_STATES = \[0, 2, 4, 6, 7\] as const;/);
+  assert.match(carousel, /const CAROUSEL_MOBILE_STATES = \[0, 1, 2, 3, 4, 5, 6, 7, 8\] as const;/);
+  assert.match(carousel, /const lastStartIndex = isMobile \? services\.length - 1 : services\.length - 2;/);
   assert.match(
     css,
     /\.service-card\s*{[^}]*width:\s*calc\(\(100% - 44px\) \/ 2\.12\);[^}]*min-width:\s*calc\(\(100% - 44px\) \/ 2\.12\);/s,

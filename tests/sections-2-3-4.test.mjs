@@ -52,9 +52,13 @@ test("section 3 keeps charts code-native and uses off-white panels", () => {
   );
   assert.match(css, /\.journey-step:not\(:last-child\)::before\s*{[^}]*transform:\s*rotate\(45deg\);/s);
   assert.doesNotMatch(css, /\.journey-step:not\(:last-child\)::after\s*{[^}]*dashed/s);
-  assert.match(
+  assert.doesNotMatch(
     css,
     /@media \(max-width:\s*640px\)[\s\S]*?\.journey-step::before,\s*\.journey-step::after\s*{[^}]*display:\s*none;/s,
+  );
+  assert.match(
+    css,
+    /@media \(max-width:\s*640px\)[\s\S]*?\.journey-step:not\(:last-child\)::after\s*{[^}]*border-top:\s*0;[^}]*border-left:\s*1px solid #b29157;/s,
   );
   assert.match(
     css,

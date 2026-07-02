@@ -69,8 +69,9 @@ test("section 6 is a single-row five-logo marquee using original assets", () => 
 });
 
 test("section 7 final state shows services 8 and 9 completely", () => {
-  assert.match(carousel, /const lastStartIndex = 7;/);
-  assert.match(carousel, /CAROUSEL_STATES\.map/);
+  assert.match(carousel, /const lastStartIndex = isMobile \? services\.length - 1 : services\.length - 2;/);
+  assert.match(carousel, /const carouselStates = isMobile \? CAROUSEL_MOBILE_STATES : CAROUSEL_DESKTOP_STATES;/);
+  assert.match(carousel, /carouselStates\.map/);
   assert.match(carousel, /goToState/);
   assert.match(carousel, /disabled=\{activeIndex === lastStartIndex\}/);
 });

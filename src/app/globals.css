@@ -353,15 +353,15 @@ summary::-webkit-details-marker {
     position: relative;
     display: block;
     width: 100%;
-    height: clamp(420px, 132vw, 520px);
+    height: clamp(430px, 118vw, 540px);
     overflow: hidden;
     background-color: #000717;
     background-image:
       linear-gradient(180deg, rgba(0, 7, 23, 0.08) 0%, rgba(0, 7, 23, 0.1) 62%, #000717 100%),
       url("/brand/3/background-hero.png.png");
-    background-position: center top, 58% top;
+    background-position: center top, center top;
     background-repeat: no-repeat;
-    background-size: cover, auto 106%;
+    background-size: 100% 100%, 100% auto;
   }
 
   .hero-mobile-visual::before {
@@ -378,9 +378,9 @@ summary::-webkit-details-marker {
     position: absolute;
     inset: 0;
     background-image: url("/brand/3/marco%20aurelio%20hero%20sem%20fundo.png");
-    background-position: 55% bottom;
+    background-position: center bottom;
     background-repeat: no-repeat;
-    background-size: min(560px, 110vw) auto;
+    background-size: min(470px, 92vw) auto;
     filter: drop-shadow(0 26px 34px rgba(0, 0, 0, 0.54));
   }
 
@@ -3261,6 +3261,12 @@ summary::-webkit-details-marker {
     content: " ";
   }
 
+  .work-heading h2 {
+    max-width: 350px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
   .work-heading-subtitle {
     margin-top: 20px;
     font-size: 1.08rem;
@@ -3342,6 +3348,11 @@ summary::-webkit-details-marker {
   .service-card-copy > p:not(.service-card-number) {
     font-size: 1.08rem;
     line-height: 1.6;
+  }
+
+  .service-card h3 {
+    font-size: clamp(1.36rem, 6vw, 1.58rem);
+    line-height: 1.14;
   }
 
   .method-revenue-text > strong {
@@ -3443,8 +3454,8 @@ summary::-webkit-details-marker {
   }
 
   :root {
-    --mobile-section-title: clamp(30px, 8vw, 38px);
-    --mobile-long-title: clamp(28px, 7.2vw, 36px);
+    --mobile-section-title: clamp(30px, 7.2vw, 35px);
+    --mobile-long-title: clamp(28px, 6.8vw, 34px);
   }
 
   .hero-title,
@@ -3507,7 +3518,8 @@ summary::-webkit-details-marker {
 
   .form-title-mobile {
     display: block;
-    max-width: 360px;
+    width: 100%;
+    max-width: calc(100vw - 40px);
   }
 
   .form-copy .form-title-line,
@@ -3561,6 +3573,10 @@ summary::-webkit-details-marker {
     padding: 0 20px 66px;
   }
 
+  .method-revenue-section {
+    background-image: none;
+  }
+
   .method-revenue-copy {
     width: 100%;
     max-width: none;
@@ -3578,21 +3594,21 @@ summary::-webkit-details-marker {
   }
 
   .method-revenue-mobile-visual .method-revenue-visual {
-    min-height: clamp(520px, 152vw, 680px);
+    min-height: clamp(430px, 118vw, 560px);
     overflow: hidden;
     background-color: #fbf8f4;
     background-image: url("/brand/3/background-sessao-4.png.png");
     background-position: center top;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100% auto;
   }
 
   .method-revenue-mobile-visual .method-revenue-statue {
-    top: 0;
+    top: 24px;
     right: auto;
     bottom: auto;
     left: 50%;
-    width: min(1120px, 230vw);
+    width: min(720px, 154vw);
     transform: translateX(-50%);
   }
 
@@ -3605,10 +3621,10 @@ summary::-webkit-details-marker {
   }
 
   .method-revenue-title {
-    max-width: 370px;
+    max-width: calc(100vw - 40px);
     margin-top: 26px;
-    font-size: clamp(42px, 11.2vw, 54px);
-    line-height: 1.04;
+    font-size: var(--mobile-long-title);
+    line-height: 1.14;
   }
 
   .method-title-mobile .method-title-line {
@@ -3631,9 +3647,9 @@ summary::-webkit-details-marker {
   }
 
   .method-revenue-text > strong {
-    max-width: 330px;
-    font-size: clamp(28px, 7.3vw, 34px);
-    line-height: 1.12;
+    max-width: calc(100vw - 40px);
+    font-size: clamp(25px, 6.2vw, 30px);
+    line-height: 1.16;
     text-wrap: balance;
   }
 
@@ -3643,25 +3659,28 @@ summary::-webkit-details-marker {
   }
 
   .work-heading-line {
-    display: block;
+    display: inline;
   }
 
   .work-heading-line + .work-heading-line::before {
-    content: "";
+    content: " ";
   }
 
   .work-card {
-    padding: 50px 24px 32px;
+    position: relative;
+    padding: 54px 24px 32px;
   }
 
   .work-card-heading {
     display: block;
+    position: static;
   }
 
   .work-card-number {
     position: absolute;
-    top: 21px;
-    left: 24px;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
     font-size: 1.02rem;
     letter-spacing: 0.14em;
     line-height: 1;
@@ -3678,15 +3697,15 @@ summary::-webkit-details-marker {
   }
 
   .clients-title-block > h2 {
-    max-width: 350px;
+    max-width: calc(100vw - 40px);
     margin-right: auto;
     margin-left: auto;
   }
 
   .clients-title-block > p:nth-of-type(2) {
-    max-width: 360px !important;
-    font-size: clamp(25px, 6.35vw, 31px) !important;
-    line-height: 1.16 !important;
+    max-width: calc(100vw - 40px) !important;
+    font-size: clamp(24px, 5.9vw, 29px) !important;
+    line-height: 1.18 !important;
     text-wrap: balance;
   }
 
@@ -3699,7 +3718,7 @@ summary::-webkit-details-marker {
   }
 
   .sales-title-block > h2 {
-    max-width: 365px;
+    max-width: calc(100vw - 40px);
     margin-right: auto;
     margin-left: auto;
     line-height: 1.12;
@@ -3728,16 +3747,18 @@ summary::-webkit-details-marker {
     width: 100%;
     max-width: 390px;
     margin: 0 auto;
-    padding-top: 24px;
-    font-size: 1.05rem;
+    border-top: 0;
+    padding-top: 8px;
+    font-size: 1.02rem;
     line-height: 1.68;
   }
 
   .personalized-radar {
     order: 2;
-    width: min(100%, 390px);
-    min-height: 360px;
-    margin: 10px auto 0;
+    width: min(calc(100vw - 16px), 430px);
+    max-width: none;
+    min-height: 390px;
+    margin: 4px auto 0;
     overflow: visible;
   }
 
@@ -3750,9 +3771,9 @@ summary::-webkit-details-marker {
   .personalized-close {
     order: 4;
     margin-top: 6px;
-    padding: 24px 18px;
-    font-size: clamp(25px, 6.3vw, 31px);
-    line-height: 1.16;
+    padding: 22px 16px;
+    font-size: clamp(20px, 5.15vw, 24px);
+    line-height: 1.22;
   }
 
   .technology-visual-desktop {
@@ -3762,12 +3783,15 @@ summary::-webkit-details-marker {
   .technology-visual-mobile {
     display: flex;
     min-height: auto;
-    margin: 26px auto 0;
+    width: 100vw;
+    margin: 24px calc(50% - 50vw) 0;
+    padding: 0 8px;
     overflow: visible;
   }
 
   .technology-flow-image {
-    width: min(100%, 430px);
+    width: min(100vw, 500px);
+    max-width: calc(100vw - 16px);
   }
 
   .technology-copy h3 {
