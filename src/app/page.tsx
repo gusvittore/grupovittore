@@ -713,21 +713,42 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#FBF8F4] text-[#090E1F]">
       <section id="topo" className="hero-section">
+        <div className="hero-mobile-visual" aria-hidden="true">
+          <div className="hero-mobile-statue" />
+        </div>
         <div className="hero-shell">
           <div className="hero-main">
             <div className="hero-copy">
               <p className="hero-eyebrow">
-                ASSESSORIA DE VENDAS E MARKETING DE PERFORMANCE
+                <span className="hero-eyebrow-desktop">
+                  ASSESSORIA DE VENDAS E MARKETING DE PERFORMANCE
+                </span>
+                <span className="hero-eyebrow-mobile">
+                  ASSESSORIA COMERCIAL E MARKETING DE PERFORMANCE
+                </span>
               </p>
               <h1 className="hero-title">
-                <span className="hero-title-line">Seu comercial não</span>
-                <span className="hero-title-line">
-                  <span className="hero-title-highlight">perde vendas</span> só para
+                <span className="hero-title-desktop">
+                  <span className="hero-title-line">Seu comercial não</span>
+                  <span className="hero-title-line">
+                    <span className="hero-title-highlight">perde vendas</span> só para
+                  </span>
+                  <span className="hero-title-line">concorrentes.</span>
+                  <span className="hero-title-line">Ele também perde para</span>
+                  <span className="hero-title-line">
+                    <span className="hero-title-highlight">o próprio processo.</span>
+                  </span>
                 </span>
-                <span className="hero-title-line">concorrentes.</span>
-                <span className="hero-title-line">Ele também perde para</span>
-                <span className="hero-title-line">
-                  <span className="hero-title-highlight">o próprio processo.</span>
+                <span className="hero-title-mobile">
+                  <span className="hero-title-line">Seu comercial não</span>
+                  <span className="hero-title-line">
+                    <span className="hero-title-highlight">perde vendas</span> só para
+                  </span>
+                  <span className="hero-title-line">concorrentes.</span>
+                  <span className="hero-title-line">Ele também perde para</span>
+                  <span className="hero-title-line">
+                    <span className="hero-title-highlight">o próprio processo.</span>
+                  </span>
                 </span>
               </h1>
               <div className="hero-title-rule" aria-hidden="true" />
@@ -784,7 +805,14 @@ export default function Home() {
       <Section id="formulario" className="form-section clean-off-white">
         <div className="form-section-grid">
           <div className="form-copy">
-            <h2 className="section-title section-title-left">
+            <h2 className="section-title section-title-left form-title-desktop">
+              <span className="form-title-line">Agende uma reunião online,</span>
+              <span className="form-title-line">receba um diagnóstico comercial</span>
+              <span className="form-title-line">e descubra onde a sua empresa</span>
+              <span className="form-title-line">pode estar <span className="form-title-highlight">perdendo vendas</span></span>
+              <span className="form-title-line">dentro do próprio processo.</span>
+            </h2>
+            <h2 className="section-title section-title-left form-title-mobile">
               <span className="form-title-line">Agende uma reunião online,</span>
               <span className="form-title-line">receba um diagnóstico comercial</span>
               <span className="form-title-line">e descubra onde a sua empresa</span>
@@ -842,13 +870,24 @@ export default function Home() {
       <section id="metodo-receita" className="method-revenue-section">
         <div className="method-revenue-overlay">
           <div className="method-revenue-shell">
+            <div className="method-revenue-mobile-visual">
+              <MethodRevenueVisual />
+            </div>
             <div className="method-revenue-copy">
               <p className="section-eyebrow-left">MÉTODO E RECEITA</p>
               <span className="section-small-rule" />
               <h2 className="method-revenue-title">
-                <span className="method-title-line">Você não precisa de mais marketing,</span>
-                <span className="method-title-line method-title-accent">precisa de vendas acontecendo</span>
-                <span className="method-title-line method-title-accent">com método.</span>
+                <span className="method-title-desktop">
+                  <span className="method-title-line">Você não precisa de mais marketing,</span>
+                  <span className="method-title-line method-title-accent">precisa de vendas acontecendo</span>
+                  <span className="method-title-line method-title-accent">com método.</span>
+                </span>
+                <span className="method-title-mobile">
+                  <span className="method-title-line">Você não precisa de</span>
+                  <span className="method-title-line">mais marketing,</span>
+                  <span className="method-title-line method-title-accent">precisa de vendas</span>
+                  <span className="method-title-line method-title-accent">acontecendo com método.</span>
+                </span>
               </h2>
               <div className="method-revenue-text">
                 <p>
@@ -967,7 +1006,7 @@ export default function Home() {
                   ou <span className="personalized-title-accent">Platinum</span>”?
                 </span>
               </h2>
-              <div>
+              <div className="personalized-description personalized-description-desktop">
                 <p>
                   Porque, ao contrário do que o mercado faz, que é vender
                   serviços padrão de baixa qualidade, nós trabalhamos com
@@ -982,6 +1021,19 @@ export default function Home() {
               </div>
             </div>
             <PersonalizedRadar />
+            <div className="personalized-description personalized-description-mobile">
+              <p>
+                Porque, ao contrário do que o mercado faz, que é vender
+                serviços padrão de baixa qualidade, nós trabalhamos com
+                projetos personalizados.
+              </p>
+              <p>
+                Com cinco anos de atuação no mercado, entendemos que negócios
+                não funcionam com base em “receitinha de bolo”, que você copia
+                e cola de um negócio para o outro, mas sim com negócio de
+                ponta a ponta.
+              </p>
+            </div>
             <strong className="personalized-close">
               <span className="personalized-close-line">POR ISSO, O DIAGNÓSTICO, O PLANO E O SERVIÇO</span>
               <span className="personalized-close-line">QUE APRESENTAMOS SÃO <span>EXCLUSIVOS</span> PARA O <span>SEU NEGÓCIO.</span></span>

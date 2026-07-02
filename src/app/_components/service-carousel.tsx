@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const services = [
   {
@@ -60,13 +60,30 @@ const services = [
   },
 ] as const;
 
-const CAROUSEL_STEP = 2;
-const CAROUSEL_STATES = [0, 2, 4, 6, 7] as const;
+const CAROUSEL_DESKTOP_STEP = 2;
+const CAROUSEL_DESKTOP_STATES = [0, 2, 4, 6, 7] as const;
+const CAROUSEL_MOBILE_STATES = [0, 1, 2, 3, 4, 5, 6, 7, 8] as const;
+
+const getCarouselStep = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(max-width: 640px)").matches ? 1 : CAROUSEL_DESKTOP_STEP;
 
 export function ServiceCarousel() {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const lastStartIndex = 7;
+  const [isMobile, setIsMobile] = useState(false);
+  const lastStartIndex = isMobile ? services.length - 1 : services.length - 2;
+  const carouselStates = isMobile ? CAROUSEL_MOBILE_STATES : CAROUSEL_DESKTOP_STATES;
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 640px)");
+    const updateViewport = () => setIsMobile(query.matches);
+
+    updateViewport();
+    query.addEventListener("change", updateViewport);
+
+    return () => query.removeEventListener("change", updateViewport);
+  }, []);
 
   function goToState(nextIndex: number) {
     const scroller = scrollerRef.current;
@@ -84,7 +101,7 @@ export function ServiceCarousel() {
   }
 
   function move(direction: -1 | 1) {
-    const steppedIndex = activeIndex + direction * CAROUSEL_STEP;
+    const steppedIndex = activeIndex + direction * getCarouselStep();
     const nextIndex = Math.max(
       0,
       Math.min(
@@ -95,6 +112,22 @@ export function ServiceCarousel() {
       ),
     );
     goToState(nextIndex);
+  }
+
+  function updateActiveFromScroll() {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+
+    const children = Array.from(scroller.children) as HTMLElement[];
+    const closest = children.reduce(
+      (best, child, index) => {
+        const distance = Math.abs(child.offsetLeft - scroller.scrollLeft);
+        return distance < best.distance ? { distance, index } : best;
+      },
+      { distance: Number.POSITIVE_INFINITY, index: activeIndex },
+    );
+
+    setActiveIndex(Math.max(0, Math.min(lastStartIndex, closest.index)));
   }
 
   return (
@@ -119,7 +152,7 @@ export function ServiceCarousel() {
       </div>
 
       <div className="service-carousel-viewport">
-        <div ref={scrollerRef} className="service-scroll">
+        <div ref={scrollerRef} className="service-scroll" onScroll={updateActiveFromScroll}>
           {services.map((service) => (
             <article
               id={`servico-${service.number}`}
@@ -149,13 +182,13 @@ export function ServiceCarousel() {
       </div>
 
       <div className="service-carousel-dots" aria-label="Estados do carrossel de serviços">
-        {CAROUSEL_STATES.map((state, index) => (
+        {carouselStates.map((state, index) => (
           <button
             key={state}
             type="button"
             onClick={() => goToState(state)}
             className={state === activeIndex ? "is-active" : ""}
-            aria-label={`Mostrar grupo ${index + 1} de ${CAROUSEL_STATES.length}`}
+            aria-label={`Mostrar grupo ${index + 1} de ${carouselStates.length}`}
             aria-current={state === activeIndex ? "true" : undefined}
           />
         ))}

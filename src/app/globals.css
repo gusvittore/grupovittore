@@ -136,6 +136,10 @@ summary::-webkit-details-marker {
   max-width: 680px;
 }
 
+.hero-mobile-visual {
+  display: none;
+}
+
 .hero-eyebrow {
   display: flex;
   align-items: center;
@@ -145,6 +149,10 @@ summary::-webkit-details-marker {
   letter-spacing: 0.18em;
   line-height: 1.4;
   text-transform: uppercase;
+}
+
+.hero-eyebrow-mobile {
+  display: none;
 }
 
 .hero-title {
@@ -162,6 +170,15 @@ summary::-webkit-details-marker {
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.04;
+}
+
+.hero-title-desktop,
+.hero-title-mobile {
+  display: block;
+}
+
+.hero-title-mobile {
+  display: none;
 }
 
 .hero-title-line {
@@ -323,23 +340,55 @@ summary::-webkit-details-marker {
 
 @media (max-width: 640px) {
   .hero-section {
-    min-height: 100vh;
-    background-image:
-      linear-gradient(180deg, rgba(0, 7, 23, 0.97), rgba(0, 7, 23, 0.9) 52%, rgba(0, 7, 23, 0.98)),
-      url("/brand/3/background-hero.png.png");
-    background-position: center top, 66% top;
-    background-size: cover, auto 100%;
+    min-height: 0;
+    background-color: #000717;
+    background-image: none;
   }
 
   .hero-section::after {
-    height: 360px;
+    display: none;
+  }
+
+  .hero-mobile-visual {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: clamp(420px, 132vw, 520px);
+    overflow: hidden;
+    background-color: #000717;
+    background-image:
+      linear-gradient(180deg, rgba(0, 7, 23, 0.08) 0%, rgba(0, 7, 23, 0.1) 62%, #000717 100%),
+      url("/brand/3/background-hero.png.png");
+    background-position: center top, 58% top;
+    background-repeat: no-repeat;
+    background-size: cover, auto 106%;
+  }
+
+  .hero-mobile-visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 55% 28%, rgba(178, 145, 87, 0.18), transparent 36%),
+      linear-gradient(90deg, rgba(0, 7, 23, 0.18), rgba(0, 7, 23, 0) 42%, rgba(0, 7, 23, 0.2));
+    pointer-events: none;
+  }
+
+  .hero-mobile-statue {
+    position: absolute;
+    inset: 0;
+    background-image: url("/brand/3/marco%20aurelio%20hero%20sem%20fundo.png");
+    background-position: 55% bottom;
+    background-repeat: no-repeat;
+    background-size: min(560px, 110vw) auto;
+    filter: drop-shadow(0 26px 34px rgba(0, 0, 0, 0.54));
   }
 
   .hero-shell {
     width: 100vw;
     max-width: 100vw;
-    min-height: 100vh;
-    padding: 74px 20px 28px;
+    min-height: 0;
+    padding: 42px 20px 32px;
     overflow: hidden;
   }
 
@@ -349,20 +398,31 @@ summary::-webkit-details-marker {
   }
 
   .hero-copy {
-    max-width: 352px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
   }
 
   .hero-eyebrow {
-    max-width: 330px;
-    font-size: 0.64rem;
-    letter-spacing: 0.11em;
+    display: block;
+    max-width: 360px;
+    font-size: 0.68rem;
+    letter-spacing: 0.17em;
+  }
+
+  .hero-eyebrow-desktop {
+    display: none;
+  }
+
+  .hero-eyebrow-mobile {
+    display: inline;
   }
 
   .hero-title {
-    margin-top: 20px;
-    max-width: 352px;
-    font-size: clamp(2.15rem, 10.8vw, 2.84rem);
-    line-height: 1.03;
+    margin-top: 22px;
+    max-width: 100%;
+    font-size: clamp(30px, 7.8vw, 34px);
+    line-height: 1.06;
   }
 
   .hero-title-line {
@@ -427,12 +487,7 @@ summary::-webkit-details-marker {
   }
 
   .hero-visual {
-    right: -260px;
-    top: 154px;
-    width: 620px;
-    height: 780px;
-    opacity: 0.26;
-    transform: scale(1.03);
+    display: none;
   }
 
   .hero-proof-grid {
@@ -574,6 +629,10 @@ summary::-webkit-details-marker {
 .form-copy .form-title-line {
   display: block;
   color: #090e1f;
+}
+
+.form-title-mobile {
+  display: none;
 }
 
 .form-copy .form-title-line:first-child {
@@ -1364,6 +1423,15 @@ summary::-webkit-details-marker {
   white-space: nowrap;
 }
 
+.method-title-desktop,
+.method-title-mobile {
+  display: block;
+}
+
+.method-title-mobile {
+  display: none;
+}
+
 .method-title-accent {
   color: #960000;
 }
@@ -1415,6 +1483,10 @@ summary::-webkit-details-marker {
   display: flex;
   justify-content: flex-start;
   margin-top: 30px;
+}
+
+.method-revenue-mobile-visual {
+  display: none;
 }
 
 .method-revenue-visual {
@@ -2261,7 +2333,7 @@ summary::-webkit-details-marker {
   color: #c78a35;
 }
 
-.personalized-copy div {
+.personalized-description {
   display: grid;
   gap: 14px;
   max-width: 580px;
@@ -2271,6 +2343,10 @@ summary::-webkit-details-marker {
   color: rgba(248, 244, 240, 0.84);
   font-size: 1.26rem;
   line-height: 1.68;
+}
+
+.personalized-description-mobile {
+  display: none;
 }
 
 .personalized-close {
@@ -2583,6 +2659,10 @@ summary::-webkit-details-marker {
   align-items: center;
   justify-content: flex-end;
   overflow: hidden;
+}
+
+.technology-visual-mobile {
+  display: none;
 }
 
 .technology-flow-image {
@@ -3021,11 +3101,6 @@ summary::-webkit-details-marker {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .journey-step::before,
-  .journey-step::after {
-    display: none;
-  }
-
   .diagnostic-title-line {
     white-space: nowrap;
   }
@@ -3365,6 +3440,343 @@ summary::-webkit-details-marker {
   .faq-title-block > h2 {
     font-size: 2.15rem;
     line-height: 1.06;
+  }
+
+  :root {
+    --mobile-section-title: clamp(30px, 8vw, 38px);
+    --mobile-long-title: clamp(28px, 7.2vw, 36px);
+  }
+
+  .hero-title,
+  .section-title,
+  .method-revenue-title,
+  .work-heading h2,
+  .clients-title-block > h2,
+  .clients-title-block > p:nth-of-type(2),
+  .sales-title-block > h2,
+  .personalized-copy h2,
+  .personalized-close,
+  .technology-copy h2,
+  .faq-title-block > h2 {
+    text-wrap: balance;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+
+  .hero-title {
+    max-width: 100%;
+    font-size: clamp(30px, 7.8vw, 34px);
+    line-height: 1.06;
+  }
+
+  .hero-title-desktop {
+    display: none;
+  }
+
+  .hero-title-mobile {
+    display: block;
+  }
+
+  .hero-title-mobile .hero-title-line {
+    white-space: nowrap;
+  }
+
+  .section-title,
+  .work-heading h2,
+  .clients-title-block > h2,
+  .technology-copy h2,
+  .faq-title-block > h2 {
+    font-size: var(--mobile-section-title);
+    line-height: 1.12;
+    letter-spacing: 0;
+  }
+
+  .form-copy .section-title,
+  .diagnostic-section .section-title,
+  .method-revenue-title,
+  .sales-title-block > h2,
+  .personalized-copy h2 {
+    font-size: var(--mobile-long-title);
+    line-height: 1.14;
+    letter-spacing: 0;
+  }
+
+  .form-title-desktop {
+    display: none;
+  }
+
+  .form-title-mobile {
+    display: block;
+    max-width: 360px;
+  }
+
+  .form-copy .form-title-line,
+  .diagnostic-title-line,
+  .method-title-line,
+  .sales-title-line,
+  .personalized-title-line {
+    white-space: normal;
+  }
+
+  .diagnostic-section .section-title,
+  .method-revenue-title,
+  .sales-title-block > h2,
+  .personalized-copy h2 {
+    max-width: 360px;
+  }
+
+  .journey-track {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .journey-step {
+    padding-bottom: 12px;
+  }
+
+  .journey-step:not(:last-child)::after {
+    display: block;
+    top: auto;
+    right: auto;
+    bottom: -21px;
+    left: 50%;
+    width: 0;
+    height: 24px;
+    border-top: 0;
+    border-left: 1px solid #b29157;
+    transform: translateX(-50%);
+  }
+
+  .journey-step:not(:last-child)::before {
+    display: block;
+    top: auto;
+    right: auto;
+    bottom: -23px;
+    left: 50%;
+    transform: translateX(-50%) rotate(135deg);
+  }
+
+  .method-revenue-shell {
+    display: block;
+    padding: 0 20px 66px;
+  }
+
+  .method-revenue-copy {
+    width: 100%;
+    max-width: none;
+    padding-top: 56px;
+  }
+
+  .method-revenue-shell > .method-revenue-visual {
+    display: none;
+  }
+
+  .method-revenue-mobile-visual {
+    display: block;
+    width: 100vw;
+    margin: 0 calc(50% - 50vw);
+  }
+
+  .method-revenue-mobile-visual .method-revenue-visual {
+    min-height: clamp(520px, 152vw, 680px);
+    overflow: hidden;
+    background-color: #fbf8f4;
+    background-image: url("/brand/3/background-sessao-4.png.png");
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .method-revenue-mobile-visual .method-revenue-statue {
+    top: 0;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+    width: min(1120px, 230vw);
+    transform: translateX(-50%);
+  }
+
+  .method-title-desktop {
+    display: none;
+  }
+
+  .method-title-mobile {
+    display: block;
+  }
+
+  .method-revenue-title {
+    max-width: 370px;
+    margin-top: 26px;
+    font-size: clamp(42px, 11.2vw, 54px);
+    line-height: 1.04;
+  }
+
+  .method-title-mobile .method-title-line {
+    white-space: nowrap;
+  }
+
+  .method-description-line {
+    display: inline;
+    white-space: normal;
+  }
+
+  .method-description-line + .method-description-line::before {
+    content: " ";
+  }
+
+  .method-revenue-text {
+    margin-top: 28px;
+    font-size: 1.05rem;
+    line-height: 1.66;
+  }
+
+  .method-revenue-text > strong {
+    max-width: 330px;
+    font-size: clamp(28px, 7.3vw, 34px);
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  .method-revenue-complement {
+    font-size: 1.05rem;
+    line-height: 1.66;
+  }
+
+  .work-heading-line {
+    display: block;
+  }
+
+  .work-heading-line + .work-heading-line::before {
+    content: "";
+  }
+
+  .work-card {
+    padding: 50px 24px 32px;
+  }
+
+  .work-card-heading {
+    display: block;
+  }
+
+  .work-card-number {
+    position: absolute;
+    top: 21px;
+    left: 24px;
+    font-size: 1.02rem;
+    letter-spacing: 0.14em;
+    line-height: 1;
+  }
+
+  .work-card h3,
+  .work-card:nth-child(3) h3,
+  .work-card:nth-child(4) h3 {
+    margin-top: 16px;
+    font-size: 1.48rem;
+    line-height: 1.08;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .clients-title-block > h2 {
+    max-width: 350px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .clients-title-block > p:nth-of-type(2) {
+    max-width: 360px !important;
+    font-size: clamp(25px, 6.35vw, 31px) !important;
+    line-height: 1.16 !important;
+    text-wrap: balance;
+  }
+
+  .client-claim-line {
+    display: inline;
+  }
+
+  .client-claim-line + .client-claim-line::before {
+    content: " ";
+  }
+
+  .sales-title-block > h2 {
+    max-width: 365px;
+    margin-right: auto;
+    margin-left: auto;
+    line-height: 1.12;
+  }
+
+  .personalized-shell {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .personalized-copy {
+    width: 100%;
+  }
+
+  .personalized-copy h2 {
+    line-height: 1.17;
+  }
+
+  .personalized-description-desktop {
+    display: none;
+  }
+
+  .personalized-description-mobile {
+    order: 3;
+    display: grid;
+    width: 100%;
+    max-width: 390px;
+    margin: 0 auto;
+    padding-top: 24px;
+    font-size: 1.05rem;
+    line-height: 1.68;
+  }
+
+  .personalized-radar {
+    order: 2;
+    width: min(100%, 390px);
+    min-height: 360px;
+    margin: 10px auto 0;
+    overflow: visible;
+  }
+
+  .personalized-radar-svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .personalized-close {
+    order: 4;
+    margin-top: 6px;
+    padding: 24px 18px;
+    font-size: clamp(25px, 6.3vw, 31px);
+    line-height: 1.16;
+  }
+
+  .technology-visual-desktop {
+    display: none;
+  }
+
+  .technology-visual-mobile {
+    display: flex;
+    min-height: auto;
+    margin: 26px auto 0;
+    overflow: visible;
+  }
+
+  .technology-flow-image {
+    width: min(100%, 430px);
+  }
+
+  .technology-copy h3 {
+    margin-top: 30px;
+  }
+
+  .faq-item summary {
+    font-size: clamp(17px, 4.7vw, 19px);
+    line-height: 1.34;
   }
 
   .site-footer-main {

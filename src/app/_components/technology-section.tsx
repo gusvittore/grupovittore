@@ -31,6 +31,24 @@ const applications = [
   },
 ];
 
+function TechnologyFlow({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={`technology-visual ${className}`}
+      aria-label="Ecossistema de tecnologia conectado ao Grupo Vittore"
+    >
+      <Image
+        src="/brand/fluxogram-sessao9-2.png.png"
+        alt="Fluxograma de tecnologia, automação e inteligência conectado ao Grupo Vittore"
+        width={1254}
+        height={1254}
+        sizes="(max-width: 640px) 92vw, (max-width: 1100px) 100vw, 64vw"
+        className="technology-flow-image"
+      />
+    </div>
+  );
+}
+
 export function TechnologySection() {
   return (
     <section id="inteligencia-tecnologia" className="technology-section">
@@ -53,6 +71,8 @@ export function TechnologySection() {
             dados em decisões mais lucrativas.
           </p>
 
+          <TechnologyFlow className="technology-visual-mobile" />
+
           <h3>
             Aplicações estratégicas
             <span aria-hidden="true" />
@@ -74,16 +94,7 @@ export function TechnologySection() {
           </div>
         </div>
 
-        <div className="technology-visual" aria-label="Ecossistema de tecnologia conectado ao Grupo Vittore">
-          <Image
-            src="/brand/fluxogram-sessao9-2.png.png"
-            alt="Fluxograma de tecnologia, automação e inteligência conectado ao Grupo Vittore"
-            width={1254}
-            height={1254}
-            sizes="(max-width: 1100px) 100vw, 64vw"
-            className="technology-flow-image"
-          />
-        </div>
+        <TechnologyFlow className="technology-visual-desktop" />
       </div>
     </section>
   );
