@@ -686,10 +686,7 @@ function PersonalizedRadar() {
           <tspan x="542">Marketing de</tspan>
           <tspan x="542" dy="24">Performance</tspan>
         </text>
-        <text x="174" y="505" textAnchor="end" className="personalized-radar-label">
-          <tspan x="174">Marketing de</tspan>
-          <tspan x="174" dy="24">Performance</tspan>
-        </text>
+        <text x="126" y="328" textAnchor="end" className="personalized-radar-label personalized-radar-label-processes">Processos</text>
         <text x="168" y="150" textAnchor="end" className="personalized-radar-label">
           <tspan x="168">Gestão</tspan>
           <tspan x="168" dy="24">de Projetos</tspan>
@@ -1043,8 +1040,8 @@ export default function Home() {
               <span className="personalized-close-copy personalized-close-copy-mobile">
                 <span className="personalized-close-line">POR ISSO, O DIAGNÓSTICO,</span>
                 <span className="personalized-close-line">O PLANO E O SERVIÇO QUE</span>
-                <span className="personalized-close-line">APRESENTAMOS SÃO</span>
-                <span className="personalized-close-line"><span>EXCLUSIVOS</span> PARA O <span>SEU NEGÓCIO.</span></span>
+                <span className="personalized-close-line">APRESENTAMOS SÃO <span>EXCLUSIVOS</span></span>
+                <span className="personalized-close-line">PARA O <span>SEU NEGÓCIO.</span></span>
               </span>
             </strong>
           </div>

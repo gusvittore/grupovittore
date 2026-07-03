@@ -42,7 +42,7 @@ function TechnologyFlow({ className = "" }: { className?: string }) {
         alt="Fluxograma de tecnologia, automação e inteligência conectado ao Grupo Vittore"
         width={1254}
         height={1254}
-        sizes="(max-width: 640px) 114vw, (max-width: 1100px) 100vw, 64vw"
+        sizes="(max-width: 767px) 130vw, (max-width: 1100px) 100vw, 64vw"
         className="technology-flow-image"
       />
     </div>

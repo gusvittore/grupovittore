@@ -32,7 +32,8 @@ test("section 5 final objective statement and frame are removed", () => {
 
 test("section 8 radar follows the reference label set and keeps labels close to the octagon", () => {
   assert.match(radarSource, /viewBox="0 0 720 620"/);
-  assert.equal((radarSource.match(/Marketing de/g) ?? []).length, 2);
+  assert.equal((radarSource.match(/Marketing de/g) ?? []).length, 1);
+  assert.match(radarSource, />Processos</);
   assert.doesNotMatch(radarSource, /Dados e/);
   assert.doesNotMatch(radarSource, /Automação/);
   assert.doesNotMatch(radarSource, /Estratégia/);
@@ -64,6 +65,6 @@ test("section 8 closing statement is a wide two-line premium block", () => {
   );
   assert.match(
     page,
-    /className="personalized-close-copy personalized-close-copy-mobile"[\s\S]*<span className="personalized-close-line">POR ISSO, O DIAGNÓSTICO,<\/span>[\s\S]*<span className="personalized-close-line">O PLANO E O SERVIÇO QUE<\/span>[\s\S]*<span className="personalized-close-line">APRESENTAMOS SÃO<\/span>[\s\S]*<span className="personalized-close-line"><span>EXCLUSIVOS<\/span> PARA O <span>SEU NEGÓCIO\.<\/span><\/span>/,
+    /className="personalized-close-copy personalized-close-copy-mobile"[\s\S]*<span className="personalized-close-line">POR ISSO, O DIAGNÓSTICO,<\/span>[\s\S]*<span className="personalized-close-line">O PLANO E O SERVIÇO QUE<\/span>[\s\S]*<span className="personalized-close-line">APRESENTAMOS SÃO <span>EXCLUSIVOS<\/span><\/span>[\s\S]*<span className="personalized-close-line">PARA O <span>SEU NEGÓCIO\.<\/span><\/span>/,
   );
 });

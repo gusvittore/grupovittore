@@ -47,10 +47,11 @@ test("section 8 keeps its required background and uses an eight-axis radar", () 
     "Anúncios",
     "Marketing de",
     "Gestão",
+    "Processos",
   ]) {
     assert.match(radarSource, new RegExp(label));
   }
-  assert.equal((radarSource.match(/Marketing de/g) ?? []).length, 2);
+  assert.equal((radarSource.match(/Marketing de/g) ?? []).length, 1);
   assert.doesNotMatch(radarSource, /Dados e|Automação|Estratégia/);
   assert.match(page, /personalized-title-line/);
   assert.match(css, /\.personalized-close\s*{[^}]*min-height:\s*184px;/s);
@@ -111,7 +112,7 @@ test("section 9 has desktop and mobile layout rules", () => {
   );
   assert.match(
     css,
-    /@media \(max-width:\s*640px\)[\s\S]*?\.technology-visual-mobile\s*{[^}]*width:\s*100%;[\s\S]*?\.technology-flow-image\s*{[^}]*width:\s*min\(114vw,\s*468px\);/s,
+    /@media \(max-width:\s*640px\)[\s\S]*?\.technology-visual-mobile\s*{[^}]*width:\s*100%;[\s\S]*?\.technology-flow-image\s*{[^}]*width:\s*min\(130vw,\s*528px\);/s,
   );
   assert.match(
     css,

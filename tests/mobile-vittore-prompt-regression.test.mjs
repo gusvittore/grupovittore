@@ -13,6 +13,10 @@ const technology = await readFile(
   "utf8",
 );
 
+const radarSource = page.slice(
+  page.indexOf("function PersonalizedRadar"),
+  page.indexOf("function HeroPrimaryButton"),
+);
 const mobileCss = css.slice(css.indexOf("@media (max-width: 640px)"));
 const formMobileHeading = page.slice(
   page.indexOf('className="section-title section-title-left form-title-mobile"'),
@@ -108,19 +112,22 @@ test("personalized radar and technology image are enlarged only on mobile withou
   );
   assert.match(mobileCss, /\.personalized-radar-label\s*{(?=[^}]*font-size:\s*15px;)(?=[^}]*stroke-width:\s*2\.25px;)[^}]*}/s);
   assert.match(mobileCss, /\.personalized-radar-label-crm\s*{[^}]*transform:\s*translate\(32px,\s*-6px\);/s);
-  assert.match(mobileCss, /\.personalized-radar-label-ads\s*{(?=[^}]*text-anchor:\s*end;)(?=[^}]*transform:\s*translate\(10px,\s*-4px\);)[^}]*}/s);
+  assert.match(mobileCss, /\.personalized-radar-label-ads\s*{(?=[^}]*text-anchor:\s*start;)(?=[^}]*transform:\s*translate\(42px,\s*-4px\);)[^}]*}/s);
+  assert.match(mobileCss, /\.personalized-radar-label-processes\s*{[^}]*transform:\s*translate\(-10px,\s*0\);/s);
   assert.match(page, /<text x="520" y="152" className="personalized-radar-label personalized-radar-label-crm">CRM<\/text>/);
   assert.match(page, /<text x="574" y="308" textAnchor="start" className="personalized-radar-label personalized-radar-label-ads">\s*<tspan x="574">An(?:ú|Ãº)ncios<\/tspan>/);
   assert.match(page, /<text x="542" y="508" textAnchor="start" className="personalized-radar-label personalized-radar-label-performance-right">\s*<tspan x="542">Marketing de<\/tspan>/);
+  assert.match(page, /<text x="126" y="328" textAnchor="end" className="personalized-radar-label personalized-radar-label-processes">Processos<\/text>/);
+  assert.equal((radarSource.match(/Marketing de/g) ?? []).length, 1);
   assert.match(page, /className="personalized-radar-label personalized-radar-label-performance-right"/);
   assert.match(mobileCss, /\.personalized-radar-label-performance-right\s*{[^}]*transform:\s*translate\(-42px,\s*0\);/s);
   assert.match(
     mobileCss,
-    /\.personalized-close\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*430px;)(?=[^}]*padding:\s*20px 14px;)(?=[^}]*font-size:\s*clamp\(15px,\s*3\.85vw,\s*18px\);)(?=[^}]*line-height:\s*1\.14;)[^}]*}/s,
+    /\.personalized-close\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*430px;)(?=[^}]*padding:\s*20px 14px;)(?=[^}]*font-size:\s*clamp\(14px,\s*3\.75vw,\s*17px\);)(?=[^}]*line-height:\s*1\.13;)[^}]*}/s,
   );
   assert.match(
     page,
-    /className="personalized-close-copy personalized-close-copy-mobile"[\s\S]*POR ISSO, O DIAGNÓSTICO,[\s\S]*O PLANO E O SERVIÇO QUE[\s\S]*APRESENTAMOS SÃO[\s\S]*<span>EXCLUSIVOS<\/span> PARA O <span>SEU NEGÓCIO\.<\/span>/,
+    /className="personalized-close-copy personalized-close-copy-mobile"[\s\S]*POR ISSO, O DIAGNÓSTICO,[\s\S]*O PLANO E O SERVIÇO QUE[\s\S]*APRESENTAMOS SÃO <span>EXCLUSIVOS<\/span>[\s\S]*PARA O <span>SEU NEGÓCIO\.<\/span>/,
   );
   assert.match(mobileCss, /\.personalized-close-copy-desktop\s*{[^}]*display:\s*none;/s);
   assert.match(mobileCss, /\.personalized-close-copy-mobile\s*{[^}]*display:\s*block;/s);
@@ -138,13 +145,13 @@ test("personalized radar and technology image are enlarged only on mobile withou
   );
   assert.match(
     mobileCss,
-    /\.technology-flow-image\s*{(?=[^}]*width:\s*min\(114vw,\s*468px\);)(?=[^}]*max-width:\s*none;)(?=[^}]*transform:\s*translateX\(-6%\);)[^}]*}/s,
+    /\.technology-flow-image\s*{(?=[^}]*width:\s*min\(130vw,\s*528px\);)(?=[^}]*max-width:\s*none;)(?=[^}]*height:\s*auto;)(?=[^}]*transform:\s*translateX\(-2%\);)[^}]*}/s,
   );
   assert.match(
     mobileCss,
     /\.technology-copy,\s*\.technology-intro,\s*\.technology-applications\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*calc\(100vw - 40px\);)[^}]*}/s,
   );
-  assert.match(technology, /sizes="\(max-width: 640px\) 114vw,/);
+  assert.match(technology, /sizes="\(max-width: 767px\) 130vw,/);
 });
 
 test("protected areas remain untouched by this mobile correction", () => {
