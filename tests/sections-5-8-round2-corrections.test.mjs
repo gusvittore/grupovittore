@@ -36,8 +36,8 @@ test("section 8 radar follows the reference label set and keeps labels close to 
   assert.doesNotMatch(radarSource, /Dados e/);
   assert.doesNotMatch(radarSource, /Automação/);
   assert.doesNotMatch(radarSource, /Estratégia/);
-  assert.match(radarSource, /<text x="545" y="152" className="personalized-radar-label">CRM<\/text>/);
-  assert.match(radarSource, /<text x="618" y="308" className="personalized-radar-label"/);
+  assert.match(radarSource, /<text x="520" y="152" className="personalized-radar-label">CRM<\/text>/);
+  assert.match(radarSource, /<text x="574" y="308" textAnchor="start" className="personalized-radar-label"/);
   assert.match(
     css,
     /\.personalized-radar\s*{[^}]*width:\s*min\(100%,\s*720px\);[^}]*min-height:\s*620px;[^}]*margin:\s*0 auto;/s,

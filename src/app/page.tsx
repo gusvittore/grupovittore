@@ -677,14 +677,14 @@ function PersonalizedRadar() {
           <tspan x="360">Treinamento</tspan>
           <tspan x="360" dy="24">Comercial</tspan>
         </text>
-        <text x="545" y="152" className="personalized-radar-label">CRM</text>
-        <text x="618" y="308" className="personalized-radar-label">
-          <tspan x="618">Anúncios</tspan>
-          <tspan x="618" dy="24">online</tspan>
+        <text x="520" y="152" className="personalized-radar-label">CRM</text>
+        <text x="574" y="308" textAnchor="start" className="personalized-radar-label">
+          <tspan x="574">Anúncios</tspan>
+          <tspan x="574" dy="24">online</tspan>
         </text>
-        <text x="548" y="508" className="personalized-radar-label">
-          <tspan x="548">Marketing de</tspan>
-          <tspan x="548" dy="24">Performance</tspan>
+        <text x="542" y="508" textAnchor="start" className="personalized-radar-label">
+          <tspan x="542">Marketing de</tspan>
+          <tspan x="542" dy="24">Performance</tspan>
         </text>
         <text x="174" y="505" textAnchor="end" className="personalized-radar-label">
           <tspan x="174">Marketing de</tspan>

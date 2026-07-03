@@ -111,7 +111,7 @@ test("section 9 has desktop and mobile layout rules", () => {
   );
   assert.match(
     css,
-    /@media \(max-width:\s*640px\)[\s\S]*?\.technology-flow-image\s*{[^}]*width:\s*min\(calc\(100vw - 4px\),\s*540px\);/s,
+    /@media \(max-width:\s*640px\)[\s\S]*?\.technology-visual-mobile\s*{[^}]*width:\s*calc\(100% \+ 32px\);[\s\S]*?\.technology-flow-image\s*{[^}]*width:\s*100%;/s,
   );
   assert.match(
     css,

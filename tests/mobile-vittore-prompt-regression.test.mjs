@@ -28,7 +28,7 @@ test("mobile hero and method visuals use controlled background layers", () => {
   );
   assert.match(
     mobileCss,
-    /\.hero-mobile-background\s*{(?=[^}]*width:\s*min\(960px,\s*210vw\);)(?=[^}]*height:\s*100%;)(?=[^}]*background-image:\s*url\("\/brand\/3\/background-hero\.png\.png"\);)(?=[^}]*background-size:\s*100% auto;)[^}]*}/s,
+    /\.hero-mobile-background\s*{(?=[^}]*width:\s*min\(960px,\s*210vw\);)(?=[^}]*height:\s*100%;)(?=[^}]*background-image:\s*url\("\/brand\/3\/background-hero\.png\.png"\);)(?=[^}]*background-position:\s*50% top;)(?=[^}]*background-size:\s*100% auto;)(?=[^}]*transform:\s*translateX\(-65%\);)[^}]*}/s,
   );
   assert.match(
     mobileCss,
@@ -40,7 +40,7 @@ test("mobile hero and method visuals use controlled background layers", () => {
   );
   assert.match(
     mobileCss,
-    /\.method-revenue-mobile-visual \.method-revenue-background\s*{(?=[^}]*width:\s*min\(990px,\s*212vw\);)(?=[^}]*height:\s*100%;)(?=[^}]*background-image:\s*url\("\/brand\/3\/background-sessao-4\.png\.png"\);)(?=[^}]*background-size:\s*100% auto;)[^}]*}/s,
+    /\.method-revenue-mobile-visual \.method-revenue-background\s*{(?=[^}]*width:\s*min\(990px,\s*212vw\);)(?=[^}]*height:\s*100%;)(?=[^}]*background-image:\s*url\("\/brand\/3\/background-sessao-4\.png\.png"\);)(?=[^}]*background-position:\s*50% top;)(?=[^}]*background-size:\s*100% auto;)(?=[^}]*transform:\s*translateX\(-70%\);)[^}]*}/s,
   );
   assert.match(
     mobileCss,
@@ -97,22 +97,30 @@ test("section 5 title casing is normal and mobile card numbers sit in the card c
 
 test("personalized radar and technology image are enlarged only on mobile without divider lines", () => {
   assert.doesNotMatch(css, /personalized-description-mobile::before|personalized-radar::after/);
-  assert.match(mobileCss, /\.personalized-shell\s*{[^}]*gap:\s*18px;/s);
+  assert.match(mobileCss, /\.personalized-shell\s*{[^}]*gap:\s*14px;/s);
   assert.match(
     mobileCss,
-    /\.personalized-radar\s*{(?=[^}]*width:\s*min\(calc\(100vw - 8px\),\s*450px\);)(?=[^}]*min-height:\s*400px;)(?=[^}]*margin:\s*0 auto -8px;)(?=[^}]*transform:\s*translateX\(-8px\);)[^}]*}/s,
+    /\.personalized-radar\s*{(?=[^}]*width:\s*calc\(100% \+ 32px\);)(?=[^}]*max-width:\s*430px;)(?=[^}]*min-height:\s*clamp\(356px,\s*95vw,\s*394px\);)(?=[^}]*margin:\s*0 auto -14px;)(?=[^}]*transform:\s*translateX\(-8px\);)[^}]*}/s,
+  );
+  assert.match(mobileCss, /\.personalized-radar-label\s*{(?=[^}]*font-size:\s*13px;)(?=[^}]*stroke-width:\s*2\.1px;)[^}]*}/s);
+  assert.match(page, /<text x="520" y="152" className="personalized-radar-label">CRM<\/text>/);
+  assert.match(page, /<text x="574" y="308" textAnchor="start" className="personalized-radar-label">\s*<tspan x="574">An(?:ú|Ãº)ncios<\/tspan>/);
+  assert.match(page, /<text x="542" y="508" textAnchor="start" className="personalized-radar-label">\s*<tspan x="542">Marketing de<\/tspan>/);
+  assert.match(
+    mobileCss,
+    /\.personalized-description-mobile\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*420px;)(?=[^}]*margin:\s*-4px auto 0;)(?=[^}]*border-top:\s*0;)(?=[^}]*padding-top:\s*0;)(?=[^}]*line-height:\s*1\.62;)[^}]*}/s,
   );
   assert.match(
     mobileCss,
-    /\.personalized-description-mobile\s*{(?=[^}]*width:\s*min\(calc\(100vw - 24px\),\s*420px\);)(?=[^}]*border-top:\s*0;)(?=[^}]*padding-top:\s*0;)(?=[^}]*line-height:\s*1\.62;)[^}]*}/s,
+    /\.personalized-close\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*430px;)(?=[^}]*font-size:\s*clamp\(18px,\s*4\.65vw,\s*22px\);)(?=[^}]*line-height:\s*1\.18;)[^}]*}/s,
   );
   assert.match(
     mobileCss,
-    /\.personalized-close\s*{(?=[^}]*width:\s*min\(calc\(100vw - 24px\),\s*430px\);)(?=[^}]*font-size:\s*clamp\(18px,\s*4\.65vw,\s*22px\);)(?=[^}]*line-height:\s*1\.18;)[^}]*}/s,
+    /\.technology-visual-mobile\s*{(?=[^}]*width:\s*calc\(100% \+ 32px\);)(?=[^}]*max-width:\s*430px;)(?=[^}]*overflow:\s*hidden;)[^}]*}/s,
   );
   assert.match(
     mobileCss,
-    /\.technology-flow-image\s*{[^}]*width:\s*min\(calc\(100vw - 4px\),\s*540px\);[^}]*max-width:\s*none;/s,
+    /\.technology-flow-image\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*100%;)(?=[^}]*transform:\s*none;)[^}]*}/s,
   );
   assert.match(technology, /sizes="\(max-width: 640px\) 100vw,/);
 });
