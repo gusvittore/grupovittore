@@ -687,6 +687,10 @@ function PersonalizedRadar() {
           <tspan x="542" dy="24">Performance</tspan>
         </text>
         <text x="126" y="328" textAnchor="end" className="personalized-radar-label personalized-radar-label-processes">Processos</text>
+        <text x="178" y="526" textAnchor="end" className="personalized-radar-label personalized-radar-label-technology">
+          <tspan x="178">Tecnologia e</tspan>
+          <tspan x="178" dy="24">automações</tspan>
+        </text>
         <text x="168" y="150" textAnchor="end" className="personalized-radar-label">
           <tspan x="168">Gestão</tspan>
           <tspan x="168" dy="24">de Projetos</tspan>

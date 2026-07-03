@@ -2511,6 +2511,18 @@ summary::-webkit-details-marker {
   stroke-linejoin: round;
 }
 
+.personalized-radar-label-crm {
+  transform: translate(42px, -10px);
+}
+
+.personalized-radar-label-ads {
+  transform: translate(52px, -6px);
+}
+
+.personalized-radar-label-processes {
+  transform: translate(-32px, 0);
+}
+
 .technology-section {
   position: relative;
   overflow: hidden;
@@ -3862,6 +3874,10 @@ summary::-webkit-details-marker {
     transform: translate(-10px, 0);
   }
 
+  .personalized-radar-label-technology {
+    transform: translate(-8px, 0);
+  }
+
   .personalized-close {
     order: 4;
     width: 100%;
@@ -3903,19 +3919,19 @@ summary::-webkit-details-marker {
   .technology-visual-mobile {
     display: flex;
     min-height: auto;
-    width: 100%;
-    max-width: 430px;
-    margin: 26px auto 0;
+    width: 118vw;
+    max-width: none;
+    margin: 26px 0 0 -9vw;
     padding: 0;
     justify-content: center;
     overflow: visible;
   }
 
   .technology-flow-image {
-    width: min(130vw, 528px);
+    width: 100%;
     max-width: none;
     height: auto;
-    transform: translateX(-2%);
+    transform: none;
   }
 
   .technology-copy,

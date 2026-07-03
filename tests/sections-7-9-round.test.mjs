@@ -39,7 +39,7 @@ test("section 8 keeps its required background and uses an eight-axis radar", () 
   );
   assert.equal(
     (radarSource.match(/className="personalized-radar-label/g) ?? []).length,
-    6,
+    7,
   );
   for (const label of [
     "Treinamento",
@@ -52,6 +52,8 @@ test("section 8 keeps its required background and uses an eight-axis radar", () 
     assert.match(radarSource, new RegExp(label));
   }
   assert.equal((radarSource.match(/Marketing de/g) ?? []).length, 1);
+  assert.equal((radarSource.match(/Tecnologia e/g) ?? []).length, 1);
+  assert.match(radarSource, /personalized-radar-label-technology/);
   assert.doesNotMatch(radarSource, /Dados e|Automação|Estratégia/);
   assert.match(page, /personalized-title-line/);
   assert.match(css, /\.personalized-close\s*{[^}]*min-height:\s*184px;/s);
@@ -112,7 +114,7 @@ test("section 9 has desktop and mobile layout rules", () => {
   );
   assert.match(
     css,
-    /@media \(max-width:\s*640px\)[\s\S]*?\.technology-visual-mobile\s*{[^}]*width:\s*100%;[\s\S]*?\.technology-flow-image\s*{[^}]*width:\s*min\(130vw,\s*528px\);/s,
+    /@media \(max-width:\s*640px\)[\s\S]*?\.technology-visual-mobile\s*{[^}]*width:\s*118vw;[\s\S]*?\.technology-flow-image\s*{[^}]*width:\s*100%;/s,
   );
   assert.match(
     css,

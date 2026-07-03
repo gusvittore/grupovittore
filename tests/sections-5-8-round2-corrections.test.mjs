@@ -39,10 +39,15 @@ test("section 8 radar follows the reference label set and keeps labels close to 
   assert.doesNotMatch(radarSource, /Estratégia/);
   assert.match(radarSource, /<text x="520" y="152" className="personalized-radar-label personalized-radar-label-crm">CRM<\/text>/);
   assert.match(radarSource, /<text x="574" y="308" textAnchor="start" className="personalized-radar-label personalized-radar-label-ads"/);
+  assert.match(radarSource, /<text x="178" y="526" textAnchor="end" className="personalized-radar-label personalized-radar-label-technology">/);
+  assert.match(radarSource, /Tecnologia e/);
   assert.match(
     css,
     /\.personalized-radar\s*{[^}]*width:\s*min\(100%,\s*720px\);[^}]*min-height:\s*620px;[^}]*margin:\s*0 auto;/s,
   );
+  assert.match(css, /\.personalized-radar-label-crm\s*{[^}]*transform:\s*translate\(42px,\s*-10px\);/s);
+  assert.match(css, /\.personalized-radar-label-ads\s*{[^}]*transform:\s*translate\(52px,\s*-6px\);/s);
+  assert.match(css, /\.personalized-radar-label-processes\s*{[^}]*transform:\s*translate\(-32px,\s*0\);/s);
 });
 
 test("section 8 closing statement is a wide two-line premium block", () => {
