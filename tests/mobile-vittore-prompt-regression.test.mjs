@@ -100,29 +100,51 @@ test("personalized radar and technology image are enlarged only on mobile withou
   assert.match(mobileCss, /\.personalized-shell\s*{[^}]*gap:\s*14px;/s);
   assert.match(
     mobileCss,
-    /\.personalized-radar\s*{(?=[^}]*width:\s*calc\(100% \+ 32px\);)(?=[^}]*max-width:\s*430px;)(?=[^}]*min-height:\s*clamp\(356px,\s*95vw,\s*394px\);)(?=[^}]*margin:\s*0 auto -14px;)(?=[^}]*transform:\s*translateX\(-8px\);)[^}]*}/s,
-  );
-  assert.match(mobileCss, /\.personalized-radar-label\s*{(?=[^}]*font-size:\s*13px;)(?=[^}]*stroke-width:\s*2\.1px;)[^}]*}/s);
-  assert.match(page, /<text x="520" y="152" className="personalized-radar-label">CRM<\/text>/);
-  assert.match(page, /<text x="574" y="308" textAnchor="start" className="personalized-radar-label">\s*<tspan x="574">An(?:ú|Ãº)ncios<\/tspan>/);
-  assert.match(page, /<text x="542" y="508" textAnchor="start" className="personalized-radar-label">\s*<tspan x="542">Marketing de<\/tspan>/);
-  assert.match(
-    mobileCss,
-    /\.personalized-description-mobile\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*420px;)(?=[^}]*margin:\s*-4px auto 0;)(?=[^}]*border-top:\s*0;)(?=[^}]*padding-top:\s*0;)(?=[^}]*line-height:\s*1\.62;)[^}]*}/s,
+    /\.personalized-radar\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*430px;)(?=[^}]*min-height:\s*clamp\(364px,\s*98vw,\s*410px\);)(?=[^}]*margin:\s*-2px auto -10px;)(?=[^}]*transform:\s*none;)[^}]*}/s,
   );
   assert.match(
     mobileCss,
-    /\.personalized-close\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*430px;)(?=[^}]*font-size:\s*clamp\(18px,\s*4\.65vw,\s*22px\);)(?=[^}]*line-height:\s*1\.18;)[^}]*}/s,
+    /\.personalized-radar-svg\s*{(?=[^}]*width:\s*calc\(100% \+ 44px\);)(?=[^}]*max-width:\s*none;)(?=[^}]*transform:\s*translateX\(-28px\);)[^}]*}/s,
+  );
+  assert.match(mobileCss, /\.personalized-radar-label\s*{(?=[^}]*font-size:\s*15px;)(?=[^}]*stroke-width:\s*2\.25px;)[^}]*}/s);
+  assert.match(mobileCss, /\.personalized-radar-label-crm\s*{[^}]*transform:\s*translate\(32px,\s*-6px\);/s);
+  assert.match(mobileCss, /\.personalized-radar-label-ads\s*{(?=[^}]*text-anchor:\s*end;)(?=[^}]*transform:\s*translate\(10px,\s*-4px\);)[^}]*}/s);
+  assert.match(page, /<text x="520" y="152" className="personalized-radar-label personalized-radar-label-crm">CRM<\/text>/);
+  assert.match(page, /<text x="574" y="308" textAnchor="start" className="personalized-radar-label personalized-radar-label-ads">\s*<tspan x="574">An(?:ú|Ãº)ncios<\/tspan>/);
+  assert.match(page, /<text x="542" y="508" textAnchor="start" className="personalized-radar-label personalized-radar-label-performance-right">\s*<tspan x="542">Marketing de<\/tspan>/);
+  assert.match(page, /className="personalized-radar-label personalized-radar-label-performance-right"/);
+  assert.match(mobileCss, /\.personalized-radar-label-performance-right\s*{[^}]*transform:\s*translate\(-42px,\s*0\);/s);
+  assert.match(
+    mobileCss,
+    /\.personalized-close\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*430px;)(?=[^}]*padding:\s*20px 14px;)(?=[^}]*font-size:\s*clamp\(15px,\s*3\.85vw,\s*18px\);)(?=[^}]*line-height:\s*1\.14;)[^}]*}/s,
+  );
+  assert.match(
+    page,
+    /className="personalized-close-copy personalized-close-copy-mobile"[\s\S]*POR ISSO, O DIAGNÓSTICO,[\s\S]*O PLANO E O SERVIÇO QUE[\s\S]*APRESENTAMOS SÃO[\s\S]*<span>EXCLUSIVOS<\/span> PARA O <span>SEU NEGÓCIO\.<\/span>/,
+  );
+  assert.match(mobileCss, /\.personalized-close-copy-desktop\s*{[^}]*display:\s*none;/s);
+  assert.match(mobileCss, /\.personalized-close-copy-mobile\s*{[^}]*display:\s*block;/s);
+  assert.match(
+    mobileCss,
+    /\.personalized-close-copy-mobile \.personalized-close-line\s*{[^}]*display:\s*block;[^}]*white-space:\s*nowrap;/s,
   );
   assert.match(
     mobileCss,
-    /\.technology-visual-mobile\s*{(?=[^}]*width:\s*calc\(100% \+ 32px\);)(?=[^}]*max-width:\s*430px;)(?=[^}]*overflow:\s*hidden;)[^}]*}/s,
+    /\.personalized-description-mobile\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*calc\(100vw - 40px\);)(?=[^}]*margin:\s*-4px auto 0;)(?=[^}]*border-top:\s*0;)(?=[^}]*padding-top:\s*0;)(?=[^}]*line-height:\s*1\.62;)[^}]*}/s,
   );
   assert.match(
     mobileCss,
-    /\.technology-flow-image\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*100%;)(?=[^}]*transform:\s*none;)[^}]*}/s,
+    /\.technology-visual-mobile\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*430px;)(?=[^}]*overflow:\s*visible;)[^}]*}/s,
   );
-  assert.match(technology, /sizes="\(max-width: 640px\) 100vw,/);
+  assert.match(
+    mobileCss,
+    /\.technology-flow-image\s*{(?=[^}]*width:\s*min\(114vw,\s*468px\);)(?=[^}]*max-width:\s*none;)(?=[^}]*transform:\s*translateX\(-6%\);)[^}]*}/s,
+  );
+  assert.match(
+    mobileCss,
+    /\.technology-copy,\s*\.technology-intro,\s*\.technology-applications\s*{(?=[^}]*width:\s*100%;)(?=[^}]*max-width:\s*calc\(100vw - 40px\);)[^}]*}/s,
+  );
+  assert.match(technology, /sizes="\(max-width: 640px\) 114vw,/);
 });
 
 test("protected areas remain untouched by this mobile correction", () => {

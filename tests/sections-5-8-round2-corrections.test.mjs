@@ -36,8 +36,8 @@ test("section 8 radar follows the reference label set and keeps labels close to 
   assert.doesNotMatch(radarSource, /Dados e/);
   assert.doesNotMatch(radarSource, /Automação/);
   assert.doesNotMatch(radarSource, /Estratégia/);
-  assert.match(radarSource, /<text x="520" y="152" className="personalized-radar-label">CRM<\/text>/);
-  assert.match(radarSource, /<text x="574" y="308" textAnchor="start" className="personalized-radar-label"/);
+  assert.match(radarSource, /<text x="520" y="152" className="personalized-radar-label personalized-radar-label-crm">CRM<\/text>/);
+  assert.match(radarSource, /<text x="574" y="308" textAnchor="start" className="personalized-radar-label personalized-radar-label-ads"/);
   assert.match(
     css,
     /\.personalized-radar\s*{[^}]*width:\s*min\(100%,\s*720px\);[^}]*min-height:\s*620px;[^}]*margin:\s*0 auto;/s,
@@ -61,5 +61,9 @@ test("section 8 closing statement is a wide two-line premium block", () => {
   assert.match(
     css,
     /@media \(max-width:\s*640px\)[\s\S]*?\.personalized-close-line\s*{[^}]*white-space:\s*normal;/s,
+  );
+  assert.match(
+    page,
+    /className="personalized-close-copy personalized-close-copy-mobile"[\s\S]*<span className="personalized-close-line">POR ISSO, O DIAGNÓSTICO,<\/span>[\s\S]*<span className="personalized-close-line">O PLANO E O SERVIÇO QUE<\/span>[\s\S]*<span className="personalized-close-line">APRESENTAMOS SÃO<\/span>[\s\S]*<span className="personalized-close-line"><span>EXCLUSIVOS<\/span> PARA O <span>SEU NEGÓCIO\.<\/span><\/span>/,
   );
 });

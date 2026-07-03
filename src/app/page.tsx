@@ -677,12 +677,12 @@ function PersonalizedRadar() {
           <tspan x="360">Treinamento</tspan>
           <tspan x="360" dy="24">Comercial</tspan>
         </text>
-        <text x="520" y="152" className="personalized-radar-label">CRM</text>
-        <text x="574" y="308" textAnchor="start" className="personalized-radar-label">
+        <text x="520" y="152" className="personalized-radar-label personalized-radar-label-crm">CRM</text>
+        <text x="574" y="308" textAnchor="start" className="personalized-radar-label personalized-radar-label-ads">
           <tspan x="574">Anúncios</tspan>
           <tspan x="574" dy="24">online</tspan>
         </text>
-        <text x="542" y="508" textAnchor="start" className="personalized-radar-label">
+        <text x="542" y="508" textAnchor="start" className="personalized-radar-label personalized-radar-label-performance-right">
           <tspan x="542">Marketing de</tspan>
           <tspan x="542" dy="24">Performance</tspan>
         </text>
@@ -1036,8 +1036,16 @@ export default function Home() {
               </p>
             </div>
             <strong className="personalized-close">
-              <span className="personalized-close-line">POR ISSO, O DIAGNÓSTICO, O PLANO E O SERVIÇO</span>
-              <span className="personalized-close-line">QUE APRESENTAMOS SÃO <span>EXCLUSIVOS</span> PARA O <span>SEU NEGÓCIO.</span></span>
+              <span className="personalized-close-copy personalized-close-copy-desktop">
+                <span className="personalized-close-line">POR ISSO, O DIAGNÓSTICO, O PLANO E O SERVIÇO</span>
+                <span className="personalized-close-line">QUE APRESENTAMOS SÃO <span>EXCLUSIVOS</span> PARA O <span>SEU NEGÓCIO.</span></span>
+              </span>
+              <span className="personalized-close-copy personalized-close-copy-mobile">
+                <span className="personalized-close-line">POR ISSO, O DIAGNÓSTICO,</span>
+                <span className="personalized-close-line">O PLANO E O SERVIÇO QUE</span>
+                <span className="personalized-close-line">APRESENTAMOS SÃO</span>
+                <span className="personalized-close-line"><span>EXCLUSIVOS</span> PARA O <span>SEU NEGÓCIO.</span></span>
+              </span>
             </strong>
           </div>
         </div>

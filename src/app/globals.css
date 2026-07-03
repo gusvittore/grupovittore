@@ -2408,6 +2408,14 @@ summary::-webkit-details-marker {
   color: #c78a35;
 }
 
+.personalized-close-copy-desktop {
+  display: block;
+}
+
+.personalized-close-copy-mobile {
+  display: none;
+}
+
 .personalized-close-line {
   display: block;
   white-space: nowrap;
@@ -3806,7 +3814,7 @@ summary::-webkit-details-marker {
     order: 3;
     display: grid;
     width: 100%;
-    max-width: 420px;
+    max-width: calc(100vw - 40px);
     margin: -4px auto 0;
     border-top: 0;
     padding-top: 0;
@@ -3816,23 +3824,38 @@ summary::-webkit-details-marker {
 
   .personalized-radar {
     order: 2;
-    width: calc(100% + 32px);
+    width: 100%;
     max-width: 430px;
-    min-height: clamp(356px, 95vw, 394px);
-    margin: 0 auto -14px;
+    min-height: clamp(364px, 98vw, 410px);
+    margin: -2px auto -10px;
     overflow: visible;
-    transform: translateX(-8px);
+    transform: none;
   }
 
   .personalized-radar-svg {
-    width: 100%;
+    width: calc(100% + 44px);
+    max-width: none;
     height: auto;
     overflow: visible;
+    transform: translateX(-28px);
   }
 
   .personalized-radar-label {
-    font-size: 13px;
-    stroke-width: 2.1px;
+    font-size: 15px;
+    stroke-width: 2.25px;
+  }
+
+  .personalized-radar-label-crm {
+    transform: translate(32px, -6px);
+  }
+
+  .personalized-radar-label-ads {
+    text-anchor: end;
+    transform: translate(10px, -4px);
+  }
+
+  .personalized-radar-label-performance-right {
+    transform: translate(-42px, 0);
   }
 
   .personalized-close {
@@ -3842,13 +3865,27 @@ summary::-webkit-details-marker {
     min-height: 0;
     margin-top: 2px;
     padding: 20px 14px;
-    font-size: clamp(18px, 4.65vw, 22px);
-    line-height: 1.18;
+    font-size: clamp(15px, 3.85vw, 18px);
+    line-height: 1.14;
+    text-wrap: balance;
+  }
+
+  .personalized-close-copy-desktop {
+    display: none;
+  }
+
+  .personalized-close-copy-mobile {
+    display: block;
   }
 
   .personalized-close-line {
     display: inline;
     white-space: normal;
+  }
+
+  .personalized-close-copy-mobile .personalized-close-line {
+    display: block;
+    white-space: nowrap;
   }
 
   .personalized-close-line + .personalized-close-line::before {
@@ -3862,24 +3899,25 @@ summary::-webkit-details-marker {
   .technology-visual-mobile {
     display: flex;
     min-height: auto;
-    width: calc(100% + 32px);
+    width: 100%;
     max-width: 430px;
-    margin: 24px auto 0;
+    margin: 26px auto 0;
     padding: 0;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .technology-flow-image {
-    width: 100%;
-    max-width: 100%;
-    transform: none;
+    width: min(114vw, 468px);
+    max-width: none;
+    transform: translateX(-6%);
   }
 
   .technology-copy,
   .technology-intro,
   .technology-applications {
-    max-width: 100%;
+    width: 100%;
+    max-width: calc(100vw - 40px);
   }
 
   .technology-copy h3 {
