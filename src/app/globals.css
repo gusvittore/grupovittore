@@ -2512,7 +2512,7 @@ summary::-webkit-details-marker {
 }
 
 .personalized-radar-label-crm {
-  transform: translate(42px, -10px);
+  transform: translate(28px, -8px);
 }
 
 .personalized-radar-label-ads {
@@ -2521,6 +2521,10 @@ summary::-webkit-details-marker {
 
 .personalized-radar-label-processes {
   transform: translate(-32px, 0);
+}
+
+.personalized-radar-label-technology {
+  transform: translate(14px, -14px);
 }
 
 .technology-section {
@@ -3875,7 +3879,7 @@ summary::-webkit-details-marker {
   }
 
   .personalized-radar-label-technology {
-    transform: translate(-8px, 0);
+    transform: translate(6px, -10px);
   }
 
   .personalized-close {

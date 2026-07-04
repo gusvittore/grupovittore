@@ -45,9 +45,10 @@ test("section 8 radar follows the reference label set and keeps labels close to 
     css,
     /\.personalized-radar\s*{[^}]*width:\s*min\(100%,\s*720px\);[^}]*min-height:\s*620px;[^}]*margin:\s*0 auto;/s,
   );
-  assert.match(css, /\.personalized-radar-label-crm\s*{[^}]*transform:\s*translate\(42px,\s*-10px\);/s);
+  assert.match(css, /\.personalized-radar-label-crm\s*{[^}]*transform:\s*translate\(28px,\s*-8px\);/s);
   assert.match(css, /\.personalized-radar-label-ads\s*{[^}]*transform:\s*translate\(52px,\s*-6px\);/s);
   assert.match(css, /\.personalized-radar-label-processes\s*{[^}]*transform:\s*translate\(-32px,\s*0\);/s);
+  assert.match(css, /\.personalized-radar-label-technology\s*{[^}]*transform:\s*translate\(14px,\s*-14px\);/s);
 });
 
 test("section 8 closing statement is a wide two-line premium block", () => {

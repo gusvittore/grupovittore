@@ -118,10 +118,11 @@ test("personalized radar and technology image are enlarged only on mobile withou
   assert.match(mobileCss, /\.personalized-radar-label-crm\s*{[^}]*transform:\s*translate\(32px,\s*-6px\);/s);
   assert.match(mobileCss, /\.personalized-radar-label-ads\s*{(?=[^}]*text-anchor:\s*start;)(?=[^}]*transform:\s*translate\(42px,\s*-4px\);)[^}]*}/s);
   assert.match(mobileCss, /\.personalized-radar-label-processes\s*{[^}]*transform:\s*translate\(-10px,\s*0\);/s);
-  assert.match(basePersonalizedCss, /\.personalized-radar-label-crm\s*{[^}]*transform:\s*translate\(42px,\s*-10px\);/s);
+  assert.match(basePersonalizedCss, /\.personalized-radar-label-crm\s*{[^}]*transform:\s*translate\(28px,\s*-8px\);/s);
   assert.match(basePersonalizedCss, /\.personalized-radar-label-ads\s*{[^}]*transform:\s*translate\(52px,\s*-6px\);/s);
   assert.match(basePersonalizedCss, /\.personalized-radar-label-processes\s*{[^}]*transform:\s*translate\(-32px,\s*0\);/s);
-  assert.match(mobileCss, /\.personalized-radar-label-technology\s*{[^}]*transform:\s*translate\(-8px,\s*0\);/s);
+  assert.match(basePersonalizedCss, /\.personalized-radar-label-technology\s*{[^}]*transform:\s*translate\(14px,\s*-14px\);/s);
+  assert.match(mobileCss, /\.personalized-radar-label-technology\s*{[^}]*transform:\s*translate\(6px,\s*-10px\);/s);
   assert.match(page, /<text x="520" y="152" className="personalized-radar-label personalized-radar-label-crm">CRM<\/text>/);
   assert.match(page, /<text x="574" y="308" textAnchor="start" className="personalized-radar-label personalized-radar-label-ads">\s*<tspan x="574">An(?:ú|Ãº)ncios<\/tspan>/);
   assert.match(page, /<text x="542" y="508" textAnchor="start" className="personalized-radar-label personalized-radar-label-performance-right">\s*<tspan x="542">Marketing de<\/tspan>/);
