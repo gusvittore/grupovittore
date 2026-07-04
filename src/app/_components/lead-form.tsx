@@ -33,6 +33,11 @@ const revenueOptions = [
 
 const NON_QUALIFIED_REVENUE = "Até 50 mil";
 
+type LeadApiResponse = {
+  ok?: boolean;
+  redirectTo?: string;
+};
+
 function getLeadRedirectPath(revenue: string) {
   return revenue === NON_QUALIFIED_REVENUE
     ? "/obrigado"
@@ -130,12 +135,18 @@ function SelectField({
 
 export function LeadForm() {
   const [whatsApp, setWhatsApp] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <form
       className="rounded-[8px] border border-[#B29157]/48 bg-[#FBF8F4]/82 p-5 shadow-[0_24px_70px_rgba(9,14,31,0.08)] sm:p-8 lg:p-10"
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
+
+        if (isSubmitting) {
+          return;
+        }
+
         const form = event.currentTarget;
 
         if (!form.reportValidity()) {
@@ -144,8 +155,45 @@ export function LeadForm() {
 
         const formData = new FormData(form);
         const revenue = String(formData.get("revenue") ?? "");
+        const params = new URLSearchParams(window.location.search);
 
-        window.location.assign(getLeadRedirectPath(revenue));
+        try {
+          setIsSubmitting(true);
+
+          const response = await fetch("/api/leads", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              nome_completo: String(formData.get("name") ?? ""),
+              email: String(formData.get("email") ?? ""),
+              whatsapp: String(formData.get("whatsapp") ?? ""),
+              empresa: String(formData.get("company") ?? ""),
+              segmento: String(formData.get("sector") ?? ""),
+              faturamento_mensal: revenue,
+              origem_lead: "Landing Page Assessoria Comercial",
+              utm_source: params.get("utm_source") || "",
+              utm_medium: params.get("utm_medium") || "",
+              utm_campaign: params.get("utm_campaign") || "",
+              utm_term: params.get("utm_term") || "",
+              utm_content: params.get("utm_content") || "",
+              gclid: params.get("gclid") || "",
+            }),
+          });
+          const result = (await response.json().catch(() => null)) as LeadApiResponse | null;
+
+          if (!response.ok || !result?.ok) {
+            alert("Não foi possível enviar suas informações. Tente novamente.");
+            return;
+          }
+
+          window.location.assign(result.redirectTo ?? getLeadRedirectPath(revenue));
+        } catch {
+          alert("Não foi possível enviar suas informações. Tente novamente.");
+        } finally {
+          setIsSubmitting(false);
+        }
       }}
     >
       <div className="lead-form-ornament" aria-hidden="true">
@@ -187,6 +235,7 @@ export function LeadForm() {
       </div>
       <button
         type="submit"
+        disabled={isSubmitting}
         className="mt-8 flex min-h-16 w-full items-center justify-center rounded-[6px] bg-[#008723] px-5 py-4 text-sm font-bold uppercase leading-snug tracking-[0.12em] text-white shadow-[0_14px_28px_rgba(0,72,20,0.24)] transition hover:brightness-95 focus:outline-none focus:ring-4 focus:ring-[#008723]/25 sm:px-6"
       >
         Receber mais informações
