@@ -34,6 +34,7 @@ type SupabaseConfig = {
 type ClickUpConfig = {
   clickUpApiToken: string;
   clickUpListId: string;
+  assigneeId: number | null;
 };
 
 type ClickUpOption = {
@@ -61,7 +62,13 @@ const clickUpFieldMapping: Array<{
   { names: ["Nome Completo"], payloadKey: "nome_completo" },
   { names: ["E-mail"], payloadKey: "email" },
   {
-    names: ["Whatsapp / Telefone", "WhatsApp / Telefone"],
+    names: [
+      "Whatsapp / Telefone",
+      "WhatsApp / Telefone",
+      "Telefone / WhatsApp",
+      "Telefone",
+      "WhatsApp",
+    ],
     payloadKey: "whatsapp",
   },
   { names: ["Empresa"], payloadKey: "empresa" },
@@ -151,12 +158,20 @@ function getSupabaseConfig(): SupabaseConfig {
 function getClickUpConfig(): ClickUpConfig {
   const clickUpApiToken = process.env.CLICKUP_API_TOKEN;
   const clickUpListId = process.env.CLICKUP_LIST_ID || DEFAULT_CLICKUP_LIST_ID;
+  const assigneeId = process.env.CLICKUP_ASSIGNEE_ID
+    ? Number(process.env.CLICKUP_ASSIGNEE_ID)
+    : null;
 
   if (!clickUpApiToken || !clickUpListId) {
     throw new Error("Configuração do ClickUp ausente.");
   }
 
-  return { clickUpApiToken, clickUpListId };
+  return {
+    clickUpApiToken,
+    clickUpListId,
+    assigneeId:
+      assigneeId !== null && Number.isFinite(assigneeId) ? assigneeId : null,
+  };
 }
 
 function getSupabaseHeaders(serviceRoleKey: string) {
@@ -236,14 +251,18 @@ async function updateLeadClickUpStatus(
   }
 }
 
-function normalizeFieldName(value: string) {
+function normalizeComparison(value: string) {
   return value
     .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
+    .trim();
+}
+
+function normalizeFieldName(value: string) {
+  return normalizeComparison(value)
     .replace(/\s*\/\s*/g, " / ")
     .replace(/\s+/g, " ")
-    .trim();
 }
 
 function buildClickUpDescription(
@@ -274,6 +293,15 @@ async function createClickUpTask(
   qualification: LeadQualification,
 ) {
   const { clickUpListId } = config;
+  const assigneeId = config.assigneeId;
+  const taskPayload = {
+    name: payload.empresa
+      ? `${payload.empresa} - ${payload.nome_completo}`
+      : payload.nome_completo,
+    description: buildClickUpDescription(payload, qualification),
+    status: qualification.clickupStatus,
+    ...(assigneeId !== null ? { assignees: [assigneeId] } : {}),
+  };
   const response = await fetch(
     `https://api.clickup.com/api/v2/list/${clickUpListId}/task`,
     {
@@ -282,13 +310,7 @@ async function createClickUpTask(
         Authorization: config.clickUpApiToken,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name: payload.empresa
-          ? `${payload.empresa} - ${payload.nome_completo}`
-          : payload.nome_completo,
-        description: buildClickUpDescription(payload, qualification),
-        status: qualification.clickupStatus,
-      }),
+      body: JSON.stringify(taskPayload),
     },
   );
 
@@ -325,19 +347,25 @@ async function getClickUpFields(config: ClickUpConfig) {
   return data.fields ?? [];
 }
 
-function resolveClickUpFieldValue(field: ClickUpField, value: string) {
+function resolveClickUpFieldValue(
+  field: ClickUpField,
+  value: string,
+  payloadKey: keyof LeadPayload,
+) {
   const options = field.type_config?.options;
 
   if (!options?.length) {
     return value;
   }
 
+  const normalizedValue = normalizeComparison(value);
   const option = options.find(
-    (item) => normalizeFieldName(item.name) === normalizeFieldName(value),
+    (item) => normalizeComparison(item.name) === normalizedValue,
   );
 
   if (!option) {
-    const message = `Campo "${field.name}" pulado: opção "${value}" não encontrada no dropdown.`;
+    const fieldName = payloadKey === "segmento" ? "Segmento" : field.name;
+    const message = `Campo "${fieldName}" pulado: opção "${value}" não encontrada no dropdown.`;
     console.warn(message);
     return { error: message };
   }
@@ -371,7 +399,7 @@ async function fillClickUpCustomFields(
     }
 
     const value = payload[payloadKey];
-    const resolvedValue = resolveClickUpFieldValue(field, value);
+    const resolvedValue = resolveClickUpFieldValue(field, value, payloadKey);
 
     if (typeof resolvedValue === "object") {
       fieldErrors.push(resolvedValue.error);

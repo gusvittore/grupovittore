@@ -188,8 +188,10 @@ export function LeadForm() {
             return;
           }
 
-          window.location.assign(result.redirectTo ?? getLeadRedirectPath(revenue));
-        } catch {
+          const redirectTo = result.redirectTo || getLeadRedirectPath(revenue);
+          window.location.href = redirectTo;
+        } catch (error) {
+          console.error("Erro ao enviar lead:", error);
           alert("Não foi possível enviar suas informações. Tente novamente.");
         } finally {
           setIsSubmitting(false);
