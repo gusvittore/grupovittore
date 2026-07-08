@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ChangeEventHandler } from "react";
+import { useRef, useState, type ChangeEventHandler } from "react";
 
 const sectorOptions = [
   "Serviço",
@@ -136,6 +136,7 @@ function SelectField({
 export function LeadForm() {
   const [whatsApp, setWhatsApp] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const submitLockedRef = useRef(false);
 
   return (
     <form
@@ -143,7 +144,7 @@ export function LeadForm() {
       onSubmit={async (event) => {
         event.preventDefault();
 
-        if (isSubmitting) {
+        if (submitLockedRef.current || isSubmitting) {
           return;
         }
 
@@ -153,13 +154,14 @@ export function LeadForm() {
           return;
         }
 
+        submitLockedRef.current = true;
+        setIsSubmitting(true);
+
         const formData = new FormData(form);
         const revenue = String(formData.get("revenue") ?? "");
         const params = new URLSearchParams(window.location.search);
 
         try {
-          setIsSubmitting(true);
-
           const response = await fetch("/api/leads", {
             method: "POST",
             headers: {
@@ -184,17 +186,16 @@ export function LeadForm() {
           const result = (await response.json().catch(() => null)) as LeadApiResponse | null;
 
           if (!response.ok || !result?.ok) {
-            alert("Não foi possível enviar suas informações. Tente novamente.");
-            return;
+            throw new Error("Lead API request failed.");
           }
 
           const redirectTo = result.redirectTo || getLeadRedirectPath(revenue);
           window.location.href = redirectTo;
         } catch (error) {
           console.error("Erro ao enviar lead:", error);
-          alert("Não foi possível enviar suas informações. Tente novamente.");
-        } finally {
+          submitLockedRef.current = false;
           setIsSubmitting(false);
+          alert("Não foi possível enviar suas informações. Tente novamente.");
         }
       }}
     >
@@ -240,7 +241,7 @@ export function LeadForm() {
         disabled={isSubmitting}
         className="mt-8 flex min-h-16 w-full items-center justify-center rounded-[6px] bg-[#008723] px-5 py-4 text-sm font-bold uppercase leading-snug tracking-[0.12em] text-white shadow-[0_14px_28px_rgba(0,72,20,0.24)] transition hover:brightness-95 focus:outline-none focus:ring-4 focus:ring-[#008723]/25 sm:px-6"
       >
-        Receber mais informações
+        {isSubmitting ? "Enviando..." : "Receber mais informações"}
       </button>
     </form>
   );

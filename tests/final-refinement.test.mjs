@@ -17,7 +17,7 @@ test("lead form redirects low revenue to non-qualified page and all other revenu
   );
   assert.match(leadForm, /new FormData\(form\)/);
   assert.match(leadForm, /fetch\("\/api\/leads"/);
-  assert.match(leadForm, /window\.location\.assign\(result\.redirectTo \?\? getLeadRedirectPath\(revenue\)\)/);
+  assert.match(leadForm, /window\.location\.href = redirectTo/);
   assert.doesNotMatch(leadForm, /event\.currentTarget\.reset\(\)/);
 });
 
@@ -74,7 +74,7 @@ test("lead form applies a progressive Brazilian WhatsApp mask without changing r
   assert.match(leadForm, /inputMode="numeric"/);
   assert.match(leadForm, /maxLength=\{15\}/);
   assert.match(leadForm, /name="whatsapp"/);
-  assert.match(leadForm, /window\.location\.assign\(result\.redirectTo \?\? getLeadRedirectPath\(revenue\)\)/);
+  assert.match(leadForm, /window\.location\.href = redirectTo/);
 });
 
 test("description font sizes are lightly increased without targeting titles or charts", () => {

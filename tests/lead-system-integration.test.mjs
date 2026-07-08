@@ -60,6 +60,23 @@ test("lead API creates ClickUp tasks and fills dynamic custom fields without ICP
   assert.doesNotMatch(route, /["']ICP["']\s*:/);
 });
 
+test("lead API maps ClickUp assignee, phone text, and segment dropdown safely", () => {
+  assert.match(route, /process\.env\.CLICKUP_ASSIGNEE_ID/);
+  assert.match(route, /Number\(process\.env\.CLICKUP_ASSIGNEE_ID\)/);
+  assert.match(route, /assignees: \[assigneeId\]/);
+  assert.doesNotMatch(route, /84823221/);
+
+  assert.match(route, /Telefone \/ WhatsApp/);
+  assert.match(route, /Telefone/);
+  assert.match(route, /WhatsApp/);
+  assert.doesNotMatch(route, /\+55/);
+
+  assert.match(route, /normalize\("NFD"\)/);
+  assert.match(route, /\.replace\(\/\[\\u0300-\\u036f\]\/g, ""\)/);
+  assert.match(route, /payloadKey === "segmento"/);
+  assert.match(route, /return option\.id/);
+});
+
 test("lead form posts payload with URL tracking params before redirecting", () => {
   assert.match(leadForm, /fetch\("\/api\/leads"/);
   assert.match(leadForm, /method: "POST"/);
@@ -71,7 +88,9 @@ test("lead form posts payload with URL tracking params before redirecting", () =
   assert.match(leadForm, /utm_content/);
   assert.match(leadForm, /gclid/);
   assert.match(leadForm, /origem_lead: "Landing Page Assessoria Comercial"/);
-  assert.match(leadForm, /window\.location\.assign\(result\.redirectTo \?\? getLeadRedirectPath\(revenue\)\)/);
+  assert.match(leadForm, /const redirectTo = result\.redirectTo \|\| getLeadRedirectPath\(revenue\)/);
+  assert.match(leadForm, /window\.location\.href = redirectTo/);
+  assert.match(leadForm, /console\.error\("Erro ao enviar lead:", error\)/);
   assert.match(leadForm, /disabled=\{isSubmitting\}/);
   assert.match(leadForm, /alert\("N(?:ã|Ã£)o foi poss(?:í|Ã­)vel enviar suas informa(?:ç|Ã§)(?:õ|Ãµ)es\. Tente novamente\."\)/);
 });

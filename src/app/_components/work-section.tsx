@@ -149,7 +149,7 @@ export function WorkSection() {
             </p>
             <h2>
               <span className="work-heading-line">Na prática, é assim que</span>
-              <span className="work-heading-line">o nosso <b>trabalho</b> acontece</span>
+              <span className="work-heading-line">o nosso trabalho acontece</span>
             </h2>
             <p className="work-heading-subtitle">
               Com uma arquitetura clara entre marketing, vendas e tecnologia,

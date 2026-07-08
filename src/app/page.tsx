@@ -1001,12 +1001,8 @@ export default function Home() {
               <h2>
                 <span className="personalized-title-line">Por que o nosso</span>
                 <span className="personalized-title-line">serviço não tem</span>
-                <span className="personalized-title-line">
-                  “planos <span className="personalized-title-accent">Black, Gold</span>
-                </span>
-                <span className="personalized-title-line">
-                  ou <span className="personalized-title-accent">Platinum</span>”?
-                </span>
+                <span className="personalized-title-line">planos <span className="personalized-title-accent">Black, Gold</span></span>
+                <span className="personalized-title-line">ou <span className="personalized-title-accent">Platinum</span>?</span>
               </h2>
               <div className="personalized-description personalized-description-desktop">
                 <p>

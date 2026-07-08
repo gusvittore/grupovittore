@@ -3,6 +3,7 @@ export const runtime = "nodejs";
 const LEAD_ORIGIN = "Landing Page Assessoria Comercial";
 const NON_QUALIFIED_REVENUE = "Até 50 mil";
 const DEFAULT_CLICKUP_LIST_ID = "901327751514";
+const RECENT_DUPLICATE_WINDOW_MINUTES = 3;
 
 type LeadPayload = {
   nome_completo: string;
@@ -45,6 +46,7 @@ type ClickUpOption = {
 type ClickUpField = {
   id: string;
   name: string;
+  type?: string;
   type_config?: {
     options?: ClickUpOption[];
   };
@@ -194,6 +196,33 @@ function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Erro desconhecido.";
 }
 
+async function findRecentDuplicateLead(
+  config: SupabaseConfig,
+  payload: LeadPayload,
+) {
+  const since = new Date(
+    Date.now() - RECENT_DUPLICATE_WINDOW_MINUTES * 60 * 1000,
+  ).toISOString();
+  const response = await fetch(
+    `${config.supabaseUrl}/rest/v1/leads_assessoria?select=id,clickup_task_id&email=eq.${encodeURIComponent(payload.email)}&whatsapp=eq.${encodeURIComponent(payload.whatsapp)}&empresa=eq.${encodeURIComponent(payload.empresa)}&created_at=gte.${encodeURIComponent(since)}&order=created_at.desc&limit=1`,
+    {
+      method: "GET",
+      headers: getSupabaseHeaders(config.serviceRoleKey),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(await readResponseText(response));
+  }
+
+  const data = (await response.json()) as Array<{
+    id?: string | number;
+    clickup_task_id?: string | null;
+  }>;
+
+  return data[0] ?? null;
+}
+
 async function saveLeadToSupabase(
   config: SupabaseConfig,
   payload: LeadPayload,
@@ -261,8 +290,55 @@ function normalizeComparison(value: string) {
 
 function normalizeFieldName(value: string) {
   return normalizeComparison(value)
+    .replace(/\/+/g, "/")
     .replace(/\s*\/\s*/g, " / ")
     .replace(/\s+/g, " ")
+    .trim();
+}
+
+function isWhatsAppFieldName(fieldName: string) {
+  const normalizedName = normalizeFieldName(fieldName);
+
+  return (
+    normalizedName.includes("whatsapp") ||
+    normalizedName.includes("telefone") ||
+    normalizedName.includes("phone")
+  );
+}
+
+function isTextLikeClickUpField(field: ClickUpField) {
+  if (field.type_config?.options?.length) {
+    return false;
+  }
+
+  const normalizedType = normalizeFieldName(field.type ?? "");
+
+  return (
+    !normalizedType ||
+    normalizedType.includes("text") ||
+    normalizedType.includes("phone")
+  );
+}
+
+function findClickUpFields(
+  fields: ClickUpField[],
+  names: string[],
+  payloadKey: keyof LeadPayload,
+) {
+  if (payloadKey === "whatsapp") {
+    return fields.filter(
+      (field) => isWhatsAppFieldName(field.name) && isTextLikeClickUpField(field),
+    );
+  }
+
+  const field = fields.find((item) =>
+    names.some(
+      (clickUpFieldName) =>
+        normalizeFieldName(item.name) === normalizeFieldName(clickUpFieldName),
+    ),
+  );
+
+  return field ? [field] : [];
 }
 
 function buildClickUpDescription(
@@ -300,6 +376,7 @@ async function createClickUpTask(
       : payload.nome_completo,
     description: buildClickUpDescription(payload, qualification),
     status: qualification.clickupStatus,
+    notify_all: true,
     ...(assigneeId !== null ? { assignees: [assigneeId] } : {}),
   };
   const response = await fetch(
@@ -325,6 +402,33 @@ async function createClickUpTask(
   }
 
   return data.id;
+}
+
+async function createClickUpTaskComment(
+  config: ClickUpConfig,
+  taskId: string,
+) {
+  const response = await fetch(
+    `https://api.clickup.com/api/v2/task/${taskId}/comment`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: config.clickUpApiToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        comment_text: "Novo lead recebido pela landing page do Grupo Vittore.",
+        notify_all: true,
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    console.warn(
+      "Falha ao criar comentário no ClickUp:",
+      await readResponseText(response),
+    );
+  }
 }
 
 async function getClickUpFields(config: ClickUpConfig) {
@@ -383,45 +487,58 @@ async function fillClickUpCustomFields(
   const fieldErrors: string[] = [];
 
   for (const { names, payloadKey } of clickUpFieldMapping) {
-    const field = fields.find(
-      (item) =>
-        names.some(
-          (clickUpFieldName) =>
-            normalizeFieldName(item.name) === normalizeFieldName(clickUpFieldName),
-        ),
-    );
-
-    if (!field) {
-      const message = `Campo ClickUp não encontrado: ${names.join(" / ")}.`;
-      console.warn(message);
-      fieldErrors.push(message);
-      continue;
-    }
-
     const value = payload[payloadKey];
-    const resolvedValue = resolveClickUpFieldValue(field, value, payloadKey);
 
-    if (typeof resolvedValue === "object") {
-      fieldErrors.push(resolvedValue.error);
+    if (payloadKey === "whatsapp" && !value) {
       continue;
     }
 
-    const response = await fetch(
-      `https://api.clickup.com/api/v2/task/${taskId}/field/${field.id}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: clickUpApiToken,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ value: resolvedValue }),
-      },
-    );
+    const matchedFields = findClickUpFields(fields, names, payloadKey);
 
-    if (!response.ok) {
-      const message = `Falha ao preencher campo "${field.name}": ${await readResponseText(response)}`;
+    if (!matchedFields.length) {
+      const message =
+        payloadKey === "whatsapp"
+          ? "Campo WhatsApp / Telefone não encontrado no ClickUp"
+          : `Campo ClickUp não encontrado: ${names.join(" / ")}.`;
       console.warn(message);
       fieldErrors.push(message);
+      continue;
+    }
+
+    for (const field of matchedFields) {
+      if (payloadKey === "whatsapp") {
+        console.log(
+          "Campo WhatsApp encontrado:",
+          field.name,
+          field.id,
+          field.type,
+        );
+      }
+
+      const resolvedValue = resolveClickUpFieldValue(field, value, payloadKey);
+
+      if (typeof resolvedValue === "object") {
+        fieldErrors.push(resolvedValue.error);
+        continue;
+      }
+
+      const response = await fetch(
+        `https://api.clickup.com/api/v2/task/${taskId}/field/${field.id}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: clickUpApiToken,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ value: resolvedValue }),
+        },
+      );
+
+      if (!response.ok) {
+        const message = `Falha ao preencher campo "${field.name}": ${await readResponseText(response)}`;
+        console.warn(message);
+        fieldErrors.push(message);
+      }
     }
   }
 
@@ -435,6 +552,12 @@ async function sendLeadToClickUp(
   const config = getClickUpConfig();
   const taskId = await createClickUpTask(config, payload, qualification);
   const fieldErrors: string[] = [];
+
+  try {
+    await createClickUpTaskComment(config, taskId);
+  } catch (error) {
+    console.warn("Falha ao criar comentário no ClickUp:", getErrorMessage(error));
+  }
 
   try {
     const fields = await getClickUpFields(config);
@@ -474,6 +597,28 @@ export async function POST(request: Request) {
 
   try {
     supabaseConfig = getSupabaseConfig();
+
+    try {
+      const duplicateLead = await findRecentDuplicateLead(supabaseConfig, payload);
+
+      if (duplicateLead) {
+        return Response.json({
+          ok: true,
+          duplicate: true,
+          savedToSupabase: true,
+          sentToClickUp: true,
+          leadId: duplicateLead.id ? String(duplicateLead.id) : undefined,
+          clickupTaskId: duplicateLead.clickup_task_id ?? undefined,
+          redirectTo: qualification.redirectTo,
+        });
+      }
+    } catch (duplicateError) {
+      console.warn(
+        "Falha ao verificar duplicidade recente no Supabase:",
+        duplicateError,
+      );
+    }
+
     leadId = await saveLeadToSupabase(
       supabaseConfig,
       payload,
