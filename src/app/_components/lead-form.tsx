@@ -243,6 +243,20 @@ export function LeadForm() {
       >
         {isSubmitting ? "Enviando..." : "Receber mais informações"}
       </button>
+      {isSubmitting ? (
+        <div
+          aria-live="polite"
+          className="mt-3 flex items-center justify-center gap-2 text-center text-sm font-semibold text-[#090E1F]/70"
+        >
+          <span
+            className="h-4 w-4 flex-none animate-spin rounded-full border-2 border-[#B29157]/70 border-t-transparent"
+            aria-hidden="true"
+          />
+          <span>
+            Aguarde, suas informações estão sendo enviadas. Não feche esta página.
+          </span>
+        </div>
+      ) : null}
     </form>
   );
 }

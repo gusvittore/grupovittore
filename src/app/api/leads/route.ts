@@ -1,3 +1,5 @@
+import nodemailer from "nodemailer";
+
 export const runtime = "nodejs";
 
 const LEAD_ORIGIN = "Landing Page Assessoria Comercial";
@@ -38,6 +40,20 @@ type ClickUpConfig = {
   assigneeId: number | null;
 };
 
+type SmtpConfig = {
+  host: string;
+  port: number;
+  user: string;
+  pass: string;
+  notificationEmail: string;
+};
+
+type LeadEmailNotificationOptions = {
+  clickup_task_id?: string | null;
+  clickup_task_url?: string | null;
+  clickupError?: string | null;
+};
+
 type ClickUpOption = {
   id: string;
   name: string;
@@ -54,6 +70,7 @@ type ClickUpField = {
 
 type ClickUpTaskResult = {
   taskId: string;
+  taskUrl?: string | null;
   fieldErrors: string[];
 };
 
@@ -176,6 +193,33 @@ function getClickUpConfig(): ClickUpConfig {
   };
 }
 
+function getSmtpConfig(): SmtpConfig | null {
+  const host = process.env.SMTP_HOST;
+  const port = Number(process.env.SMTP_PORT);
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  const notificationEmail = process.env.LEAD_NOTIFICATION_EMAIL;
+
+  if (
+    !host ||
+    !Number.isFinite(port) ||
+    !user ||
+    !pass ||
+    !notificationEmail
+  ) {
+    console.warn("Configuracao de e-mail incompleta. E-mail de lead nao enviado.");
+    return null;
+  }
+
+  return {
+    host,
+    port,
+    user,
+    pass,
+    notificationEmail,
+  };
+}
+
 function getSupabaseHeaders(serviceRoleKey: string) {
   return {
     apikey: serviceRoleKey,
@@ -194,6 +238,112 @@ async function readResponseText(response: Response) {
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Erro desconhecido.";
+}
+
+function formatEmailValue(value: string | null | undefined) {
+  return value || "Nao informado";
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function buildLeadNotificationEmailBody(
+  payload: LeadPayload,
+  qualification: LeadQualification,
+  options: LeadEmailNotificationOptions,
+) {
+  const clickup_task_id = formatEmailValue(options.clickup_task_id);
+  const clickup_task_url = formatEmailValue(options.clickup_task_url);
+  const clickupError = options.clickupError || "Nao houve erro registrado.";
+  const rows = [
+    ["Nome", payload.nome_completo],
+    ["Empresa", payload.empresa],
+    ["WhatsApp / Telefone", payload.whatsapp],
+    ["E-mail", payload.email],
+    ["Segmento", payload.segmento],
+    ["Faturamento mensal", payload.faturamento_mensal],
+    ["Status enviado para o ClickUp", qualification.clickupStatus],
+    ["Origem", payload.origem_lead],
+    ["UTM Source", payload.utm_source],
+    ["UTM Medium", payload.utm_medium],
+    ["UTM Campaign", payload.utm_campaign],
+    ["UTM Term", payload.utm_term],
+    ["UTM Content", payload.utm_content],
+    ["GCLID", payload.gclid],
+    ["clickup_task_id", clickup_task_id],
+    ["clickup_task_url", clickup_task_url],
+    ["Erro ClickUp", clickupError],
+  ];
+
+  const text = [
+    "Novo lead recebido pela landing page do Grupo Vittore.",
+    "",
+    ...rows.flatMap(([label, value]) => [
+      `${label}:`,
+      formatEmailValue(value),
+      "",
+    ]),
+  ].join("\n");
+
+  const htmlRows = rows
+    .map(
+      ([label, value]) => `
+        <tr>
+          <td style="padding:8px 12px;border:1px solid #e7e0d4;font-weight:700;">${escapeHtml(label)}</td>
+          <td style="padding:8px 12px;border:1px solid #e7e0d4;">${escapeHtml(formatEmailValue(value))}</td>
+        </tr>`,
+    )
+    .join("");
+  const html = `
+    <div style="font-family:Arial,sans-serif;color:#090E1F;line-height:1.5;">
+      <h2>Novo lead recebido pela landing page do Grupo Vittore.</h2>
+      <table style="border-collapse:collapse;width:100%;max-width:720px;">
+        <tbody>${htmlRows}</tbody>
+      </table>
+    </div>`;
+
+  return { text, html };
+}
+
+async function sendLeadNotificationEmail(
+  payload: LeadPayload,
+  qualification: LeadQualification,
+  options: LeadEmailNotificationOptions,
+) {
+  const smtpConfig = getSmtpConfig();
+
+  if (!smtpConfig) {
+    return;
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: smtpConfig.host,
+    port: smtpConfig.port,
+    secure: smtpConfig.port === 465,
+    auth: {
+      user: smtpConfig.user,
+      pass: smtpConfig.pass,
+    },
+  });
+  const { text, html } = buildLeadNotificationEmailBody(
+    payload,
+    qualification,
+    options,
+  );
+
+  await transporter.sendMail({
+    from: `"Grupo Vittore Leads" <${smtpConfig.user}>`,
+    to: smtpConfig.notificationEmail,
+    subject: "Novo lead recebido | Grupo Vittore",
+    text,
+    html,
+  });
 }
 
 async function findRecentDuplicateLead(
@@ -395,13 +545,16 @@ async function createClickUpTask(
     throw new Error(await readResponseText(response));
   }
 
-  const data = (await response.json()) as { id?: string };
+  const data = (await response.json()) as { id?: string; url?: string };
 
   if (!data.id) {
     throw new Error("ClickUp não retornou o id da tarefa.");
   }
 
-  return data.id;
+  return {
+    taskId: data.id,
+    taskUrl: data.url ?? null,
+  };
 }
 
 async function createClickUpTaskComment(
@@ -550,7 +703,8 @@ async function sendLeadToClickUp(
   qualification: LeadQualification,
 ): Promise<ClickUpTaskResult> {
   const config = getClickUpConfig();
-  const taskId = await createClickUpTask(config, payload, qualification);
+  const task = await createClickUpTask(config, payload, qualification);
+  const taskId = task.taskId;
   const fieldErrors: string[] = [];
 
   try {
@@ -570,7 +724,7 @@ async function sendLeadToClickUp(
     fieldErrors.push(message);
   }
 
-  return { taskId, fieldErrors };
+  return { taskId, taskUrl: task.taskUrl, fieldErrors };
 }
 
 export async function POST(request: Request) {
@@ -649,12 +803,25 @@ export async function POST(request: Request) {
       console.error("Erro ao atualizar status do ClickUp no Supabase:", error);
     }
 
+    try {
+      await sendLeadNotificationEmail(payload, qualification, {
+        clickup_task_id: clickUpResult.taskId,
+        clickup_task_url: clickUpResult.taskUrl,
+      });
+    } catch (emailError) {
+      console.warn(
+        "Falha ao enviar e-mail de notificação do lead:",
+        getErrorMessage(emailError),
+      );
+    }
+
     return Response.json({
       ok: true,
       savedToSupabase: true,
       sentToClickUp: true,
       leadId,
       clickupTaskId: clickUpResult.taskId,
+      clickupTaskUrl: clickUpResult.taskUrl ?? undefined,
       redirectTo: qualification.redirectTo,
     });
   } catch (error) {
@@ -668,6 +835,19 @@ export async function POST(request: Request) {
       });
     } catch (updateError) {
       console.error("Erro ao registrar falha do ClickUp no Supabase:", updateError);
+    }
+
+    try {
+      await sendLeadNotificationEmail(payload, qualification, {
+        clickup_task_id: null,
+        clickup_task_url: null,
+        clickupError: erroClickUp,
+      });
+    } catch (emailError) {
+      console.warn(
+        "Falha ao enviar e-mail de notificação do lead:",
+        getErrorMessage(emailError),
+      );
     }
 
     return Response.json({
