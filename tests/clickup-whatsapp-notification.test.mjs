@@ -26,5 +26,5 @@ test("ClickUp WhatsApp field matching accepts common phone field names", () => {
 test("ClickUp comment notification is non-blocking", () => {
   assert.match(route, /\/task\/\$\{taskId\}\/comment/);
   assert.match(route, /Novo lead recebido pela landing page do Grupo Vittore\./);
-  assert.match(route, /console\.warn\("Falha ao criar coment(?:a|á)rio no ClickUp:/);
+  assert.match(route, /Falha ao criar coment(?:a|á|Ã¡)rio no ClickUp:/);
 });

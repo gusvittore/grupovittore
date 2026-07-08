@@ -54,6 +54,20 @@ type LeadEmailNotificationOptions = {
   clickupError?: string | null;
 };
 
+type LeadEmailResult = {
+  attempted: boolean;
+  sent: boolean;
+  messageId?: string | null;
+  error?: string | null;
+};
+
+type LeadApiTimings = {
+  totalMs: number;
+  supabaseMs: number;
+  clickupCreateMs: number;
+  postTasksMs: number;
+};
+
 type ClickUpOption = {
   id: string;
   name: string;
@@ -72,6 +86,8 @@ type ClickUpTaskResult = {
   taskId: string;
   taskUrl?: string | null;
   fieldErrors: string[];
+  commentErrors: string[];
+  emailResult: LeadEmailResult;
 };
 
 const clickUpFieldMapping: Array<{
@@ -194,20 +210,38 @@ function getClickUpConfig(): ClickUpConfig {
 }
 
 function getSmtpConfig(): SmtpConfig | null {
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT);
+  console.log("Email SMTP config:", {
+    hasHost: Boolean(process.env.SMTP_HOST),
+    hasPort: Boolean(process.env.SMTP_PORT),
+    hasUser: Boolean(process.env.SMTP_USER),
+    hasPass: Boolean(process.env.SMTP_PASS),
+    hasNotificationEmail: Boolean(process.env.LEAD_NOTIFICATION_EMAIL),
+    notificationEmail: process.env.LEAD_NOTIFICATION_EMAIL,
+  });
+
+  const host = process.env.SMTP_HOST || "smtp.gmail.com";
+  const port = Number(process.env.SMTP_PORT || 465);
   const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+  const smtpPass = process.env.SMTP_PASS?.replace(/\s/g, "");
   const notificationEmail = process.env.LEAD_NOTIFICATION_EMAIL;
 
-  if (
-    !host ||
-    !Number.isFinite(port) ||
-    !user ||
-    !pass ||
-    !notificationEmail
-  ) {
-    console.warn("Configuracao de e-mail incompleta. E-mail de lead nao enviado.");
+  if (!user) {
+    console.warn("SMTP_USER ausente. E-mail de lead nao enviado.");
+    return null;
+  }
+
+  if (!smtpPass) {
+    console.warn("SMTP_PASS ausente. E-mail de lead nao enviado.");
+    return null;
+  }
+
+  if (!notificationEmail) {
+    console.warn("LEAD_NOTIFICATION_EMAIL ausente. E-mail de lead nao enviado.");
+    return null;
+  }
+
+  if (!Number.isFinite(port)) {
+    console.warn("SMTP_PORT invalido. E-mail de lead nao enviado.");
     return null;
   }
 
@@ -215,7 +249,7 @@ function getSmtpConfig(): SmtpConfig | null {
     host,
     port,
     user,
-    pass,
+    pass: smtpPass,
     notificationEmail,
   };
 }
@@ -238,6 +272,46 @@ async function readResponseText(response: Response) {
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Erro desconhecido.";
+}
+
+function getSafeEmailErrorDetails(error: unknown) {
+  const errorRecord = isRecord(error) ? error : {};
+
+  return {
+    message: error instanceof Error ? error.message : String(error),
+    code:
+      typeof errorRecord.code === "string" ? errorRecord.code : undefined,
+    command:
+      typeof errorRecord.command === "string"
+        ? errorRecord.command
+        : undefined,
+    response:
+      typeof errorRecord.response === "string"
+        ? errorRecord.response
+        : undefined,
+  };
+}
+
+async function withTimeout<T>(
+  promise: Promise<T>,
+  ms: number,
+  label: string,
+): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(
+      () => reject(new Error(`${label} timeout after ${ms}ms`)),
+      ms,
+    );
+  });
+
+  try {
+    return await Promise.race([promise, timeout]);
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  }
 }
 
 function formatEmailValue(value: string | null | undefined) {
@@ -315,11 +389,15 @@ async function sendLeadNotificationEmail(
   payload: LeadPayload,
   qualification: LeadQualification,
   options: LeadEmailNotificationOptions,
-) {
+): Promise<LeadEmailResult> {
   const smtpConfig = getSmtpConfig();
 
   if (!smtpConfig) {
-    return;
+    return {
+      attempted: false,
+      sent: false,
+      error: "Configuracao SMTP incompleta.",
+    };
   }
 
   const transporter = nodemailer.createTransport({
@@ -337,13 +415,63 @@ async function sendLeadNotificationEmail(
     options,
   );
 
-  await transporter.sendMail({
-    from: `"Grupo Vittore Leads" <${smtpConfig.user}>`,
-    to: smtpConfig.notificationEmail,
-    subject: "Novo lead recebido | Grupo Vittore",
-    text,
-    html,
-  });
+  console.log(
+    "Tentando enviar e-mail de lead para:",
+    process.env.LEAD_NOTIFICATION_EMAIL,
+  );
+
+  try {
+    const info = await transporter.sendMail({
+      from: `"Grupo Vittore Leads" <${process.env.SMTP_USER}>`,
+      to: process.env.LEAD_NOTIFICATION_EMAIL,
+      subject: "Novo lead recebido | Grupo Vittore",
+      text,
+      html,
+    });
+
+    console.log("E-mail de lead enviado:", info.messageId);
+
+    return {
+      attempted: true,
+      sent: true,
+      messageId: info.messageId,
+      error: null,
+    };
+  } catch (error) {
+    const details = getSafeEmailErrorDetails(error);
+
+    console.warn("Falha ao enviar e-mail de lead:", details);
+
+    return {
+      attempted: true,
+      sent: false,
+      error: details.message,
+    };
+  }
+}
+
+async function sendLeadNotificationEmailWithTimeout(
+  payload: LeadPayload,
+  qualification: LeadQualification,
+  options: LeadEmailNotificationOptions,
+) {
+  try {
+    return await withTimeout(
+      sendLeadNotificationEmail(payload, qualification, options),
+      3000,
+      "sendLeadNotificationEmail",
+    );
+  } catch (error) {
+    const details = getSafeEmailErrorDetails(error);
+
+    console.warn("Falha ao enviar e-mail de lead:", details);
+
+    return {
+      attempted: true,
+      sent: false,
+      error: details.message,
+    };
+  }
 }
 
 async function findRecentDuplicateLead(
@@ -698,36 +826,136 @@ async function fillClickUpCustomFields(
   return fieldErrors;
 }
 
-async function sendLeadToClickUp(
+async function fillClickUpCustomFieldsForTask(
+  config: ClickUpConfig,
+  taskId: string,
+  payload: LeadPayload,
+) {
+  const fields = await getClickUpFields(config);
+  return fillClickUpCustomFields(config, taskId, fields, payload);
+}
+
+async function runPostClickUpTasks(
+  config: ClickUpConfig,
+  taskId: string,
+  taskUrl: string | null | undefined,
   payload: LeadPayload,
   qualification: LeadQualification,
-): Promise<ClickUpTaskResult> {
-  const config = getClickUpConfig();
-  const task = await createClickUpTask(config, payload, qualification);
-  const taskId = task.taskId;
+) {
+  const postClickupTasks = [
+    fillClickUpCustomFieldsForTask(config, taskId, payload),
+    createClickUpTaskComment(config, taskId),
+    sendLeadNotificationEmailWithTimeout(payload, qualification, {
+      clickup_task_id: taskId,
+      clickup_task_url: taskUrl,
+    }),
+  ] as const;
+  const settled = await Promise.allSettled(postClickupTasks);
   const fieldErrors: string[] = [];
+  const commentErrors: string[] = [];
+  let emailResult: LeadEmailResult = {
+    attempted: true,
+    sent: false,
+    error: "Resultado do e-mail nao disponivel.",
+  };
+  const [fieldsResult, commentResult, emailSettledResult] = settled;
 
-  try {
-    await createClickUpTaskComment(config, taskId);
-  } catch (error) {
-    console.warn("Falha ao criar comentário no ClickUp:", getErrorMessage(error));
-  }
-
-  try {
-    const fields = await getClickUpFields(config);
-    fieldErrors.push(
-      ...(await fillClickUpCustomFields(config, taskId, fields, payload)),
-    );
-  } catch (error) {
-    const message = `Falha ao preencher campos personalizados do ClickUp: ${getErrorMessage(error)}`;
+  if (fieldsResult.status === "fulfilled") {
+    fieldErrors.push(...fieldsResult.value);
+  } else {
+    const message = `Falha ao preencher campos personalizados do ClickUp: ${getErrorMessage(fieldsResult.reason)}`;
     console.warn(message);
     fieldErrors.push(message);
   }
 
-  return { taskId, taskUrl: task.taskUrl, fieldErrors };
+  if (commentResult.status === "rejected") {
+    const message = `Falha ao criar comentario no ClickUp: ${getErrorMessage(commentResult.reason)}`;
+    console.warn(message);
+    commentErrors.push(message);
+  }
+
+  if (emailSettledResult.status === "fulfilled") {
+    emailResult = emailSettledResult.value;
+  } else {
+    const details = getSafeEmailErrorDetails(emailSettledResult.reason);
+    console.warn("Falha ao enviar e-mail de lead:", details);
+    emailResult = {
+      attempted: true,
+      sent: false,
+      error: details.message,
+    };
+  }
+
+  return {
+    fieldErrors,
+    commentErrors,
+    emailResult,
+  };
+}
+
+async function sendLeadToClickUp(
+  payload: LeadPayload,
+  qualification: LeadQualification,
+  timings?: {
+    onTaskCreated?: (durationMs: number) => void;
+    onPostTasksSettled?: (durationMs: number) => void;
+  },
+): Promise<ClickUpTaskResult> {
+  const config = getClickUpConfig();
+  const taskStartedAt = Date.now();
+  const task = await createClickUpTask(config, payload, qualification);
+  const taskId = task.taskId;
+  timings?.onTaskCreated?.(Date.now() - taskStartedAt);
+
+  const postTasksStartedAt = Date.now();
+  const postTasksResult = await runPostClickUpTasks(
+    config,
+    taskId,
+    task.taskUrl,
+    payload,
+    qualification,
+  );
+  timings?.onPostTasksSettled?.(Date.now() - postTasksStartedAt);
+
+  return {
+    taskId,
+    taskUrl: task.taskUrl,
+    fieldErrors: postTasksResult.fieldErrors,
+    commentErrors: postTasksResult.commentErrors,
+    emailResult: postTasksResult.emailResult,
+  };
 }
 
 export async function POST(request: Request) {
+  const startedAt = Date.now();
+  const timings: LeadApiTimings = {
+    totalMs: 0,
+    supabaseMs: 0,
+    clickupCreateMs: 0,
+    postTasksMs: 0,
+  };
+  let emailResult: LeadEmailResult = {
+    attempted: false,
+    sent: false,
+    error: null,
+  };
+
+  console.log("Lead API started");
+
+  const createDebug = (savedToSupabase: boolean, sentToClickUp: boolean) => {
+    timings.totalMs = Date.now() - startedAt;
+    console.log("Tempo total API:", timings.totalMs);
+
+    return {
+      savedToSupabase,
+      sentToClickUp,
+      emailAttempted: emailResult.attempted,
+      emailSent: emailResult.sent,
+      emailError: emailResult.error ?? null,
+      timings: { ...timings },
+    };
+  };
+
   let rawPayload: unknown;
 
   try {
@@ -740,7 +968,11 @@ export async function POST(request: Request) {
 
   if (!hasRequiredFields(payload)) {
     return Response.json(
-      { ok: false, error: "Campos obrigatórios ausentes." },
+      {
+        ok: false,
+        error: "Campos obrigatórios ausentes.",
+        debug: createDebug(false, false),
+      },
       { status: 400 },
     );
   }
@@ -748,6 +980,7 @@ export async function POST(request: Request) {
   const qualification = qualifyLead(payload.faturamento_mensal);
   let supabaseConfig: SupabaseConfig;
   let leadId: string;
+  const supabaseStartedAt = Date.now();
 
   try {
     supabaseConfig = getSupabaseConfig();
@@ -756,6 +989,9 @@ export async function POST(request: Request) {
       const duplicateLead = await findRecentDuplicateLead(supabaseConfig, payload);
 
       if (duplicateLead) {
+        timings.supabaseMs = Date.now() - supabaseStartedAt;
+        console.log("Tempo após Supabase:", Date.now() - startedAt);
+
         return Response.json({
           ok: true,
           duplicate: true,
@@ -764,6 +1000,7 @@ export async function POST(request: Request) {
           leadId: duplicateLead.id ? String(duplicateLead.id) : undefined,
           clickupTaskId: duplicateLead.clickup_task_id ?? undefined,
           redirectTo: qualification.redirectTo,
+          debug: createDebug(true, true),
         });
       }
     } catch (duplicateError) {
@@ -779,19 +1016,39 @@ export async function POST(request: Request) {
       qualification,
       rawPayload,
     );
+    timings.supabaseMs = Date.now() - supabaseStartedAt;
+    console.log("Tempo após Supabase:", Date.now() - startedAt);
   } catch (error) {
+    timings.supabaseMs = Date.now() - supabaseStartedAt;
     console.error("Erro ao salvar lead no Supabase:", error);
     return Response.json(
-      { ok: false, error: "Não foi possível salvar o lead." },
+      {
+        ok: false,
+        error: "Não foi possível salvar o lead.",
+        debug: createDebug(false, false),
+      },
       { status: 500 },
     );
   }
 
+  const clickupStartedAt = Date.now();
+
   try {
-    const clickUpResult = await sendLeadToClickUp(payload, qualification);
-    const erroClickUp = clickUpResult.fieldErrors.length
-      ? clickUpResult.fieldErrors.join(" | ")
-      : null;
+    const clickUpResult = await sendLeadToClickUp(payload, qualification, {
+      onTaskCreated: (durationMs) => {
+        timings.clickupCreateMs = durationMs;
+        console.log("Tempo após ClickUp task:", Date.now() - startedAt);
+      },
+      onPostTasksSettled: (durationMs) => {
+        timings.postTasksMs = durationMs;
+      },
+    });
+    emailResult = clickUpResult.emailResult;
+    const clickUpErrors = [
+      ...clickUpResult.fieldErrors,
+      ...clickUpResult.commentErrors,
+    ];
+    const erroClickUp = clickUpErrors.length ? clickUpErrors.join(" | ") : null;
 
     try {
       await updateLeadClickUpStatus(supabaseConfig, leadId, {
@@ -803,18 +1060,6 @@ export async function POST(request: Request) {
       console.error("Erro ao atualizar status do ClickUp no Supabase:", error);
     }
 
-    try {
-      await sendLeadNotificationEmail(payload, qualification, {
-        clickup_task_id: clickUpResult.taskId,
-        clickup_task_url: clickUpResult.taskUrl,
-      });
-    } catch (emailError) {
-      console.warn(
-        "Falha ao enviar e-mail de notificação do lead:",
-        getErrorMessage(emailError),
-      );
-    }
-
     return Response.json({
       ok: true,
       savedToSupabase: true,
@@ -823,31 +1068,52 @@ export async function POST(request: Request) {
       clickupTaskId: clickUpResult.taskId,
       clickupTaskUrl: clickUpResult.taskUrl ?? undefined,
       redirectTo: qualification.redirectTo,
+      debug: createDebug(true, true),
     });
   } catch (error) {
     const erroClickUp = getErrorMessage(error);
-    console.error("Erro ao enviar lead para o ClickUp:", error);
+    const postTasksStartedAt = Date.now();
 
-    try {
-      await updateLeadClickUpStatus(supabaseConfig, leadId, {
-        enviado_clickup: false,
-        erro_clickup: erroClickUp,
-      });
-    } catch (updateError) {
-      console.error("Erro ao registrar falha do ClickUp no Supabase:", updateError);
+    if (!timings.clickupCreateMs) {
+      timings.clickupCreateMs = Date.now() - clickupStartedAt;
+      console.log("Tempo após ClickUp task:", Date.now() - startedAt);
     }
 
-    try {
-      await sendLeadNotificationEmail(payload, qualification, {
+    console.error("Erro ao enviar lead para o ClickUp:", error);
+
+    const failureTasks = [
+      updateLeadClickUpStatus(supabaseConfig, leadId, {
+        enviado_clickup: false,
+        erro_clickup: erroClickUp,
+      }),
+      sendLeadNotificationEmailWithTimeout(payload, qualification, {
         clickup_task_id: null,
         clickup_task_url: null,
         clickupError: erroClickUp,
-      });
-    } catch (emailError) {
-      console.warn(
-        "Falha ao enviar e-mail de notificação do lead:",
-        getErrorMessage(emailError),
+      }),
+    ] as const;
+    const [updateResult, emailSettledResult] =
+      await Promise.allSettled(failureTasks);
+
+    timings.postTasksMs = Date.now() - postTasksStartedAt;
+
+    if (updateResult.status === "rejected") {
+      console.error(
+        "Erro ao registrar falha do ClickUp no Supabase:",
+        updateResult.reason,
       );
+    }
+
+    if (emailSettledResult.status === "fulfilled") {
+      emailResult = emailSettledResult.value;
+    } else {
+      const details = getSafeEmailErrorDetails(emailSettledResult.reason);
+      console.warn("Falha ao enviar e-mail de lead:", details);
+      emailResult = {
+        attempted: true,
+        sent: false,
+        error: details.message,
+      };
     }
 
     return Response.json({
@@ -856,6 +1122,7 @@ export async function POST(request: Request) {
       sentToClickUp: false,
       leadId,
       redirectTo: qualification.redirectTo,
+      debug: createDebug(true, false),
     });
   }
 }
