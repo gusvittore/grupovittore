@@ -16,6 +16,10 @@ const route = await readFile(
   new URL("../src/app/api/leads/route.ts", import.meta.url),
   "utf8",
 );
+const core = await readFile(
+  new URL("../src/server/lead-core.ts", import.meta.url),
+  "utf8",
+);
 
 test("requested section titles keep sentence case and exact manual lines", () => {
   assert.match(workSection, /<span className="work-heading-line">Na pr(?:á|Ã¡)tica, (?:é|Ã©) assim que<\/span>/);
@@ -48,23 +52,25 @@ test("lead form locks synchronously until redirect or error", () => {
   assert.doesNotMatch(leadForm, /finally\s*{[\s\S]*setIsSubmitting\(false\)/);
 });
 
-test("lead API checks recent duplicate before saving and before ClickUp", () => {
-  assert.match(route, /RECENT_DUPLICATE_WINDOW_MINUTES = [2-5]/);
+test("lead API checks recent duplicate before saving and before background queue", () => {
+  assert.match(core, /RECENT_DUPLICATE_WINDOW_MINUTES = [2-5]/);
   assert.match(route, /findRecentDuplicateLead/);
-  assert.match(route, /email=eq\.\$\{encodeURIComponent\(payload\.email\)\}/);
-  assert.match(route, /whatsapp=eq\.\$\{encodeURIComponent\(payload\.whatsapp\)\}/);
-  assert.match(route, /empresa=eq\.\$\{encodeURIComponent\(payload\.empresa\)\}/);
-  assert.match(route, /created_at=gte\./);
+  assert.match(core, /email=eq\.\$\{encodeURIComponent\(payload\.email\)\}/);
+  assert.match(core, /whatsapp=eq\.\$\{encodeURIComponent\(payload\.whatsapp\)\}/);
+  assert.match(core, /empresa=eq\.\$\{encodeURIComponent\(payload\.empresa\)\}/);
+  assert.match(core, /created_at=gte\./);
   assert.match(route, /duplicate: true/);
   assert.match(route, /redirectTo: qualification\.redirectTo/);
 
-  const duplicateCheckIndex = route.indexOf("findRecentDuplicateLead");
-  const saveIndex = route.indexOf("saveLeadToSupabase");
-  const clickUpIndex = route.indexOf("sendLeadToClickUp");
+  const postBody = route.slice(route.indexOf("export async function POST"));
+  const duplicateCheckIndex = postBody.indexOf("findRecentDuplicateLead");
+  const saveIndex = postBody.indexOf("saveLeadToSupabase");
+  const enqueueIndex = postBody.indexOf("enqueueLeadBackgroundJob");
 
   assert.ok(duplicateCheckIndex > -1);
   assert.ok(saveIndex > -1);
-  assert.ok(clickUpIndex > -1);
+  assert.ok(enqueueIndex > -1);
   assert.ok(duplicateCheckIndex < saveIndex);
-  assert.ok(duplicateCheckIndex < clickUpIndex);
+  assert.ok(duplicateCheckIndex < enqueueIndex);
+  assert.ok(saveIndex < enqueueIndex);
 });

@@ -6,10 +6,19 @@ const route = await readFile(
   new URL("../src/app/api/leads/route.ts", import.meta.url),
   "utf8",
 );
+const core = await readFile(
+  new URL("../src/server/lead-core.ts", import.meta.url),
+  "utf8",
+);
+const processor = await readFile(
+  new URL("../src/server/lead-processing.ts", import.meta.url),
+  "utf8",
+);
 const leadForm = await readFile(
   new URL("../src/app/_components/lead-form.tsx", import.meta.url),
   "utf8",
 );
+const serverCode = `${route}\n${core}\n${processor}`;
 
 test("lead API validates required fields and keeps secrets server-side", () => {
   for (const field of [
@@ -20,61 +29,62 @@ test("lead API validates required fields and keeps secrets server-side", () => {
     "segmento",
     "faturamento_mensal",
   ]) {
-    assert.match(route, new RegExp(field));
+    assert.match(serverCode, new RegExp(field));
   }
 
   assert.match(route, /export async function POST\(request: Request\)/);
-  assert.match(route, /Campos obrigat(?:ó|Ã³)rios ausentes\./);
-  assert.match(route, /process\.env\.SUPABASE_URL/);
-  assert.match(route, /process\.env\.SUPABASE_SERVICE_ROLE_KEY/);
-  assert.match(route, /process\.env\.CLICKUP_API_TOKEN/);
-  assert.match(route, /process\.env\.CLICKUP_LIST_ID/);
-  assert.doesNotMatch(`${route}\n${leadForm}`, /NEXT_PUBLIC_(?:CLICKUP|SUPABASE)/);
+  assert.match(route, /Campos obrigatorios ausentes\./);
+  assert.match(core, /process\.env\.SUPABASE_URL/);
+  assert.match(core, /process\.env\.SUPABASE_SERVICE_ROLE_KEY/);
+  assert.match(processor, /process\.env\.CLICKUP_API_TOKEN/);
+  assert.match(processor, /process\.env\.CLICKUP_LIST_ID/);
+  assert.doesNotMatch(`${serverCode}\n${leadForm}`, /NEXT_PUBLIC_(?:CLICKUP|SUPABASE)/);
 });
 
-test("lead API saves to Supabase first and returns the expected redirect contract", () => {
-  assert.match(route, /\/rest\/v1\/leads_assessoria/);
-  assert.match(route, /Prefer": "return=representation"/);
-  assert.match(route, /status_qualificacao/);
-  assert.match(route, /clickup_status_destino/);
-  assert.match(route, /raw_payload/);
-  assert.match(route, /N(?:ã|Ã£)o foi poss(?:í|Ã­)vel salvar o lead\./);
+test("lead API saves to Supabase first and returns the expected queue redirect contract", () => {
+  assert.match(core, /\/rest\/v1\/leads_assessoria/);
+  assert.match(core, /Prefer: "return=representation"/);
+  assert.match(core, /status_qualificacao/);
+  assert.match(core, /clickup_status_destino/);
+  assert.match(core, /enviado_clickup: false/);
+  assert.match(core, /raw_payload/);
+  assert.match(route, /Nao foi possivel salvar o lead\./);
   assert.match(route, /savedToSupabase: true/);
-  assert.match(route, /sentToClickUp: true/);
-  assert.match(route, /sentToClickUp: false/);
+  assert.match(route, /queued: enqueueResult\.queued/);
+  assert.match(route, /queuedBackgroundJob: enqueueResult\.queued/);
   assert.match(route, /redirectTo/);
 });
 
-test("lead API creates ClickUp tasks and fills dynamic custom fields without ICP", () => {
-  assert.match(route, /api\.clickup\.com\/api\/v2\/list\/\$\{clickUpListId\}\/task/);
-  assert.match(route, /api\.clickup\.com\/api\/v2\/list\/\$\{clickUpListId\}\/field/);
-  assert.match(route, /api\.clickup\.com\/api\/v2\/task\/\$\{taskId\}\/field\/\$\{field\.id\}/);
-  assert.match(route, /MQL - LEAD QUALIF\. MARKT\./);
-  assert.match(route, /NOVO LEAD/);
-  assert.match(route, /Nome completo:/);
-  assert.match(route, /WhatsApp \/ Telefone:/);
-  assert.match(route, /GCLID:/);
-  assert.match(route, /type_config/);
-  assert.match(route, /console\.warn/);
-  assert.match(route, /const clickUpFieldMapping/);
-  assert.doesNotMatch(route, /["']ICP["']\s*:/);
+test("background processor creates ClickUp tasks and fills dynamic custom fields without ICP", () => {
+  assert.match(processor, /api\.clickup\.com\/api\/v2\/list\/\$\{clickUpListId\}\/task/);
+  assert.match(processor, /api\.clickup\.com\/api\/v2\/list\/\$\{clickUpListId\}\/field/);
+  assert.match(processor, /api\.clickup\.com\/api\/v2\/task\/\$\{taskId\}\/field\/\$\{field\.id\}/);
+  assert.match(core, /MQL - LEAD QUALIF\. MARKT\./);
+  assert.match(core, /NOVO LEAD/);
+  assert.match(processor, /Nome completo:/);
+  assert.match(processor, /WhatsApp \/ Telefone:/);
+  assert.match(processor, /GCLID:/);
+  assert.match(processor, /type_config/);
+  assert.match(processor, /console\.warn/);
+  assert.match(processor, /const clickUpFieldMapping/);
+  assert.doesNotMatch(processor, /["']ICP["']\s*:/);
 });
 
-test("lead API maps ClickUp assignee, phone text, and segment dropdown safely", () => {
-  assert.match(route, /process\.env\.CLICKUP_ASSIGNEE_ID/);
-  assert.match(route, /Number\(process\.env\.CLICKUP_ASSIGNEE_ID\)/);
-  assert.match(route, /assignees: \[assigneeId\]/);
-  assert.doesNotMatch(route, /84823221/);
+test("background processor maps ClickUp assignee, phone text, and segment dropdown safely", () => {
+  assert.match(processor, /process\.env\.CLICKUP_ASSIGNEE_ID/);
+  assert.match(processor, /Number\(process\.env\.CLICKUP_ASSIGNEE_ID\)/);
+  assert.match(processor, /assignees: \[assigneeId\]/);
+  assert.doesNotMatch(processor, /84823221/);
 
-  assert.match(route, /Telefone \/ WhatsApp/);
-  assert.match(route, /Telefone/);
-  assert.match(route, /WhatsApp/);
-  assert.doesNotMatch(route, /\+55/);
+  assert.match(processor, /Telefone \/ WhatsApp/);
+  assert.match(processor, /Telefone/);
+  assert.match(processor, /WhatsApp/);
+  assert.doesNotMatch(processor, /\+55/);
 
-  assert.match(route, /normalize\("NFD"\)/);
-  assert.match(route, /\.replace\(\/\[\\u0300-\\u036f\]\/g, ""\)/);
-  assert.match(route, /payloadKey === "segmento"/);
-  assert.match(route, /return option\.id/);
+  assert.match(processor, /normalize\("NFD"\)/);
+  assert.match(processor, /\.replace\(\/\[\\u0300-\\u036f\]\/g, ""\)/);
+  assert.match(processor, /payloadKey === "segmento"/);
+  assert.match(processor, /return option\.id/);
 });
 
 test("lead form posts payload with URL tracking params before redirecting", () => {
@@ -92,5 +102,5 @@ test("lead form posts payload with URL tracking params before redirecting", () =
   assert.match(leadForm, /window\.location\.href = redirectTo/);
   assert.match(leadForm, /console\.error\("Erro ao enviar lead:", error\)/);
   assert.match(leadForm, /disabled=\{isSubmitting\}/);
-  assert.match(leadForm, /alert\("N(?:ã|Ã£)o foi poss(?:í|Ã­)vel enviar suas informa(?:ç|Ã§)(?:õ|Ãµ)es\. Tente novamente\."\)/);
+  assert.match(leadForm, /alert\("N(?:ã|Ã£|ÃƒÂ£)o foi poss(?:í|Ã­|ÃƒÂ­)vel enviar suas informa(?:çõ|Ã§Ãµ|ÃƒÂ§ÃƒÂµ)es\. Tente novamente\."\)/);
 });
