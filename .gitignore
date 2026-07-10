@@ -45,3 +45,7 @@ next-env.d.ts
 .edge-readability*/
 
 public/zips/
+
+# Arquivos temporarios locais de build, testes e Codex
+.next-*
+.next-vittore/
