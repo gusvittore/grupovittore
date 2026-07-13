@@ -129,7 +129,7 @@ export default function Home() {
             <div className="relative overflow-hidden rounded-[36px] bg-[#070d1d] px-7 pb-8 pt-6 text-[#f9f5ed] shadow-[0_35px_90px_rgba(9,14,31,0.22)] sm:px-9 sm:pb-10">
               <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#b29157]/20 blur-3xl" />
               <Image
-                src="/brand/logotipo-principal-hero.png.png"
+                src="/assets/assessoria-comercial/brand/logotipo-principal-hero.png.png"
                 alt="Símbolo do Grupo Vittore"
                 width={1896}
                 height={2458}

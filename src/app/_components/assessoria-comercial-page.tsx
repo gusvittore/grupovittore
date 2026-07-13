@@ -8,58 +8,58 @@ import { WorkSection } from "./work-section";
 const heroPillars = [
   {
     label: "Diagnóstico Estratégico",
-    icon: "/icons/hero-icon-diagnostico-comercial.png.png",
+    icon: "/assets/assessoria-comercial/icons/hero-icon-diagnostico-comercial.png.png",
   },
   {
     label: "Método Comercial",
-    icon: "/icons/hero-icon-metodo-comercial.png.png",
+    icon: "/assets/assessoria-comercial/icons/hero-icon-metodo-comercial.png.png",
   },
   {
     label: "Clareza e Controle",
-    icon: "/icons/hero-icon-clareza-controle.png.png",
+    icon: "/assets/assessoria-comercial/icons/hero-icon-clareza-controle.png.png",
   },
 ];
 
 const heroProofItems = [
   {
     label: "+100 EMPRESAS IMPACTADAS",
-    icon: "/icons/hero-icon-empresas-impactadas.png.png",
+    icon: "/assets/assessoria-comercial/icons/hero-icon-empresas-impactadas.png.png",
   },
   {
     label: "FOCO EM RESULTADOS E RECEITA PREVISÍVEL",
-    icon: "/icons/hero-icon-foco-resultado.png.png",
+    icon: "/assets/assessoria-comercial/icons/hero-icon-foco-resultado.png.png",
   },
   {
     label: "METODOLOGIA PRÓPRIA E COMPROVADA",
-    icon: "/icons/hero-icon-metodologia-propria.png.png",
+    icon: "/assets/assessoria-comercial/icons/hero-icon-metodologia-propria.png.png",
   },
   {
     label: "SIGILO, ÉTICA E PARCERIA DE VERDADE",
-    icon: "/icons/hero-icon-sigilo-etica.png.png",
+    icon: "/assets/assessoria-comercial/icons/hero-icon-sigilo-etica.png.png",
   },
 ];
 
 const diagnosticMetrics = [
   {
-    icon: "/icons/sessao-3-receita-prevista.png.png",
+    icon: "/assets/assessoria-comercial/icons/sessao-3-receita-prevista.png.png",
     title: "Receita prevista",
     value: "R$ 8,72M",
     delta: "▼ 28,4%",
   },
   {
-    icon: "/icons/sessao-3-oportunidades.png.png",
+    icon: "/assets/assessoria-comercial/icons/sessao-3-oportunidades.png.png",
     title: "Oportunidades",
     value: "142",
     delta: "▼ 31,5%",
   },
   {
-    icon: "/icons/sessao-3-taxa-conversao.png.png",
+    icon: "/assets/assessoria-comercial/icons/sessao-3-taxa-conversao.png.png",
     title: "Taxa de conversão",
     value: "24,7%",
     delta: "▼ 18,6%",
   },
   {
-    icon: "/icons/sessao-3-ticket-medio.png.png",
+    icon: "/assets/assessoria-comercial/icons/sessao-3-ticket-medio.png.png",
     title: "Ticket médio",
     value: "R$ 36,8K",
     delta: "▼ 22,1%",
@@ -95,31 +95,31 @@ const funnelStages = [
 const journeySteps = [
   {
     label: "Descoberta",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-descoberta.png.png",
+    icon: "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-descoberta.png.png",
   },
   {
     label: "Atração",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-atracao.png.png",
+    icon: "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-atracao.png.png",
   },
   {
     label: "Consideração",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-consideracao.png.png",
+    icon: "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-consideracao.png.png",
   },
   {
     label: "Compra",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-compra.png.png",
+    icon: "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-compra.png.png",
   },
   {
     label: "Experiência",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-experiencia.png.png",
+    icon: "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-experiencia.png.png",
   },
   {
     label: "Recompra",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-recompra.png.png",
+    icon: "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-recompra.png.png",
   },
   {
     label: "Indicação",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-indicacao.png.png",
+    icon: "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-indicacao.png.png",
   },
 ];
 
@@ -139,34 +139,34 @@ const bottlenecks = [
 
 const diagnosticInsights = [
   {
-    icon: "/icons/sessao-3-baixa-conversao.png.png",
+    icon: "/assets/assessoria-comercial/icons/sessao-3-baixa-conversao.png.png",
     text: "Baixa conversão causada por falhas de qualificação e follow-up.",
   },
   {
-    icon: "/icons/sessao-3-receita-instavel.png.png",
+    icon: "/assets/assessoria-comercial/icons/sessao-3-receita-instavel.png.png",
     text: "Receita instável e sem previsibilidade de crescimento.",
   },
   {
-    icon: "/icons/sessao-3-processo-comercial-reativo.png.png",
+    icon: "/assets/assessoria-comercial/icons/sessao-3-processo-comercial-reativo.png.png",
     text: "Processo comercial reativo, sem método e sem dados.",
   },
 ];
 
 const clientLogos = [
-  { src: "/brand/cliente-1.png.png", alt: "Cliente 01" },
-  { src: "/brand/cliente-2.png.png", alt: "Cliente 02" },
-  { src: "/brand/cliente-3.png.png", alt: "Cliente 03" },
-  { src: "/brand/cliente-4.png.png", alt: "Cliente 04" },
-  { src: "/brand/cliente-44.png.png", alt: "Cliente 05" },
-  { src: "/brand/cliente-5.png.png", alt: "Cliente 06" },
-  { src: "/brand/cliente-55.png.png", alt: "Cliente 07" },
-  { src: "/brand/cliente-6.png.png", alt: "Cliente 08" },
-  { src: "/brand/cliente-7.png.png", alt: "Cliente 09" },
-  { src: "/brand/cliente-9.png.png", alt: "Cliente 10" },
-  { src: "/brand/cliente-10.png.png", alt: "Cliente 11" },
-  { src: "/brand/cliente-11.png.png", alt: "Cliente 12" },
-  { src: "/brand/cliente-12.png.png", alt: "Cliente 13" },
-  { src: "/brand/cliente-13.png.png", alt: "Cliente 14" },
+  { src: "/assets/assessoria-comercial/brand/cliente-1.png.png", alt: "Cliente 01" },
+  { src: "/assets/assessoria-comercial/brand/cliente-2.png.png", alt: "Cliente 02" },
+  { src: "/assets/assessoria-comercial/brand/cliente-3.png.png", alt: "Cliente 03" },
+  { src: "/assets/assessoria-comercial/brand/cliente-4.png.png", alt: "Cliente 04" },
+  { src: "/assets/assessoria-comercial/brand/cliente-44.png.png", alt: "Cliente 05" },
+  { src: "/assets/assessoria-comercial/brand/cliente-5.png.png", alt: "Cliente 06" },
+  { src: "/assets/assessoria-comercial/brand/cliente-55.png.png", alt: "Cliente 07" },
+  { src: "/assets/assessoria-comercial/brand/cliente-6.png.png", alt: "Cliente 08" },
+  { src: "/assets/assessoria-comercial/brand/cliente-7.png.png", alt: "Cliente 09" },
+  { src: "/assets/assessoria-comercial/brand/cliente-9.png.png", alt: "Cliente 10" },
+  { src: "/assets/assessoria-comercial/brand/cliente-10.png.png", alt: "Cliente 11" },
+  { src: "/assets/assessoria-comercial/brand/cliente-11.png.png", alt: "Cliente 12" },
+  { src: "/assets/assessoria-comercial/brand/cliente-12.png.png", alt: "Cliente 13" },
+  { src: "/assets/assessoria-comercial/brand/cliente-13.png.png", alt: "Cliente 14" },
 ];
 
 const faqItems = [
@@ -554,7 +554,7 @@ function MethodRevenueVisual() {
     <div className="method-revenue-visual">
       <div className="method-revenue-background" aria-hidden="true" />
       <Image
-        src="/brand/3/marco-aurelio-sessao4.png.png"
+        src="/assets/assessoria-comercial/brand/3/marco-aurelio-sessao4.png.png"
         alt=""
         width={1536}
         height={1024}
@@ -1078,7 +1078,7 @@ export function AssessoriaComercialPage() {
           <div className="site-footer-main">
             <div className="site-footer-brand">
               <Image
-                src="/brand/logotipo-principal-rodape.png.png"
+                src="/assets/assessoria-comercial/brand/logotipo-principal-rodape.png.png"
                 alt="Grupo Vittore"
                 width={2174}
                 height={1080}

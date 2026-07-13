@@ -10,40 +10,40 @@ const workSection = await readFile(
 );
 
 const heroIcons = [
-  "/icons/hero-icon-diagnostico-comercial.png.png",
-  "/icons/hero-icon-metodo-comercial.png.png",
-  "/icons/hero-icon-clareza-controle.png.png",
-  "/icons/hero-icon-empresas-impactadas.png.png",
-  "/icons/hero-icon-foco-resultado.png.png",
-  "/icons/hero-icon-metodologia-propria.png.png",
-  "/icons/hero-icon-sigilo-etica.png.png",
+  "/assets/assessoria-comercial/icons/hero-icon-diagnostico-comercial.png.png",
+  "/assets/assessoria-comercial/icons/hero-icon-metodo-comercial.png.png",
+  "/assets/assessoria-comercial/icons/hero-icon-clareza-controle.png.png",
+  "/assets/assessoria-comercial/icons/hero-icon-empresas-impactadas.png.png",
+  "/assets/assessoria-comercial/icons/hero-icon-foco-resultado.png.png",
+  "/assets/assessoria-comercial/icons/hero-icon-metodologia-propria.png.png",
+  "/assets/assessoria-comercial/icons/hero-icon-sigilo-etica.png.png",
 ];
 
 const sectionThreeIcons = [
-  "/icons/sessao-3-receita-prevista.png.png",
-  "/icons/sessao-3-oportunidades.png.png",
-  "/icons/sessao-3-taxa-conversao.png.png",
-  "/icons/sessao-3-ticket-medio.png.png",
-  "/icons/sessao-3-baixa-conversao.png.png",
-  "/icons/sessao-3-receita-instavel.png.png",
-  "/icons/sessao-3-processo-comercial-reativo.png.png",
+  "/assets/assessoria-comercial/icons/sessao-3-receita-prevista.png.png",
+  "/assets/assessoria-comercial/icons/sessao-3-oportunidades.png.png",
+  "/assets/assessoria-comercial/icons/sessao-3-taxa-conversao.png.png",
+  "/assets/assessoria-comercial/icons/sessao-3-ticket-medio.png.png",
+  "/assets/assessoria-comercial/icons/sessao-3-baixa-conversao.png.png",
+  "/assets/assessoria-comercial/icons/sessao-3-receita-instavel.png.png",
+  "/assets/assessoria-comercial/icons/sessao-3-processo-comercial-reativo.png.png",
 ];
 
 const customerJourneyIcons = [
-  "/icons/Jornada do Cliente/jornada-cliente-descoberta.png.png",
-  "/icons/Jornada do Cliente/jornada-cliente-atracao.png.png",
-  "/icons/Jornada do Cliente/jornada-cliente-consideracao.png.png",
-  "/icons/Jornada do Cliente/jornada-cliente-compra.png.png",
-  "/icons/Jornada do Cliente/jornada-cliente-experiencia.png.png",
-  "/icons/Jornada do Cliente/jornada-cliente-recompra.png.png",
-  "/icons/Jornada do Cliente/jornada-cliente-indicacao.png.png",
+  "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-descoberta.png.png",
+  "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-atracao.png.png",
+  "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-consideracao.png.png",
+  "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-compra.png.png",
+  "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-experiencia.png.png",
+  "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-recompra.png.png",
+  "/assets/assessoria-comercial/icons/Jornada do Cliente/jornada-cliente-indicacao.png.png",
 ];
 
 const sectionFiveIcons = [
-  "/icons/sessao-5-processo-comercial.png",
-  "/icons/sessao-5-geracao-demanda.png",
-  "/icons/sessao-5-atendimento.png.png",
-  "/icons/sessao-5-dados-rotina.png.png",
+  "/assets/assessoria-comercial/icons/sessao-5-processo-comercial.png",
+  "/assets/assessoria-comercial/icons/sessao-5-geracao-demanda.png",
+  "/assets/assessoria-comercial/icons/sessao-5-atendimento.png.png",
+  "/assets/assessoria-comercial/icons/sessao-5-dados-rotina.png.png",
 ];
 
 test("landing page maps the approved icon assets into hero and section 3", () => {

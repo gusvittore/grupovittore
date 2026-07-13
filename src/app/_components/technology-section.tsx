@@ -38,7 +38,7 @@ function TechnologyFlow({ className = "" }: { className?: string }) {
       aria-label="Ecossistema de tecnologia conectado ao Grupo Vittore"
     >
       <Image
-        src="/brand/fluxogram-sessao9-2.png.png"
+        src="/assets/assessoria-comercial/brand/fluxogram-sessao9-2.png.png"
         alt="Fluxograma de tecnologia, automação e inteligência conectado ao Grupo Vittore"
         width={1254}
         height={1254}

@@ -5,25 +5,25 @@ const workCards = [
     number: "01",
     title: "Processo Comercial",
     body: "Criamos um processo comercial para que cada oportunidade tenha direção, acompanhamento e o próximo passo definido.",
-    icon: "/icons/sessao-5-processo-comercial.png",
+    icon: "/assets/assessoria-comercial/icons/sessao-5-processo-comercial.png",
   },
   {
     number: "02",
     title: "Geração de Demanda",
     body: "Ajustamos a geração de demanda para atrair contatos com mais intenção de compra, e não apenas volume.",
-    icon: "/icons/sessao-5-geracao-demanda.png",
+    icon: "/assets/assessoria-comercial/icons/sessao-5-geracao-demanda.png",
   },
   {
     number: "03",
     title: "Atendimento e Follow-up",
     body: "Organizamos a forma como a sua empresa atende, conduz propostas e faz follow-up para aumentar as chances de fechamento.",
-    icon: "/icons/sessao-5-atendimento.png.png",
+    icon: "/assets/assessoria-comercial/icons/sessao-5-atendimento.png.png",
   },
   {
     number: "04",
     title: "Dados, Rotina e Tecnologia",
     body: "Conectamos dados, rotina comercial e tecnologia para que fique claro o que está funcionando, onde a venda trava e o que precisa ser corrigido primeiro.",
-    icon: "/icons/sessao-5-dados-rotina.png.png",
+    icon: "/assets/assessoria-comercial/icons/sessao-5-dados-rotina.png.png",
   },
 ] as const;
 

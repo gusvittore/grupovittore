@@ -29,7 +29,7 @@ export function SiteFooter() {
           <div className="max-w-[440px]">
             <Link href="/" aria-label="Grupo Vittore - início">
               <Image
-                src="/brand/logotipo-principal-rodape.png.png"
+                src="/assets/assessoria-comercial/brand/logotipo-principal-rodape.png.png"
                 alt="Grupo Vittore"
                 width={2174}
                 height={1080}

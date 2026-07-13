@@ -18,7 +18,7 @@ export function SiteHeader() {
       <div className="mx-auto flex w-full max-w-[1320px] flex-wrap items-center justify-between gap-x-5 gap-y-4 px-6 py-3 sm:px-10 lg:flex-nowrap lg:px-12">
         <Link href="/" aria-label="Grupo Vittore - início" className="shrink-0">
           <Image
-            src="/brand/logotipo-principal-rodape.png.png"
+            src="/assets/assessoria-comercial/brand/logotipo-principal-rodape.png.png"
             alt="Grupo Vittore"
             width={2174}
             height={1080}

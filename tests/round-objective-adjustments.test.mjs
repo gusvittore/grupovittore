@@ -16,47 +16,47 @@ const css = await readFile(new URL("../src/app/globals.css", import.meta.url), "
 const expectedServices = [
   [
     "Arquitetura de Receita",
-    "/brand/2/arquitetura-receita.png.png",
+    "/assets/assessoria-comercial/brand/2/arquitetura-receita.png.png",
     "Mapeamos como marketing, vendas, tecnologia e atendimento se conectam dentro da sua operação para criar um caminho mais claro entre oportunidade, negociação e faturamento. A ideia é organizar a estrutura que sustenta o crescimento, reduzindo desperdícios e mostrando onde cada área precisa atuar para transformar movimento em receita.",
   ],
   [
     "Processo Comercial Inteligente",
-    "/brand/2/processo-comercial-inteligente.png.png",
+    "/assets/assessoria-comercial/brand/2/processo-comercial-inteligente.png.png",
     "Estruturamos o processo comercial para que cada oportunidade tenha direção, acompanhamento e próximo passo definido. Isso ajuda sua empresa a parar de depender do improviso, da memória do vendedor ou da cobrança constante do dono, criando mais controle sobre cada etapa da venda.",
   ],
   [
     "Demanda Qualificada",
-    "/brand/2/demanda-qualificada.png.png",
+    "/assets/assessoria-comercial/brand/2/demanda-qualificada.png.png",
     "Ajustamos a geração de demanda para atrair contatos com mais intenção de compra, e não apenas volume. O foco é fazer com que marketing deixe de gerar apenas leads soltos e passe a entregar oportunidades que o comercial consiga trabalhar com mais clareza, prioridade e chance real de fechamento.",
   ],
   [
     "Comunicação que Vende",
-    "/brand/2/comunicacao-vende.png.png",
+    "/assets/assessoria-comercial/brand/2/comunicacao-vende.png.png",
     "Aprimoramos oferta, argumentos e mensagens para que o cliente entenda com clareza o valor de escolher sua empresa. Isso envolve transformar sua comunicação em uma ferramenta comercial mais forte, capaz de gerar confiança, reduzir objeções e conduzir melhor o lead até a decisão.",
   ],
   [
     "Gestão de Leads e Follow-up",
-    "/brand/2/gestao-de-leads-e-follow-up.png.png",
+    "/assets/assessoria-comercial/brand/2/gestao-de-leads-e-follow-up.png.png",
     "Organizamos a gestão dos leads, os retornos e o follow-up para aumentar as chances de avanço e fechamento. Cada oportunidade precisa ter continuidade, contexto e próximo passo. Sem acompanhamento, vendas boas morrem no caminho antes mesmo de chegarem à proposta.",
   ],
   [
     "Dados e Indicadores Comerciais",
-    "/brand/2/dados-indicadores-comerciais.png.png",
+    "/assets/assessoria-comercial/brand/2/dados-indicadores-comerciais.png.png",
     "Criamos uma visão clara dos números que revelam onde as vendas avançam, travam e precisam de correção. Assim, sua empresa deixa de decidir no achismo e passa a enxergar com mais precisão quais canais, etapas, vendedores e oportunidades realmente impactam o faturamento.",
   ],
   [
     "Tecnologia e Automação",
-    "/brand/2/tecnologia-automação.png.png",
+    "/assets/assessoria-comercial/brand/2/tecnologia-automação.png.png",
     "Conectamos CRM, automações e integrações para reduzir tarefas manuais e dar mais controle à operação. A tecnologia entra para organizar informações, acelerar rotinas, evitar perdas de oportunidades e permitir que o time comercial trabalhe com mais eficiência e previsibilidade.",
   ],
   [
     "Rotina de Crescimento",
-    "/brand/2/rotina-de-crescimento.png.png",
+    "/assets/assessoria-comercial/brand/2/rotina-de-crescimento.png.png",
     "Transformamos estratégia em uma rotina de acompanhamento, execução e melhoria contínua. O crescimento não depende de uma ação isolada, mas de análise constante, ajustes semanais, clareza de prioridades e uma operação comercial que evolui com método.",
   ],
   [
     "Direção Estratégica",
-    "/brand/2/direcao-estrategica.png.png",
+    "/assets/assessoria-comercial/brand/2/direcao-estrategica.png.png",
     "Oferecemos visão externa e direção para decisões melhores sobre marketing, vendas e tecnologia. Você não recebe apenas tarefas soltas, recebe uma leitura estratégica do que precisa ser priorizado para vender mais, desperdiçar menos oportunidades e construir uma operação mais previsível.",
   ],
 ];
