@@ -7,33 +7,43 @@ async function read(path) {
 }
 
 test("institutional home follows the approved section order and content", async () => {
-  const home = await read("src/app/page.tsx");
+  const [page, hero, materials, assessoria, blog, cta] = await Promise.all([
+    read("src/app/page.tsx"),
+    read("src/app/_components/home-hero.tsx"),
+    read("src/app/_components/home-materiais-graficos.tsx"),
+    read("src/app/_components/home-assessoria-comercial.tsx"),
+    read("src/app/_components/home-blog.tsx"),
+    read("src/app/_components/home-cta.tsx"),
+  ]);
+  const home = `${page}\n${hero}\n${materials}\n${assessoria}\n${blog}\n${cta}`;
 
   assert.match(
-    home,
-    /Grupo Vittore: crescimento, presença e estrutura para empresas\s+que\s+querem vender melhor/,
+    hero,
+    /Grupo Vittore: crescimento, presença e estrutura para empresas que querem vender melhor/,
   );
-  assert.match(home, /materiais gráficos personalizados/i);
+  assert.match(hero, /Ecossistema Grupo Vittore/);
+  assert.match(hero, /Consultoria Empresarial/);
+  assert.match(materials, /Produção e entrega para todo o Brasil/);
+  assert.match(assessoria, /Diagnóstico e clareza comercial/);
   assert.match(home, /Conhecer nossas frentes/);
   assert.match(home, /Ver Assessoria Comercial/);
-  assert.match(home, /id="servicos"/);
-  assert.match(home, /id="materiais-graficos"/);
-  assert.match(home, /id="assessoria-comercial"/);
-  assert.match(home, /id="blog"/);
-  assert.match(home, /id="cta-institucional"/);
-  assert.match(
-    home,
-    /<main className="min-h-screen overflow-x-clip bg-\[#f8f5ef\]/,
-  );
-  assert.match(home, /lg:w-\[calc\(\(100%_-_40px\)\/3\)\]/);
-  assert.match(home, /lg:min-w-\[calc\(\(100%_-_40px\)\/3\)\]/);
+  assert.match(materials, /id="servicos"/);
+  assert.match(materials, /id="materiais-graficos"/);
+  assert.match(assessoria, /id="assessoria-comercial"/);
+  assert.match(blog, /id="blog"/);
+  assert.match(cta, /id="cta-institucional"/);
+  assert.match(page, /overflow-x-clip/);
+  assert.match(blog, /overflow-x-auto/);
+  assert.match(blog, /shrink-0 snap-start/);
   assert.doesNotMatch(home, /Agendar diagn[óo]stico/i);
 
-  const materialsPosition = home.indexOf('id="materiais-graficos"');
-  const assessoriaPosition = home.indexOf('id="assessoria-comercial"');
-  const blogPosition = home.indexOf('id="blog"');
-  const ctaPosition = home.indexOf('id="cta-institucional"');
+  const heroPosition = page.indexOf("<HomeHero />");
+  const materialsPosition = page.indexOf("<HomeMateriaisGraficos />");
+  const assessoriaPosition = page.indexOf("<HomeAssessoriaComercial />");
+  const blogPosition = page.indexOf("<HomeBlog />");
+  const ctaPosition = page.indexOf("<HomeCta />");
 
+  assert.ok(heroPosition < materialsPosition);
   assert.ok(materialsPosition < assessoriaPosition);
   assert.ok(assessoriaPosition < blogPosition);
   assert.ok(blogPosition < ctaPosition);
@@ -42,9 +52,9 @@ test("institutional home follows the approved section order and content", async 
     "Como identificar gargalos comerciais antes de investir mais em tráfego",
     "Por que materiais gráficos ainda fortalecem a presença da marca",
     "Marketing, vendas e tecnologia: como conectar as três áreas",
-    "O que uma empresa precisa organizar antes de escalar a aquisição",
+    "O que uma empresa precisa organizar antes de escalar aquisição",
   ]) {
-    assert.match(home, new RegExp(title));
+    assert.match(blog, new RegExp(title));
   }
 });
 

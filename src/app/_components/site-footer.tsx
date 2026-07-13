@@ -23,48 +23,46 @@ const fronts = [
 
 export function SiteFooter() {
   return (
-    <footer className="bg-[#060b18] text-[#f5f0e7]">
-      <div className="mx-auto w-full max-w-[1320px] px-6 pb-8 pt-14 sm:px-10 sm:pt-16 lg:px-12">
-        <div className="grid gap-12 border-b border-white/10 pb-12 lg:grid-cols-[minmax(280px,1.2fr)_minmax(180px,0.7fr)_minmax(260px,1fr)] lg:gap-16">
-          <div className="max-w-[440px]">
-            <Link href="/" aria-label="Grupo Vittore - início">
+    <footer className="border-t border-[#b29157]/18 bg-[#fbf8f4] text-[#071026]">
+      <div className="mx-auto w-full max-w-[1500px] px-5 pb-8 pt-16 sm:px-8 sm:pt-20 lg:px-12 xl:px-16">
+        <div className="grid gap-12 pb-14 lg:grid-cols-[minmax(300px,1.1fr)_minmax(220px,0.72fr)_minmax(330px,0.9fr)] lg:gap-20">
+          <div className="max-w-[500px]">
+            <Link href="/" aria-label="Grupo Vittore - início" className="inline-block">
               <Image
-                src="/assets/assessoria-comercial/brand/logotipo-principal-rodape.png.png"
+                src="/assets/home-institucional/brand/logotipo-principal-rodape.png.png"
                 alt="Grupo Vittore"
                 width={2174}
                 height={1080}
-                className="h-20 w-auto brightness-0 invert sm:h-24"
+                className="h-auto w-[250px] object-contain sm:w-[310px]"
               />
             </Link>
-            <p className="mt-6 text-base leading-7 text-[#bec3cd]">
-              Frentes complementares de assessoria comercial, marketing, vendas,
-              tecnologia e materiais gráficos personalizados para empresas que
-              querem crescer com mais presença, clareza e estrutura.
+            <p className="mt-8 text-base leading-8 text-[#24334d] sm:text-lg sm:leading-9">
+              Frentes complementares de assessoria comercial, marketing, vendas, tecnologia e materiais gráficos personalizados para empresas que querem crescer com mais presença, clareza e estrutura.
             </p>
           </div>
 
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#d0ad70]">
+            <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-[#9a671e]">
               Navegação
             </p>
-            <div className="mt-6 grid gap-3 text-sm text-[#d8dbe1]">
+            <nav aria-label="Navegação do rodapé" className="mt-7 grid gap-4 text-base text-[#17243c] sm:text-lg">
               {mainLinks.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="w-fit transition hover:text-[#d0ad70]"
+                  className="w-fit transition hover:text-[#8a5b18]"
                 >
                   {item.label}
                 </Link>
               ))}
-            </div>
+            </nav>
           </div>
 
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#d0ad70]">
+            <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-[#9a671e]">
               Frentes do Grupo Vittore
             </p>
-            <div className="mt-6 grid gap-3 text-sm leading-6 text-[#d8dbe1]">
+            <div className="mt-7 grid gap-4 text-base leading-7 text-[#17243c] sm:text-lg">
               {fronts.map((front) => (
                 <p key={front}>{front}</p>
               ))}
@@ -72,16 +70,16 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 pt-7 text-xs text-[#9da4b1] sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-5 border-t border-[#b29157]/35 py-7 text-sm text-[#26344d] sm:flex-row sm:items-center sm:justify-between sm:text-base">
           <p>Grupo Vittore | Hub de Crescimento Empresarial</p>
-          <div className="flex flex-wrap gap-x-5 gap-y-2">
-            <Link href="/politicas-de-privacidade" className="transition hover:text-white">
+          <nav aria-label="Links legais" className="flex flex-wrap gap-x-7 gap-y-3">
+            <Link href="/politicas-de-privacidade" className="transition hover:text-[#8a5b18]">
               Política de Privacidade
             </Link>
-            <Link href="/termos-de-uso" className="transition hover:text-white">
+            <Link href="/termos-de-uso" className="transition hover:text-[#8a5b18]">
               Termos de Uso
             </Link>
-          </div>
+          </nav>
         </div>
       </div>
     </footer>

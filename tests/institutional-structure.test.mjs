@@ -48,6 +48,15 @@ test("institutional site structure preserves assessoria landing and adds the req
     read("src/app/api/leads/route.ts"),
   ]);
 
+  const homeComponents = await Promise.all([
+    read("src/app/_components/home-hero.tsx"),
+    read("src/app/_components/home-materiais-graficos.tsx"),
+    read("src/app/_components/home-assessoria-comercial.tsx"),
+    read("src/app/_components/home-blog.tsx"),
+    read("src/app/_components/home-cta.tsx"),
+  ]);
+  const institutionalHomeSource = [institutionalHome, ...homeComponents].join("\n");
+
   assert.match(assessoriaComponent, /LeadForm/);
   assert.match(assessoriaComponent, /TechnologySection/);
   assert.match(assessoriaComponent, /Seu comercial n/);
@@ -66,14 +75,15 @@ test("institutional site structure preserves assessoria landing and adds the req
 
   assert.doesNotMatch(header, /Agendar diagnostico|Agendar diagn[óo]stico/i);
   assert.match(footer, /Grupo Vittore/);
-  assert.match(institutionalHome, /Hub de Crescimento Empresarial/i);
-  assert.match(institutionalHome, /Marketing e geração de demanda/i);
-  assert.match(institutionalHome, /Vendas e performance comercial/i);
-  assert.match(institutionalHome, /Tecnologia e\s+automações com IA/i);
-  assert.match(institutionalHome, /Assessoria Comercial/);
-  assert.match(institutionalHome, /Materiais Gráficos Personalizados/i);
-  assert.match(institutionalHome, /id="servicos"/);
-  assert.match(institutionalHome, /href="\/assessoria-comercial"/);
+  assert.match(institutionalHomeSource, /Hub de Crescimento Empresarial/i);
+  assert.match(institutionalHomeSource, /Marketing e geração de demanda/i);
+  assert.match(institutionalHomeSource, /Vendas e performance comercial/i);
+  assert.match(institutionalHomeSource, /Tecnologia e automação empresarial/i);
+  assert.match(institutionalHomeSource, /Consultoria Empresarial/i);
+  assert.match(institutionalHomeSource, /Assessoria Comercial/);
+  assert.match(institutionalHomeSource, /Materiais Gráficos Personalizados/i);
+  assert.match(institutionalHomeSource, /id="servicos"/);
+  assert.match(institutionalHomeSource, /href="\/assessoria-comercial"/);
 
   assert.match(servicesPage, /PlaceholderPage/);
   assert.match(aboutPage, /PlaceholderPage/);
