@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const css = await readFile(new URL("../src/app/globals.css", import.meta.url), "utf8");
-const page = await readFile(new URL("../src/app/page.tsx", import.meta.url), "utf8");
+const page = await readFile(new URL("../src/app/_components/assessoria-comercial-page.tsx", import.meta.url), "utf8");
 const leadForm = await readFile(
   new URL("../src/app/_components/lead-form.tsx", import.meta.url),
   "utf8",

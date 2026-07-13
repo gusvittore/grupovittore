@@ -1,1109 +1,372 @@
 import Image from "next/image";
 import Link from "next/link";
-import { LeadForm } from "./_components/lead-form";
-import { ServiceCarousel } from "./_components/service-carousel";
-import { TechnologySection } from "./_components/technology-section";
-import { WorkSection } from "./_components/work-section";
+import { SiteFooter } from "./_components/site-footer";
+import { SiteHeader } from "./_components/site-header";
 
-const heroPillars = [
+const materialBenefits = [
   {
-    label: "Diagnóstico Estratégico",
-    icon: "/icons/hero-icon-diagnostico-comercial.png.png",
+    number: "01",
+    title: "Presença de marca",
+    description:
+      "Peças que tornam a identidade da empresa reconhecível e consistente em cada contato presencial.",
   },
   {
-    label: "Método Comercial",
-    icon: "/icons/hero-icon-metodo-comercial.png.png",
+    number: "02",
+    title: "Comunicação impressa",
+    description:
+      "Cartões de visita, panfletos, flyers e blocos personalizados que comunicam com clareza e intenção.",
   },
   {
-    label: "Clareza e Controle",
-    icon: "/icons/hero-icon-clareza-controle.png.png",
-  },
-];
-
-const heroProofItems = [
-  {
-    label: "+100 EMPRESAS IMPACTADAS",
-    icon: "/icons/hero-icon-empresas-impactadas.png.png",
+    number: "03",
+    title: "Prospecção e relacionamento",
+    description:
+      "Materiais comerciais que apoiam visitas, apresentações e ações de relacionamento com clientes.",
   },
   {
-    label: "FOCO EM RESULTADOS E RECEITA PREVISÍVEL",
-    icon: "/icons/hero-icon-foco-resultado.png.png",
-  },
-  {
-    label: "METODOLOGIA PRÓPRIA E COMPROVADA",
-    icon: "/icons/hero-icon-metodologia-propria.png.png",
-  },
-  {
-    label: "SIGILO, ÉTICA E PARCERIA DE VERDADE",
-    icon: "/icons/hero-icon-sigilo-etica.png.png",
+    number: "04",
+    title: "Personalização profissional",
+    description:
+      "Materiais institucionais e peças sob medida que traduzem o posicionamento da marca no mundo físico.",
   },
 ];
 
-const diagnosticMetrics = [
+const commercialPillars = [
   {
-    icon: "/icons/sessao-3-receita-prevista.png.png",
-    title: "Receita prevista",
-    value: "R$ 8,72M",
-    delta: "▼ 28,4%",
+    number: "01",
+    title: "Marketing e geração de demanda",
+    description:
+      "Atração de oportunidades qualificadas, campanhas, posicionamento e estrutura para gerar demanda com mais intenção.",
   },
   {
-    icon: "/icons/sessao-3-oportunidades.png.png",
-    title: "Oportunidades",
-    value: "142",
-    delta: "▼ 31,5%",
+    number: "02",
+    title: "Vendas e performance comercial",
+    description:
+      "Processo, acompanhamento, método comercial, organização da jornada e melhoria contínua da conversão.",
   },
   {
-    icon: "/icons/sessao-3-taxa-conversao.png.png",
-    title: "Taxa de conversão",
-    value: "24,7%",
-    delta: "▼ 18,6%",
-  },
-  {
-    icon: "/icons/sessao-3-ticket-medio.png.png",
-    title: "Ticket médio",
-    value: "R$ 36,8K",
-    delta: "▼ 22,1%",
-  },
-  {
-    title: "Evolução de receita",
-  },
-  {
-    title: "Funil comercial",
-  },
-  {
-    title: "Jornada do cliente",
-  },
-  {
-    title: "Qualidade da demanda",
-  },
-  {
-    title: "Gargalos e processos",
-  },
-  {
-    title: "Maturidade comercial",
+    number: "03",
+    title: "Tecnologia e automação empresarial",
+    description:
+      "CRM, automações, inteligência artificial e dados organizados para dar escala e controle à operação.",
   },
 ];
 
-const funnelStages = [
-  ["Prospecção", "1.284 (100%)"],
-  ["Qualificação", "512 (39,9%)"],
-  ["Proposta", "187 (14,6%)"],
-  ["Negociação", "63 (4,9%)"],
-  ["Fechado", "29 (2,3%)"],
-];
-
-const journeySteps = [
+const articles = [
   {
-    label: "Descoberta",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-descoberta.png.png",
+    category: "Gestão comercial",
+    title:
+      "Como identificar gargalos comerciais antes de investir mais em tráfego",
+    description:
+      "Um olhar prático sobre os sinais que mostram onde as oportunidades estão se perdendo.",
   },
   {
-    label: "Atração",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-atracao.png.png",
+    category: "Marca e presença",
+    title: "Por que materiais gráficos ainda fortalecem a presença da marca",
+    description:
+      "Como o impresso amplia credibilidade e transforma contatos físicos em memória de marca.",
   },
   {
-    label: "Consideração",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-consideracao.png.png",
+    category: "Estratégia integrada",
+    title: "Marketing, vendas e tecnologia: como conectar as três áreas",
+    description:
+      "Os princípios para fazer demanda, processo e dados trabalharem na mesma direção.",
   },
   {
-    label: "Compra",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-compra.png.png",
-  },
-  {
-    label: "Experiência",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-experiencia.png.png",
-  },
-  {
-    label: "Recompra",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-recompra.png.png",
-  },
-  {
-    label: "Indicação",
-    icon: "/icons/Jornada do Cliente/jornada-cliente-indicacao.png.png",
+    category: "Crescimento",
+    title: "O que uma empresa precisa organizar antes de escalar a aquisição",
+    description:
+      "As bases que sustentam uma operação comercial mais previsível antes de ampliar o investimento.",
   },
 ];
-
-const demandLegend = [
-  ["Qualificados", "16%", "#001a44"],
-  ["Em desenvolvimento", "31%", "#7e93a7"],
-  ["Pouco qualificados", "38%", "#c9d0d7"],
-  ["Desqualificados", "15%", "#a60012"],
-];
-
-const bottlenecks = [
-  ["Qualificação inadequada", "42"],
-  ["Falta de follow-up", "31"],
-  ["Proposta sem aderência", "16"],
-  ["Objeções mal tratadas", "11"],
-];
-
-const diagnosticInsights = [
-  {
-    icon: "/icons/sessao-3-baixa-conversao.png.png",
-    text: "Baixa conversão causada por falhas de qualificação e follow-up.",
-  },
-  {
-    icon: "/icons/sessao-3-receita-instavel.png.png",
-    text: "Receita instável e sem previsibilidade de crescimento.",
-  },
-  {
-    icon: "/icons/sessao-3-processo-comercial-reativo.png.png",
-    text: "Processo comercial reativo, sem método e sem dados.",
-  },
-];
-
-const clientLogos = [
-  { src: "/brand/cliente-1.png.png", alt: "Cliente 01" },
-  { src: "/brand/cliente-2.png.png", alt: "Cliente 02" },
-  { src: "/brand/cliente-3.png.png", alt: "Cliente 03" },
-  { src: "/brand/cliente-4.png.png", alt: "Cliente 04" },
-  { src: "/brand/cliente-44.png.png", alt: "Cliente 05" },
-  { src: "/brand/cliente-5.png.png", alt: "Cliente 06" },
-  { src: "/brand/cliente-55.png.png", alt: "Cliente 07" },
-  { src: "/brand/cliente-6.png.png", alt: "Cliente 08" },
-  { src: "/brand/cliente-7.png.png", alt: "Cliente 09" },
-  { src: "/brand/cliente-9.png.png", alt: "Cliente 10" },
-  { src: "/brand/cliente-10.png.png", alt: "Cliente 11" },
-  { src: "/brand/cliente-11.png.png", alt: "Cliente 12" },
-  { src: "/brand/cliente-12.png.png", alt: "Cliente 13" },
-  { src: "/brand/cliente-13.png.png", alt: "Cliente 14" },
-];
-
-const faqItems = [
-  {
-    question: "Para qual tamanho de empresa a assessoria do Grupo Vittore é indicada?",
-    answer: [
-      "A assessoria é indicada para empresas que já possuem operação validada, recebem oportunidades comerciais e faturam, em média, a partir de R$100 mil por mês.",
-      "O foco não é atender negócios que ainda estão começando do zero, mas empresas que já vendem e sentem que poderiam crescer mais se tivessem mais clareza, processo comercial, geração de demanda e controle sobre os números.",
-    ],
-  },
-  {
-    question: "Já tenho uma equipe comercial ou de marketing interna. Por que contratar o Grupo Vittore?",
-    answer: [
-      "Porque ter equipe não significa, necessariamente, ter estratégia, método e visão externa.",
-      "Muitas empresas têm pessoas executando tarefas todos os dias, mas ainda não conseguem enxergar com clareza onde as vendas travam, quais canais geram melhores oportunidades, quais leads são melhor conduzidos e quais pontos do processo precisam ser corrigidos primeiro.",
-      "O Grupo Vittore entra para trazer direção, diagnóstico, método e visão sistêmica entre marketing, vendas e tecnologia.",
-      "Não substituímos sua operação.",
-      "Ajudamos sua operação a funcionar com mais clareza, controle e previsibilidade.",
-    ],
-  },
-  {
-    question: "Como saber se funciona para o meu segmento?",
-    answer: [
-      "O ponto principal não é o segmento.",
-      "É entender que toda empresa é formada por pessoas vendendo para outras pessoas.",
-      "Independente do nicho, uma decisão de compra passa por percepção de valor, confiança, clareza da oferta, timing, condução comercial, objeções e acompanhamento.",
-      "Por isso, nosso trabalho não se baseia em “receitas prontas” para um mercado específico.",
-      "Ele se baseia em princípios de comportamento de compra, jornada do consumidor, posicionamento, processo comercial e tomada de decisão.",
-      "A execução muda de acordo com o setor.",
-      "Mas os fundamentos que fazem uma pessoa confiar, avançar e comprar continuam sendo humanos.",
-    ],
-  },
-  {
-    question: "Qual o diferencial do Grupo Vittore para uma assessoria comercial comum?",
-    answer: [
-      "Uma assessoria comercial comum costuma olhar apenas para o vendedor, o script, a abordagem ou a rotina de follow-up.",
-      "O Grupo Vittore olha para a arquitetura de receita como um todo.",
-      "Isso significa analisar como marketing, vendas e tecnologia se conectam para gerar crescimento.",
-      "Não adianta ter mais leads se o comercial não sabe conduzir.",
-      "Não adianta ter CRM se ninguém usa direito.",
-      "Não adianta ter proposta bonita se não existe acompanhamento.",
-      "Não adianta cobrar mais da equipe se a gestão não enxerga onde a venda está travando.",
-      "Nosso diferencial está em conectar estratégia, processo e execução para transformar oportunidades em vendas com mais método, clareza e previsibilidade.",
-    ],
-  },
-  {
-    question: "Quanto tempo leva para os resultados aparecerem?",
-    answer: [
-      "O diagnóstico inicial e o plano de ação começam nas primeiras semanas.",
-      "Nesse período, o foco é entender a operação, identificar gargalos, organizar prioridades e definir os primeiros ajustes no processo comercial.",
-      "Alguns ganhos podem aparecer rapidamente, principalmente em clareza, organização, follow-up e condução das oportunidades.",
-      "Resultados mais consistentes em conversão, previsibilidade e crescimento tendem a aparecer com a continuidade da operação, conforme o processo é ajustado, medido e melhorado.",
-      "O objetivo não é criar uma promessa rápida.",
-      "É construir uma estrutura comercial mais inteligente, capaz de vender melhor ao longo do tempo.",
-    ],
-  },
-];
-
-function Eyebrow({
-  children,
-  variant = "lines",
-}: {
-  children: React.ReactNode;
-  variant?: "lines" | "dots";
-}) {
-  const detailClass =
-    variant === "dots"
-      ? "eyebrow-dot h-[5px] w-[5px] flex-none rounded-full bg-[#B29157]"
-      : "h-px flex-1 bg-[#B29157]/65";
-
-  return (
-    <p className="mx-auto flex w-full max-w-[720px] items-center justify-center gap-4 text-center text-[0.78rem] font-semibold uppercase leading-5 tracking-[0.2em] text-[#B29157] sm:text-[0.95rem] sm:tracking-[0.34em]">
-      <span className={detailClass} />
-      <span>{children}</span>
-      <span className={detailClass} />
-    </p>
-  );
-}
-
-function Section({
-  id,
-  children,
-  className = "",
-}: {
-  id?: string;
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <section id={id} className={`page-grid relative overflow-hidden ${className}`}>
-      <div className="mx-auto w-full max-w-[1240px] overflow-hidden px-5 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24">
-        {children}
-      </div>
-    </section>
-  );
-}
-
-function Ornament({ className = "" }: { className?: string }) {
-  return (
-    <div className={`flex items-center justify-center gap-4 ${className}`}>
-      <span className="h-px w-24 bg-[#B29157]/70" />
-      <span className="h-3 w-3 rotate-45 border border-[#B29157]" />
-      <span className="h-px w-24 bg-[#B29157]/70" />
-    </div>
-  );
-}
-
-function TitleBlock({
-  eyebrow,
-  title,
-  red,
-  children,
-  className = "",
-  eyebrowVariant = "lines",
-}: {
-  eyebrow?: string;
-  title: React.ReactNode;
-  red?: React.ReactNode;
-  children?: React.ReactNode;
-  className?: string;
-  eyebrowVariant?: "lines" | "dots";
-}) {
-  return (
-    <div className={`mx-auto max-w-[980px] text-center ${className}`}>
-      {eyebrow ? <Eyebrow variant={eyebrowVariant}>{eyebrow}</Eyebrow> : null}
-      <h2 className="mt-6 font-serif text-[clamp(1.55rem,5.8vw,1.9rem)] font-medium leading-[1.1] text-[#090E1F] sm:text-[clamp(2.05rem,3vw,2.6rem)]">
-        {title}
-      </h2>
-      {red ? (
-        <p className="mx-auto mt-3 max-w-[900px] font-serif text-[clamp(1.5rem,5.8vw,1.9rem)] font-medium leading-[1.1] text-[#960000] sm:text-[clamp(2.1rem,3.1vw,2.7rem)]">
-          {red}
-        </p>
-      ) : null}
-      {children ? (
-        <div className="mx-auto mt-7 max-w-[820px] text-lg leading-8 text-[#090E1F]/82 sm:text-xl">
-          {children}
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
-function PremiumCard({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div
-      className={`rounded-[8px] border border-[#B29157]/38 bg-[#FBF8F4]/80 shadow-[0_18px_45px_rgba(9,14,31,0.06)] ${className}`}
-    >
-      {children}
-    </div>
-  );
-}
-
-function MetricCard({
-  icon,
-  title,
-  value,
-  delta,
-}: {
-  icon?: string;
-  title: string;
-  value?: string;
-  delta?: string;
-}) {
-  return (
-    <article className="diagnostic-metric-card">
-      <span className="diagnostic-metric-icon" aria-hidden="true">
-        {icon ? (
-          <Image
-            src={icon}
-            alt=""
-            width={22}
-            height={22}
-            className="diagnostic-metric-icon-image"
-          />
-        ) : null}
-      </span>
-      <p>{title}</p>
-      <strong>{value}</strong>
-      <em>{delta}</em>
-      <small>vs. período anterior</small>
-    </article>
-  );
-}
-
-function RevenueLineChart() {
-  const points = [[92, 184], [134, 154], [176, 162], [218, 106], [260, 162], [302, 114], [344, 70], [386, 90], [428, 64], [470, 30], [512, 70], [554, 122]];
-  const months = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
-  const yLabels = ["R$ 1,2M", "R$ 1,0M", "R$ 800K", "R$ 600K", "R$ 400K"];
-  const gridRows = [30, 68, 106, 144, 182];
-
-  return (
-    <article className="diagnostic-panel diagnostic-line-panel">
-      <h3>Evolução de receita</h3>
-      <div className="line-chart-layout">
-        <svg viewBox="0 0 590 228" role="img" aria-label="Evolução de receita mês a mês">
-          {gridRows.map((y, index) => (
-            <g key={y}>
-              <text x="72" y={y + 4} textAnchor="end" className="chart-y-label">
-                {yLabels[index]}
-              </text>
-              <line x1="84" x2="570" y1={y} y2={y} className="chart-grid-line" />
-            </g>
-          ))}
-          <polyline points={points.slice(0, 10).map(([x, y]) => `${x},${y}`).join(" ")} className="chart-line-solid" />
-          <polyline points={points.slice(9).map(([x, y]) => `${x},${y}`).join(" ")} className="chart-line-dashed" />
-          {points.map(([x, y]) => <circle key={`${x}-${y}`} cx={x} cy={y} r="5" className="chart-line-point" />)}
-          {months.map((month, index) => (
-            <text key={month} x={92 + index * 42} y="216" className="chart-axis-label">{month}</text>
-          ))}
-        </svg>
-      </div>
-    </article>
-  );
-}
-
-function FunnelChart() {
-  const layers = [
-    { points: "10,8 210,8 192,42 28,42", opacity: 1 },
-    { points: "31,48 189,48 173,82 47,82", opacity: 0.72 },
-    { points: "50,88 170,88 155,122 65,122", opacity: 0.48 },
-    { points: "68,128 152,128 139,162 81,162", opacity: 0.28 },
-    { points: "84,168 136,168 124,202 96,202", opacity: 0.16 },
-  ];
-
-  return (
-    <article className="diagnostic-panel diagnostic-funnel-panel">
-      <h3>Funil comercial</h3>
-      <div className="funnel-layout">
-        <svg className="funnel-svg" viewBox="0 0 220 210" aria-hidden="true">
-          {layers.map((layer) => (
-            <polygon
-              key={layer.points}
-              points={layer.points}
-              fill="#001a44"
-              opacity={layer.opacity}
-            />
-          ))}
-        </svg>
-        <div className="funnel-labels">
-          {funnelStages.map(([stage, value]) => (
-            <p key={stage}><strong>{stage}</strong><span>{value}</span></p>
-          ))}
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function CustomerJourney() {
-  return (
-    <article className="diagnostic-panel diagnostic-journey-panel">
-      <h3>Jornada do cliente</h3>
-      <div className="journey-track">
-        {journeySteps.map((step, index) => (
-          <div key={step.label} className="journey-step">
-            <strong>{index + 1}</strong>
-            <Image
-              src={step.icon}
-              alt=""
-              width={44}
-              height={44}
-              className="journey-step-icon-image"
-            />
-            <p>{step.label}</p>
-          </div>
-        ))}
-      </div>
-    </article>
-  );
-}
-
-function DemandQualityDonut() {
-  return (
-    <article className="diagnostic-panel diagnostic-small-panel demand-quality-panel">
-      <h3>Qualidade da demanda</h3>
-      <p className="diagnostic-panel-subtitle">Distribuição dos leads por nível de qualificação</p>
-      <div className="donut-layout">
-        <div className="donut-chart" aria-label="142 leads"><strong>142</strong><span>leads</span></div>
-        <div className="donut-legend">
-          {demandLegend.map(([label, value, color]) => (
-            <p key={label}><i style={{ backgroundColor: color }} /><span>{label}</span><strong>{value}</strong></p>
-          ))}
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function ProcessBottlenecks() {
-  return (
-    <article className="diagnostic-panel diagnostic-small-panel bottleneck-panel">
-      <h3>Gargalos do processo</h3>
-      <p className="diagnostic-panel-subtitle">Principais pontos de perda de conversão</p>
-      <div className="bottleneck-list">
-        {bottlenecks.map(([label, value]) => (
-          <div key={label} className="bottleneck-row">
-            <span>{label}</span>
-            <div><i style={{ width: `${value}%` }} /></div>
-            <strong>{value}%</strong>
-          </div>
-        ))}
-      </div>
-    </article>
-  );
-}
-
-function CommercialMaturityRadar() {
-  return (
-    <article className="diagnostic-panel diagnostic-small-panel maturity-panel">
-      <h3>Maturidade comercial</h3>
-      <p className="diagnostic-panel-subtitle">Avaliação dos pilares de performance</p>
-      <svg viewBox="0 0 260 188" role="img" aria-label="Radar de maturidade comercial" className="maturity-radar-svg">
-        {[72, 52, 32].map((radius) => (
-          <polygon key={radius} points={`130,${94 - radius} ${130 + radius * 0.86},${94 - radius / 2} ${130 + radius * 0.86},${94 + radius / 2} 130,${94 + radius} ${130 - radius * 0.86},${94 + radius / 2} ${130 - radius * 0.86},${94 - radius / 2}`} className="radar-grid-polygon" />
-        ))}
-        {[0, 60, 120, 180, 240, 300].map((angle) => {
-          const rad = ((angle - 90) * Math.PI) / 180;
-          return <line key={angle} x1="130" y1="94" x2={130 + Math.cos(rad) * 78} y2={94 + Math.sin(rad) * 78} className="radar-axis-line" />;
-        })}
-        <polygon points="130,36 183,68 176,124 130,158 82,122 74,70" className="radar-fill-shape" />
-        <polyline points="130,36 183,68 176,124 130,158 82,122 74,70 130,36" className="radar-outline-shape" />
-        {[
-          ["Processos", 130, 16], ["Pessoas", 214, 66], ["Dados", 212, 132],
-          ["Tecnologia", 130, 182], ["Gestão", 44, 132], ["Estratégia", 44, 66],
-        ].map(([label, x, y]) => (
-          <text key={label} x={x} y={y} textAnchor="middle" className="radar-label-text">{label}</text>
-        ))}
-      </svg>
-    </article>
-  );
-}
-
-function SectionThreeDashboard() {
-  return (
-    <div className="section-three-dashboard" aria-label="Painel de diagnóstico comercial">
-      <div className="dashboard-title-row">
-        <span aria-hidden="true" />
-        <h3>Diagnóstico Comercial</h3>
-        <i aria-hidden="true" />
-      </div>
-      <div className="diagnostic-metrics-grid">
-        {diagnosticMetrics.slice(0, 4).map((metric) => <MetricCard key={metric.title} {...metric} />)}
-      </div>
-      <div className="diagnostic-chart-grid">
-        <RevenueLineChart />
-        <FunnelChart />
-        <CustomerJourney />
-        <DemandQualityDonut />
-        <ProcessBottlenecks />
-        <CommercialMaturityRadar />
-      </div>
-      <div className="diagnostic-insights">
-        {diagnosticInsights.map((item) => (
-          <p key={item.text}>
-            <span aria-hidden="true">
-              <Image
-                src={item.icon}
-                alt=""
-                width={20}
-                height={20}
-                className="diagnostic-insight-icon-image"
-              />
-            </span>
-            {item.text}
-          </p>
-        ))}
-      </div>
-      <div className="diagnostic-dashboard-footer">
-        <span aria-hidden="true" />
-        <p>Método <b>•</b> Processo <b>•</b> Inteligência <b>•</b> Performance</p>
-        <span aria-hidden="true" />
-      </div>
-    </div>
-  );
-}
-
-function MethodRevenueVisual() {
-  return (
-    <div className="method-revenue-visual">
-      <div className="method-revenue-background" aria-hidden="true" />
-      <Image
-        src="/brand/3/marco-aurelio-sessao4.png.png"
-        alt=""
-        width={1536}
-        height={1024}
-        sizes="(max-width: 1024px) 100vw, 62vw"
-        className="method-revenue-statue"
-        priority={false}
-      />
-    </div>
-  );
-}
-
-function DiagnosticAssetPanel() {
-  return <SectionThreeDashboard />;
-}
-
-
-function PersonalizedRadar() {
-  const gridPolygons = [
-    "360,260 399,276 415,315 399,354 360,370 321,354 305,315 321,276",
-    "360,205 438,237 470,315 438,393 360,425 282,393 250,315 282,237",
-    "360,150 477,198 525,315 477,432 360,480 243,432 195,315 243,198",
-    "360,95 516,159 580,315 516,471 360,535 204,471 140,315 204,159",
-  ];
-  const majorGridPolygon = "360,80 526,149 595,315 526,481 360,550 194,481 125,315 194,149";
-  const outerPoints = [
-    [360, 80],
-    [526, 149],
-    [595, 315],
-    [526, 481],
-    [360, 550],
-    [194, 481],
-    [125, 315],
-    [194, 149],
-  ];
-  const innerPoints = [
-    [360, 135], [494, 188], [552, 315], [506, 461],
-    [360, 503], [214, 461], [178, 315], [226, 188],
-  ];
-  const redPoints = [
-    [360, 205], [430, 258], [462, 315], [500, 448],
-    [360, 405], [234, 430], [250, 315], [285, 248],
-  ];
-
-  return (
-    <div className="personalized-radar">
-      <svg
-        viewBox="0 0 720 620"
-        role="img"
-        aria-label="Radar da assessoria personalizada com oito pilares comerciais"
-        className="personalized-radar-svg"
-      >
-        {[55, 105, 155, 205].map((radius) => (
-          <circle
-            key={radius}
-            cx="360"
-            cy="315"
-            r={radius}
-            className="personalized-radar-circle-grid"
-          />
-        ))}
-        {gridPolygons.map((polygon) => (
-          <polygon
-            key={polygon}
-            points={polygon}
-            className="personalized-radar-octagon personalized-radar-octagon-minor"
-          />
-        ))}
-        <polygon
-          points={majorGridPolygon}
-          className="personalized-radar-octagon personalized-radar-octagon-major"
-        />
-        <line x1="360" y1="315" x2="360" y2="80" className="personalized-radar-axis" />
-        <line x1="360" y1="315" x2="526" y2="149" className="personalized-radar-axis" />
-        <line x1="360" y1="315" x2="595" y2="315" className="personalized-radar-axis" />
-        <line x1="360" y1="315" x2="526" y2="481" className="personalized-radar-axis" />
-        <line x1="360" y1="315" x2="360" y2="550" className="personalized-radar-axis" />
-        <line x1="360" y1="315" x2="194" y2="481" className="personalized-radar-axis" />
-        <line x1="360" y1="315" x2="125" y2="315" className="personalized-radar-axis" />
-        <line x1="360" y1="315" x2="194" y2="149" className="personalized-radar-axis" />
-        <polygon
-          points="360,104 508,165 570,315 512,463 360,520 211,462 150,315 211,166"
-          className="personalized-radar-series personalized-radar-series-blue"
-        />
-        <polygon
-          points="360,205 470,238 520,315 505,472 360,460 220,458 258,315 248,246"
-          className="personalized-radar-series personalized-radar-series-gold"
-        />
-        <polygon
-          points="360,205 430,258 462,315 500,448 360,405 234,430 250,315 285,248"
-          className="personalized-radar-series personalized-radar-series-red"
-        />
-        {outerPoints.map(([x, y]) => (
-          <circle
-            key={`${x}-${y}`}
-            cx={x}
-            cy={y}
-            r="5.5"
-            className="personalized-radar-point"
-          />
-        ))}
-        {innerPoints.map(([x, y]) => (
-          <circle
-            key={`inner-${x}-${y}`}
-            cx={x}
-            cy={y}
-            r="4.2"
-            className="personalized-radar-point personalized-radar-point-inner"
-          />
-        ))}
-        {redPoints.map(([x, y]) => (
-          <circle
-            key={`red-${x}-${y}`}
-            cx={x}
-            cy={y}
-            r="3.5"
-            className="personalized-radar-point personalized-radar-point-red"
-          />
-        ))}
-        <text x="360" y="38" textAnchor="middle" className="personalized-radar-label personalized-radar-label-top">
-          <tspan x="360">Treinamento</tspan>
-          <tspan x="360" dy="24">Comercial</tspan>
-        </text>
-        <text x="520" y="152" className="personalized-radar-label personalized-radar-label-crm">CRM</text>
-        <text x="574" y="308" textAnchor="start" className="personalized-radar-label personalized-radar-label-ads">
-          <tspan x="574">Anúncios</tspan>
-          <tspan x="574" dy="24">online</tspan>
-        </text>
-        <text x="542" y="508" textAnchor="start" className="personalized-radar-label personalized-radar-label-performance-right">
-          <tspan x="542">Marketing de</tspan>
-          <tspan x="542" dy="24">Performance</tspan>
-        </text>
-        <text x="126" y="328" textAnchor="end" className="personalized-radar-label personalized-radar-label-processes">Processos</text>
-        <text x="178" y="526" textAnchor="end" className="personalized-radar-label personalized-radar-label-technology">
-          <tspan x="178">Tecnologia e</tspan>
-          <tspan x="178" dy="24">automações</tspan>
-        </text>
-        <text x="168" y="150" textAnchor="end" className="personalized-radar-label">
-          <tspan x="168">Gestão</tspan>
-          <tspan x="168" dy="24">de Projetos</tspan>
-        </text>
-      </svg>
-    </div>
-  );
-}
-
-function HeroPrimaryButton() {
-  return (
-    <a
-      href="#formulario"
-      className="hero-primary-button"
-    >
-      QUERO MAIS INFORMAÇÕES
-    </a>
-  );
-}
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#FBF8F4] text-[#090E1F]">
-      <section id="topo" className="hero-section">
-        <div className="hero-mobile-visual" aria-hidden="true">
-          <div className="hero-mobile-background" />
-          <div className="hero-mobile-statue" />
-        </div>
-        <div className="hero-shell">
-          <div className="hero-main">
-            <div className="hero-copy">
-              <p className="hero-eyebrow">
-                <span className="hero-eyebrow-desktop">
-                  ASSESSORIA DE VENDAS E MARKETING DE PERFORMANCE
-                </span>
-                <span className="hero-eyebrow-mobile">
-                  ASSESSORIA COMERCIAL E MARKETING DE PERFORMANCE
-                </span>
+    <main className="min-h-screen overflow-x-clip bg-[#f8f5ef] text-[#090e1f]">
+      <SiteHeader />
+
+      <section className="relative isolate border-b border-[#b29157]/20">
+        <div className="absolute inset-0 -z-20 bg-[linear-gradient(135deg,#fbf8f4_0%,#f5efe5_58%,#eee4d3_100%)]" />
+        <div className="absolute -right-24 top-12 -z-10 h-[420px] w-[420px] rounded-full border border-[#b29157]/20 sm:h-[620px] sm:w-[620px]" />
+        <div className="absolute -right-10 top-36 -z-10 h-[300px] w-[300px] rounded-full border border-[#b29157]/15 sm:h-[460px] sm:w-[460px]" />
+
+        <div className="mx-auto grid w-full max-w-[1320px] gap-12 px-6 pb-20 pt-16 sm:px-10 sm:pb-24 sm:pt-20 lg:grid-cols-[minmax(0,1.3fr)_minmax(340px,0.7fr)] lg:items-center lg:gap-16 lg:px-12 lg:pb-28 lg:pt-24">
+          <div className="max-w-[830px]">
+            <div className="flex items-center gap-4">
+              <span className="h-px w-12 bg-[#b29157]" />
+              <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#8a6a34] sm:text-sm">
+                Hub de crescimento empresarial
               </p>
-              <h1 className="hero-title">
-                <span className="hero-title-desktop">
-                  <span className="hero-title-line">Seu comercial não</span>
-                  <span className="hero-title-line">
-                    <span className="hero-title-highlight">perde vendas</span> só para
-                  </span>
-                  <span className="hero-title-line">concorrentes.</span>
-                  <span className="hero-title-line">Ele também perde para</span>
-                  <span className="hero-title-line">
-                    <span className="hero-title-highlight">o próprio processo.</span>
-                  </span>
-                </span>
-                <span className="hero-title-mobile">
-                  <span className="hero-title-line">Seu comercial não</span>
-                  <span className="hero-title-line">
-                    <span className="hero-title-highlight">perde vendas</span> só para
-                  </span>
-                  <span className="hero-title-line">concorrentes.</span>
-                  <span className="hero-title-line">Ele também perde para</span>
-                  <span className="hero-title-line">
-                    <span className="hero-title-highlight">o próprio processo.</span>
-                  </span>
-                </span>
-              </h1>
-              <div className="hero-title-rule" aria-hidden="true" />
-              <p className="hero-support">
-                Descubra onde suas oportunidades estão travando e transforme
-                esforço em crescimento, clareza, método e controle.
+            </div>
+            <h1 className="mt-7 max-w-[820px] font-serif text-[clamp(3rem,7.5vw,6.2rem)] font-medium leading-[0.92] tracking-[-0.025em] text-[#090e1f]">
+              Grupo Vittore: crescimento, presença e estrutura para empresas que
+              querem vender melhor
+            </h1>
+            <p className="mt-8 max-w-[750px] text-lg leading-8 text-[#3f4756] sm:text-xl sm:leading-9">
+              O Grupo Vittore atua em frentes complementares para ajudar empresas
+              a crescer com mais clareza, presença e controle. Unimos assessoria
+              comercial, marketing e geração de demanda, vendas, tecnologia e
+              automações com IA e materiais gráficos personalizados para
+              fortalecer a operação e a comunicação da marca no mercado.
+            </p>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <Link
+                href="#servicos"
+                className="inline-flex min-h-13 items-center justify-center rounded-full bg-[#090e1f] px-7 py-3 text-sm font-bold uppercase tracking-[0.14em] text-[#fbf8f4] transition duration-300 hover:-translate-y-0.5 hover:bg-[#192238]"
+              >
+                Conhecer nossas frentes
+              </Link>
+              <Link
+                href="/assessoria-comercial"
+                className="inline-flex min-h-13 items-center justify-center rounded-full border border-[#9c7a40]/55 bg-white/45 px-7 py-3 text-sm font-bold uppercase tracking-[0.14em] text-[#4b3a20] transition duration-300 hover:-translate-y-0.5 hover:border-[#8a6a34] hover:bg-white/80"
+              >
+                Ver Assessoria Comercial
+              </Link>
+            </div>
+          </div>
+
+          <aside className="relative mx-auto w-full max-w-[470px] lg:mx-0">
+            <div className="absolute -inset-4 -z-10 rotate-3 rounded-[42px] border border-[#b29157]/30" />
+            <div className="relative overflow-hidden rounded-[36px] bg-[#070d1d] px-7 pb-8 pt-6 text-[#f9f5ed] shadow-[0_35px_90px_rgba(9,14,31,0.22)] sm:px-9 sm:pb-10">
+              <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#b29157]/20 blur-3xl" />
+              <Image
+                src="/brand/logotipo-principal-hero.png.png"
+                alt="Símbolo do Grupo Vittore"
+                width={1896}
+                height={2458}
+                priority
+                className="relative mx-auto h-36 w-auto object-contain sm:h-44"
+              />
+              <p className="relative mt-5 border-t border-white/10 pt-6 text-xs font-semibold uppercase tracking-[0.28em] text-[#d8c19a]">
+                Frentes complementares
               </p>
-              <p className="hero-diagnostic-note">
-                Agende seu diagnóstico comercial online com um especialista do Grupo Vittore.
-              </p>
-              <div className="hero-actions">
-                <HeroPrimaryButton />
+              <div className="relative mt-5 grid gap-3 text-sm leading-6 text-[#ece7dd] sm:grid-cols-2 lg:grid-cols-1">
+                <p className="border-l border-[#b29157] pl-4">Assessoria Comercial</p>
+                <p className="border-l border-[#b29157] pl-4">Marketing e demanda</p>
+                <p className="border-l border-[#b29157] pl-4">Vendas e performance</p>
+                <p className="border-l border-[#b29157] pl-4">Tecnologia e automações</p>
+                <p className="border-l border-[#b29157] pl-4 sm:col-span-2 lg:col-span-1">
+                  Materiais Gráficos Personalizados
+                </p>
               </div>
-              <div className="hero-pillars" aria-label="Pilares da assessoria">
-                {heroPillars.map((item) => (
-                  <div key={item.label} className="hero-pillar">
-                    <span aria-hidden="true">
-                      <Image
-                        src={item.icon}
-                        alt=""
-                        width={32}
-                        height={32}
-                        className="hero-benefit-icon-image"
-                      />
-                    </span>
-                    <p>{item.label}</p>
-                  </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="servicos" className="scroll-mt-28 bg-[#f8f5ef] py-20 sm:py-24 lg:py-28">
+        <div
+          id="materiais-graficos"
+          className="mx-auto w-full max-w-[1320px] scroll-mt-28 px-6 sm:px-10 lg:px-12"
+        >
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(380px,1.08fr)] lg:items-end lg:gap-16">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#8a6a34]">
+                Presença além do digital
+              </p>
+              <h2 className="mt-5 max-w-[620px] font-serif text-[clamp(2.7rem,5.5vw,5rem)] font-medium leading-[0.95] tracking-[-0.02em]">
+                Materiais Gráficos Personalizados
+              </h2>
+            </div>
+            <div className="max-w-[680px] lg:pb-1">
+              <p className="text-lg leading-8 text-[#3f4756]">
+                Para empresas, profissionais liberais e negócios que precisam
+                fortalecer apresentação, presença e comunicação. Materiais
+                gráficos personalizados não são apenas impressos: reforçam
+                profissionalismo, aumentam credibilidade e apoiam ações
+                comerciais no mundo físico.
+              </p>
+              <p className="mt-4 text-base leading-7 text-[#606776]">
+                De cartões de visita, panfletos, flyers e blocos personalizados a
+                materiais institucionais, impressos comerciais e peças de
+                apresentação, cada item é pensado como uma ferramenta clássica de
+                marketing e relacionamento.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-12 grid gap-px overflow-hidden rounded-[32px] border border-[#cfbb95]/55 bg-[#cfbb95]/45 sm:grid-cols-2 lg:grid-cols-4">
+            {materialBenefits.map((benefit) => (
+              <article
+                key={benefit.title}
+                className="group min-h-[280px] bg-[#fffdf9] p-7 transition duration-300 hover:bg-[#f3eadb] sm:p-8"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold tracking-[0.22em] text-[#8a6a34]">
+                    {benefit.number}
+                  </span>
+                  <span className="h-2.5 w-2.5 rotate-45 border border-[#b29157] transition group-hover:bg-[#b29157]" />
+                </div>
+                <h3 className="mt-14 font-serif text-3xl leading-tight">{benefit.title}</h3>
+                <p className="mt-4 text-base leading-7 text-[#555d6b]">
+                  {benefit.description}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <Link
+            href="/materiais-impressos"
+            className="mt-9 inline-flex items-center gap-3 border-b border-[#8a6a34]/60 pb-2 text-sm font-bold uppercase tracking-[0.15em] text-[#5b4525] transition hover:border-[#090e1f] hover:text-[#090e1f]"
+          >
+            Conhecer materiais gráficos <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+      </section>
+
+      <section
+        id="assessoria-comercial"
+        className="scroll-mt-28 bg-[#070d1d] py-20 text-[#f8f4ec] sm:py-24 lg:py-28"
+      >
+        <div className="mx-auto w-full max-w-[1320px] px-6 sm:px-10 lg:px-12">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.86fr)_minmax(420px,1.14fr)] lg:gap-20">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#d0ad70]">
+                Principal frente estratégica
+              </p>
+              <h2 className="mt-5 font-serif text-[clamp(2.8rem,5.6vw,5.2rem)] font-medium leading-[0.94] tracking-[-0.02em]">
+                Assessoria Comercial
+              </h2>
+              <p className="mt-7 max-w-[570px] text-lg leading-8 text-[#d7d9df]">
+                Para empresas que já possuem alguma estrutura, mas ainda sentem
+                falta de previsibilidade, clareza sobre gargalos e um método para
+                transformar oportunidades em receita.
+              </p>
+              <Link
+                href="/assessoria-comercial"
+                className="mt-9 inline-flex min-h-13 items-center justify-center rounded-full bg-[#b29157] px-7 py-3 text-sm font-bold uppercase tracking-[0.14em] text-[#090e1f] transition duration-300 hover:-translate-y-0.5 hover:bg-[#c7a66d]"
+              >
+                Conhecer Assessoria Comercial
+              </Link>
+            </div>
+
+            <div className="border-l border-[#b29157]/45 pl-6 sm:pl-9">
+              <p className="font-serif text-2xl leading-snug text-[#f4efe6] sm:text-3xl">
+                Ter demanda sem controle, investir em marketing sem saber onde a
+                venda se perde e depender de improviso são sinais de uma operação
+                que precisa conectar processo, acompanhamento e tecnologia.
+              </p>
+              <div className="mt-8 grid gap-3 text-sm leading-6 text-[#bfc4ce] sm:grid-cols-2">
+                {[
+                  "Processo comercial pouco claro",
+                  "Oportunidades sem acompanhamento",
+                  "Marketing e vendas desconectados",
+                  "Dados dispersos na operação",
+                ].map((pain) => (
+                  <p key={pain} className="border-t border-white/10 pt-3">{pain}</p>
                 ))}
               </div>
             </div>
-
-            <div className="hero-visual" aria-hidden="true" />
           </div>
 
-          <div className="hero-proof-grid" aria-label="Diferenciais do Grupo Vittore">
-            {heroProofItems.map((item) => (
-              <div key={item.label} className="hero-proof-item">
-                <span aria-hidden="true">
-                  <Image
-                    src={item.icon}
-                    alt=""
-                    width={32}
-                    height={32}
-                    className="hero-benefit-icon-image"
-                  />
+          <div className="mt-14 grid gap-5 lg:grid-cols-3">
+            {commercialPillars.map((pillar) => (
+              <article
+                key={pillar.title}
+                className="rounded-[28px] border border-white/10 bg-white/[0.045] p-7 sm:p-8"
+              >
+                <span className="text-xs font-bold tracking-[0.24em] text-[#d0ad70]">
+                  {pillar.number}
                 </span>
-                <p>{item.label}</p>
-              </div>
+                <h3 className="mt-8 font-serif text-3xl leading-tight text-white">
+                  {pillar.title}
+                </h3>
+                <p className="mt-4 text-base leading-7 text-[#bdc2cc]">
+                  {pillar.description}
+                </p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <Section id="formulario" className="form-section clean-off-white">
-        <div className="form-section-grid">
-          <div className="form-copy">
-            <h2 className="section-title section-title-left form-title-desktop">
-              <span className="form-title-line">Agende uma reunião online,</span>
-              <span className="form-title-line">receba um diagnóstico comercial</span>
-              <span className="form-title-line">e descubra onde a sua empresa</span>
-              <span className="form-title-line">pode estar <span className="form-title-highlight">perdendo vendas</span></span>
-              <span className="form-title-line">dentro do próprio processo.</span>
-            </h2>
-            <h2 className="section-title section-title-left form-title-mobile">
-              Agende uma reunião online, receba um diagnóstico comercial e
-              descubra onde sua empresa pode estar{" "}
-              <span className="form-title-highlight">perdendo vendas</span>{" "}
-              dentro do próprio processo.
-            </h2>
-            <Ornament className="my-9 justify-start" />
-            <div className="form-info-grid">
-              <PremiumCard className="form-info-card">
-                <p>Faça sua inscrição gratuita através de um rápido formulário.</p>
-              </PremiumCard>
-              <PremiumCard className="form-info-card">
-                <p>
-                  Em até 8h um especialista do Grupo Vittore entrará em contato
-                  para marcar a reunião online de diagnóstico da sua empresa.
-                </p>
-              </PremiumCard>
-            </div>
-          </div>
-          <LeadForm />
-        </div>
-      </Section>
-
-      <Section id="diagnostico" className="diagnostic-section clean-off-white">
-        <div className="diagnostic-section-grid">
-          <div className="diagnostic-copy">
-            <p className="section-eyebrow-left">PROCESSO COMERCIAL</p>
-            <span className="section-small-rule" />
-            <h2 className="section-title section-title-left">
-              <span className="diagnostic-title-line">Você não tem lucro,</span>
-              <span className="diagnostic-title-line diagnostic-title-accent">previsibilidade e nem</span>
-              <span className="diagnostic-title-line diagnostic-title-accent">escala por esse motivo</span>
-            </h2>
-            <div className="diagnostic-points">
-              <p>
-                O seu time comercial evita o contato direto com o cliente, foge
-                até de uma ligação por medo de ouvir um não ou conduzir mal a
-                conversa.
+      <section id="blog" className="scroll-mt-28 bg-[#eee7dc] py-20 sm:py-24 lg:py-28">
+        <div className="mx-auto w-full max-w-[1320px] px-6 sm:px-10 lg:px-12">
+          <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-[760px]">
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#8a6a34]">
+                Conteúdo e repertório
               </p>
-              <p>
-                Se o cliente não chega praticamente decidido, eles não conseguem
-                transformar o interesse em uma oportunidade real de venda.
-              </p>
-              <p>
-                E as agências de marketing que aparecem prometem resultados
-                extraordinários, mas no fim continuam presas em curtidas,
-                comentários e seguidores.
-              </p>
-            </div>
-          </div>
-          <DiagnosticAssetPanel />
-        </div>
-      </Section>
-
-      <section id="metodo-receita" className="method-revenue-section">
-        <div className="method-revenue-overlay">
-          <div className="method-revenue-shell">
-            <div className="method-revenue-mobile-visual">
-              <MethodRevenueVisual />
-            </div>
-            <div className="method-revenue-copy">
-              <p className="section-eyebrow-left">MÉTODO E RECEITA</p>
-              <span className="section-small-rule" />
-              <h2 className="method-revenue-title">
-                <span className="method-title-desktop">
-                  <span className="method-title-line">Você não precisa de mais marketing,</span>
-                  <span className="method-title-line method-title-accent">precisa de vendas acontecendo</span>
-                  <span className="method-title-line method-title-accent">com método.</span>
-                </span>
-                <span className="method-title-mobile">
-                  <span className="method-title-line">Você não precisa de</span>
-                  <span className="method-title-line">mais marketing,</span>
-                  <span className="method-title-line method-title-accent">precisa de vendas</span>
-                  <span className="method-title-line method-title-accent">acontecendo com método.</span>
-                </span>
+              <h2 className="mt-5 font-serif text-[clamp(2.8rem,5.5vw,5rem)] font-medium leading-[0.94] tracking-[-0.02em]">
+                Ideias para decisões empresariais mais claras
               </h2>
-              <div className="method-revenue-text">
-                <p>
-                  <span className="method-description-line">
-                    É por isso que o Grupo Vittore concentra estratégia, tempo e
-                  </span>
-                  <span className="method-description-line">
-                    execução no que realmente importa:
-                  </span>
-                </p>
-                <strong>transformar oportunidades em receita.</strong>
-                <p className="method-revenue-complement">
-                  Inspirados pela visão estoica de <strong>Marco Aurélio</strong>,
-                  acreditamos que grandes decisões não nascem do improviso, mas da{" "}
-                  <em>clareza</em>. No crescimento de uma empresa, vender mais não
-                  depende apenas de força, movimento ou volume, depende de{" "}
-                  <em>método</em>, <em>controle</em> e <em>direção</em>.
-                </p>
-                <div className="method-revenue-actions">
-                  <HeroPrimaryButton />
-                </div>
-              </div>
             </div>
-            <MethodRevenueVisual />
+            <p className="max-w-[430px] text-base leading-7 text-[#555d6b]">
+              Conteúdos estratégicos sobre crescimento empresarial, vendas,
+              marketing, tecnologia, automação, materiais gráficos e gestão
+              comercial.
+            </p>
           </div>
-        </div>
-      </section>
 
-      <WorkSection />
-
-      <Section id="clientes-parceiros" className="clients-section">
-        <TitleBlock
-          className="clients-title-block"
-          eyebrow="CLIENTES E PARCEIROS"
-          eyebrowVariant="dots"
-          title="Nosso único objetivo é claro"
-          red={
-            <>
-              <span className="client-claim-line">
-                Fazer com que cada <span className="client-claim-accent">venda do seu negócio</span>
-              </span>
-              <span className="client-claim-line">
-                seja <span className="client-claim-accent">previsível, lucrativa e recorrente.</span>
-              </span>
-            </>
-          }
-        >
-          <p>
-            Empresas que já acreditam no trabalho do Grupo Vittore e contam com
-            a nossa assessoria comercial para vender com mais método,
-            previsibilidade e controle.
-          </p>
-        </TitleBlock>
-        <div className="client-logo-panel">
-          <div className="client-logo-viewport">
-            <div className="client-logo-track">
-              {clientLogos.concat(clientLogos).map((client, index) => (
-                <div
-                  key={`${client.src}-${index}`}
-                  className="client-logo-slot"
-                  aria-hidden={index >= clientLogos.length}
+          <div className="mt-12 flex snap-x gap-5 overflow-x-auto pb-5 [scrollbar-color:#b29157_transparent] [scrollbar-width:thin]">
+            {articles.map((article, index) => (
+              <article
+                key={article.title}
+                className="group flex min-h-[390px] w-[88%] min-w-[88%] snap-start flex-col rounded-[28px] border border-[#cdb88f]/55 bg-[#faf7f1] p-7 shadow-[0_18px_50px_rgba(9,14,31,0.06)] sm:w-[48%] sm:min-w-[48%] sm:p-8 lg:w-[calc((100%_-_40px)/3)] lg:min-w-[calc((100%_-_40px)/3)]"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#8a6a34]">
+                    {article.category}
+                  </p>
+                  <span className="font-serif text-3xl text-[#b29157]/55">0{index + 1}</span>
+                </div>
+                <h3 className="mt-12 font-serif text-[2rem] leading-[1.08] text-[#090e1f]">
+                  {article.title}
+                </h3>
+                <p className="mt-5 text-base leading-7 text-[#59606e]">
+                  {article.description}
+                </p>
+                <Link
+                  href="/blog"
+                  className="mt-auto inline-flex items-center gap-3 pt-8 text-sm font-bold uppercase tracking-[0.16em] text-[#5b4525]"
                 >
-                  <div className="client-logo-image-wrap">
-                    <Image
-                      src={client.src}
-                      alt={index < clientLogos.length ? client.alt : ""}
-                      width={500}
-                      height={220}
-                      sizes="(max-width: 640px) 44vw, (max-width: 1100px) 30vw, 250px"
-                      className="client-logo-image"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+                  Ler artigo
+                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+                </Link>
+              </article>
+            ))}
           </div>
+
+          <Link
+            href="/blog"
+            className="mt-7 inline-flex min-h-12 items-center justify-center rounded-full border border-[#8a6a34]/55 px-6 py-3 text-sm font-bold uppercase tracking-[0.15em] text-[#4b3a20] transition hover:bg-[#090e1f] hover:text-white"
+          >
+            Acessar blog
+          </Link>
         </div>
-      </Section>
+      </section>
 
-      <Section id="assessoria-vendas" className="sales-section">
-        <TitleBlock
-          className="sales-title-block"
-          eyebrow="ASSESSORIA DE VENDAS"
-          eyebrowVariant="dots"
-          title={
-            <>
-              <span className="sales-title-line">O que faz parte da assessoria</span>
-              <span className="sales-title-line">
-                de vendas do Grupo Vittore?
-              </span>
-            </>
-          }
-        >
-          <p>
-            Uma estrutura comercial pensada para organizar o processo, atrair
-            oportunidades certas e aumentar a conversão com mais método,
-            controle e previsibilidade.
-          </p>
-        </TitleBlock>
-        <ServiceCarousel />
-      </Section>
-
-      <section id="assessoria-personalizada" className="personalized-section">
-        <div className="personalized-overlay">
-          <div className="personalized-shell">
-            <div className="personalized-copy">
-              <p className="section-eyebrow-left">ASSESSORIA PERSONALIZADA</p>
-              <span className="section-small-rule" />
-              <h2>
-                <span className="personalized-title-line">Por que o nosso</span>
-                <span className="personalized-title-line">serviço não tem</span>
-                <span className="personalized-title-line">planos <span className="personalized-title-accent">Black, Gold</span></span>
-                <span className="personalized-title-line">ou <span className="personalized-title-accent">Platinum</span>?</span>
+      <section id="cta-institucional" className="bg-[#f8f5ef] py-16 sm:py-20">
+        <div className="mx-auto w-full max-w-[1320px] px-6 sm:px-10 lg:px-12">
+          <div className="rounded-[30px] border border-[#cdb88f]/55 bg-[#fffdf9] px-7 py-9 shadow-[0_20px_60px_rgba(9,14,31,0.07)] sm:px-10 sm:py-11 lg:flex lg:items-center lg:justify-between lg:gap-12">
+            <div className="max-w-[760px]">
+              <h2 className="font-serif text-[clamp(2rem,4vw,3.5rem)] leading-[1.02]">
+                Conheça a frente estratégica de crescimento comercial do Grupo Vittore
               </h2>
-              <div className="personalized-description personalized-description-desktop">
-                <p>
-                  Porque, ao contrário do que o mercado faz, que é vender
-                  serviços padrão de baixa qualidade, nós trabalhamos com
-                  projetos personalizados.
-                </p>
-                <p>
-                  Com cinco anos de atuação no mercado, entendemos que negócios
-                  não funcionam com base em “receitinha de bolo”, que você copia
-                  e cola de um negócio para o outro, mas sim com negócio de
-                  ponta a ponta.
-                </p>
-              </div>
-            </div>
-            <PersonalizedRadar />
-            <div className="personalized-description personalized-description-mobile">
-              <p>
-                Porque, ao contrário do que o mercado faz, que é vender
-                serviços padrão de baixa qualidade, nós trabalhamos com
-                projetos personalizados.
-              </p>
-              <p>
-                Com cinco anos de atuação no mercado, entendemos que negócios
-                não funcionam com base em “receitinha de bolo”, que você copia
-                e cola de um negócio para o outro, mas sim com negócio de
-                ponta a ponta.
+              <p className="mt-4 max-w-[700px] text-base leading-7 text-[#555d6b]">
+                A assessoria comercial reúne marketing, vendas e tecnologia para
+                empresas que precisam transformar oportunidades em receita com
+                mais clareza e controle.
               </p>
             </div>
-            <strong className="personalized-close">
-              <span className="personalized-close-copy personalized-close-copy-desktop">
-                <span className="personalized-close-line">POR ISSO, O DIAGNÓSTICO, O PLANO E O SERVIÇO</span>
-                <span className="personalized-close-line">QUE APRESENTAMOS SÃO <span>EXCLUSIVOS</span> PARA O <span>SEU NEGÓCIO.</span></span>
-              </span>
-              <span className="personalized-close-copy personalized-close-copy-mobile">
-                <span className="personalized-close-line">POR ISSO, O DIAGNÓSTICO,</span>
-                <span className="personalized-close-line">O PLANO E O SERVIÇO QUE</span>
-                <span className="personalized-close-line">APRESENTAMOS SÃO <span>EXCLUSIVOS</span></span>
-                <span className="personalized-close-line">PARA O <span>SEU NEGÓCIO.</span></span>
-              </span>
-            </strong>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:mt-0 lg:flex-col xl:flex-row">
+              <Link
+                href="/assessoria-comercial"
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#090e1f] px-6 py-3 text-sm font-bold uppercase tracking-[0.13em] text-white transition hover:bg-[#192238]"
+              >
+                Ver Assessoria Comercial
+              </Link>
+              <Link
+                href="/materiais-impressos"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#8a6a34]/50 px-6 py-3 text-sm font-bold uppercase tracking-[0.13em] text-[#4b3a20] transition hover:border-[#090e1f] hover:text-[#090e1f]"
+              >
+                Conhecer Materiais Gráficos
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      <TechnologySection />
-
-      <Section className="faq-section">
-        <TitleBlock
-          className="faq-title-block"
-          eyebrow="FAQ"
-          title="Tire suas dúvidas antes de começar"
-        />
-        <div className="faq-list">
-          {faqItems.map((item) => (
-            <details key={item.question} className="faq-item">
-              <summary>
-                {item.question}
-                <span aria-hidden="true">+</span>
-              </summary>
-              <div>
-                {item.answer.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
-            </details>
-          ))}
-        </div>
-      </Section>
-
-      <footer id="rodape" className="site-footer">
-        <div className="site-footer-shell">
-          <div className="site-footer-main">
-            <div className="site-footer-brand">
-              <Image
-                src="/brand/logotipo-principal-rodape.png.png"
-                alt="Grupo Vittore"
-                width={2174}
-                height={1080}
-                className="site-footer-logo"
-              />
-              <div className="site-footer-copy">
-                <p>Grupo Vittore</p>
-                <p>Hub de Crescimento Empresarial</p>
-                <p>Marketing, Vendas, Tecnologia e IA</p>
-              </div>
-            </div>
-            <a className="site-footer-top-link" href="#topo">
-              <span aria-hidden="true" />
-              Retornar ao topo
-            </a>
-          </div>
-          <div className="site-footer-bottom">
-            <p>2026 © Grupo Vittore. Todos os direitos reservados.</p>
-            <nav className="site-footer-links" aria-label="Links legais">
-              <Link href="/politicas-de-privacidade">Políticas de privacidade</Link>
-              <Link href="/termos-de-uso">Termos de uso</Link>
-            </nav>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

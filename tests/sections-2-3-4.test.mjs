@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const page = await readFile(new URL("../src/app/page.tsx", import.meta.url), "utf8");
+const page = await readFile(new URL("../src/app/_components/assessoria-comercial-page.tsx", import.meta.url), "utf8");
 const css = await readFile(new URL("../src/app/globals.css", import.meta.url), "utf8");
 const leadForm = await readFile(new URL("../src/app/_components/lead-form.tsx", import.meta.url), "utf8");
 const serviceCarousel = await readFile(new URL("../src/app/_components/service-carousel.tsx", import.meta.url), "utf8");
@@ -101,7 +101,7 @@ test("light sections and footer use the new smooth off-white", () => {
 test("section 5 renders all four charts in code without chart images", async () => {
   const workSection = await readWorkSection();
 
-  assert.match(page, /import \{ WorkSection \} from "\.\/_components\/work-section";/);
+  assert.match(page, /import \{ WorkSection \} from "\.\/work-section";/);
   assert.match(page, /<WorkSection \/>/);
   assert.match(workSection, /function OpportunitiesLineChart\(\)/);
   assert.match(workSection, /function FunnelDistributionChart\(\)/);
