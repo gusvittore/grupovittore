@@ -39,9 +39,9 @@ export function HomeMateriaisGraficos() {
           <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-[#86591b] sm:text-sm">
             Presença além do digital
           </p>
-          <h2 className="mt-8 font-serif text-[clamp(2.8rem,4vw,4rem)] font-medium leading-[0.98] tracking-[-0.025em] text-[#06132d]">
-            <span className="lg:block">Materiais Gráficos</span>{" "}
-            <span className="lg:block">Personalizados</span>
+          <h2 className="mt-8 font-serif text-[clamp(2.25rem,9.6vw,3rem)] font-medium leading-[1] tracking-[-0.025em] text-[#06132d] sm:text-[clamp(2.8rem,4vw,4rem)]">
+            <span className="block whitespace-nowrap">Materiais Gráficos</span>
+            <span className="block whitespace-nowrap">Personalizados</span>
           </h2>
           <span className="mt-9 h-0.5 w-20 bg-[#9a651b]" />
           <p className="mt-9 font-serif text-[1.65rem] font-semibold leading-[1.48] text-[#10203b] sm:text-[1.9rem]">
@@ -96,15 +96,21 @@ export function HomeMateriaisGraficos() {
             />
             <span className="hidden h-14 w-px bg-[#b29157]/45 sm:block" />
             <div className="flex-1">
-              <h3 className="flex flex-wrap items-center gap-2 text-sm font-extrabold uppercase tracking-[0.13em] text-[#835719] sm:text-base">
-                Produção e entrega para todo o Brasil
-                <Image
-                  src="/assets/home-institucional/icons/bandeira-brasil.png.png"
-                  alt="Bandeira do Brasil"
-                  width={760}
-                  height={500}
-                  className="h-5 w-7 rounded-[2px] object-cover"
-                />
+              <h3
+                aria-label="Produção e entrega para todo o Brasil"
+                className="flex flex-wrap items-center gap-2 text-sm font-extrabold uppercase tracking-[0.13em] text-[#835719] sm:text-base"
+              >
+                Produção e entrega para todo o
+                <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                  <Image
+                    src="/assets/home-institucional/icons/bandeira-brasil.png.png"
+                    alt="Bandeira do Brasil"
+                    width={760}
+                    height={500}
+                    className="h-5 w-7 rounded-[2px] object-cover"
+                  />
+                  Brasil
+                </span>
               </h3>
               <p className="mt-2 text-lg leading-8 text-[#263752] sm:text-[1.18rem]">
                 Estrutura própria de produção, controle de qualidade e logística segura para que seus materiais cheguem com excelência, onde você estiver.

@@ -142,3 +142,21 @@ test("blog archive supports ten-post pagination and the complete editorial sideb
   assert.match(blogHome, /sm:text-\[1\.1rem\]/);
   assert.match(blogData, /slug: "crescimento-previsivel-comeca-com-clareza"[\s\S]*artigo-crescimento-previsivel\.png\.png/);
 });
+
+test("blog mobile hero and editorial title composition follow the approved stacked reference", async () => {
+  const blogHome = await read("src/app/_components/blog/blog-home.tsx");
+
+  assert.match(blogHome, /className="blog-hero-mobile-visual[^\"]*"/);
+  assert.match(blogHome, /className="blog-hero-mobile-content[^\"]*"/);
+  assert.match(blogHome, /aspect-\[1\.2\/1\]/);
+  assert.match(blogHome, /className="blog-hero-mobile-title[^\"]*"/);
+  assert.match(blogHome, /Conteúdo estratégico/);
+  assert.match(blogHome, /para empresas que/);
+  assert.match(blogHome, /querem crescer com/);
+  assert.match(blogHome, /mais clareza\./);
+  assert.match(blogHome, /className="blog-highlight-title-mobile[^\"]*"/);
+  assert.match(blogHome, /Como identificar/);
+  assert.match(blogHome, /gargalos comerciais/);
+  assert.match(blogHome, /antes de investir mais/);
+  assert.match(blogHome, /em tráfego/);
+});

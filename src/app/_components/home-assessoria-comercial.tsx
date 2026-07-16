@@ -3,21 +3,21 @@ import Link from "next/link";
 
 const commercialPillars = [
   {
-    title: "Marketing e geração de demanda",
+    title: "Marketing e Geração de Demanda",
     description:
       "Estruturamos campanhas, posicionamento e jornadas para atrair oportunidades com mais intenção, conectando comunicação, oferta e canais de aquisição de forma mais estratégica.",
     image:
       "/assets/home-institucional/brand/sessao-3-marketing-geracao-demanda.png.png",
   },
   {
-    title: "Vendas e performance comercial",
+    title: "Vendas e Performance Comercial",
     description:
       "Organizamos processo, acompanhamento e método comercial para que cada oportunidade tenha direção, próximo passo definido e maior chance de conversão em receita.",
     image:
       "/assets/home-institucional/brand/sessao-3-vendas-perfomance-comercial.png.png",
   },
   {
-    title: "Tecnologia e automação empresarial",
+    title: "Tecnologia e Automação Empresarial",
     description:
       "Aplicamos CRM, automações, inteligência artificial e organização de dados para reduzir improvisos, dar escala à operação e aumentar o controle sobre o crescimento.",
     image:
@@ -99,8 +99,15 @@ export function HomeAssessoriaComercial() {
                 />
               </div>
               <div className="px-6 pb-7 pt-5">
-                <h3 className="font-serif text-[1.72rem] font-medium leading-tight text-[#fbf8f4] sm:text-[2rem]">
-                  {pillar.title}
+                <h3 className="font-serif text-[1.5rem] font-medium leading-[1.08] text-[#fbf8f4] sm:text-[2rem]">
+                  {pillar.title === "Tecnologia e Automação Empresarial" ? (
+                    <>
+                      <span className="home-pillar-title-mobile block sm:hidden">Tecnologia e Automação<br />Empresarial</span>
+                      <span className="hidden sm:inline">{pillar.title}</span>
+                    </>
+                  ) : (
+                    <span className="home-pillar-title-mobile">{pillar.title}</span>
+                  )}
                 </h3>
                 <span className="mt-3 block h-0.5 w-10 bg-[#d99d3f]" />
                 <p className="mt-4 text-lg leading-8 text-[#d1d6df] sm:text-[1.16rem]">

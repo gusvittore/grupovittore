@@ -291,27 +291,58 @@ export function BlogHome() {
 
   return (
     <main className="min-h-screen overflow-x-clip bg-[#fbf8f4] text-[#071026]">
-      <section className="relative isolate min-h-[min(45.5vw,800px)] overflow-hidden bg-[#031126] text-[#fbf8f4]">
-        <Image
-          src="/assets/blog/brand/hero-background.jpg.png"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="z-0 object-cover object-center"
-        />
-        <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#031126]/[0.98] via-[#031126]/[0.72] to-[#031126]/[0.12]" />
-        <div className="relative z-20 mx-auto flex min-h-[min(45.5vw,800px)] w-full max-w-[1500px] items-center px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24 xl:px-16">
-          <div className="max-w-[790px]">
-            <p className="text-xs font-extrabold uppercase tracking-[0.27em] text-[#e3ad51] sm:text-sm">Blog Grupo Vittore</p>
-            <div className="mt-8 h-px w-14 bg-[#e3ad51]" />
-            <h1 className="mt-12 max-w-[820px] font-serif text-[clamp(2.65rem,5.8vw,4.7rem)] font-medium leading-[0.98] tracking-[-0.038em]">
-              Conteúdo estratégico para empresas que querem crescer com mais clareza.
-            </h1>
-            <p className="mt-8 max-w-[690px] text-lg leading-8 text-[#f4f1eb] sm:text-xl sm:leading-9">
-              Artigos sobre vendas, marketing, materiais gráficos, tecnologia, automação e crescimento empresarial para apoiar decisões mais conscientes e operações mais estruturadas.
-            </p>
-            <div className="mt-12 h-px w-14 bg-[#e3ad51]" />
+      <section className="relative isolate overflow-hidden bg-[#031126] text-[#fbf8f4]">
+        <div className="lg:hidden">
+          <div className="blog-hero-mobile-visual relative aspect-[1.2/1] overflow-hidden bg-[#0b1d38]">
+            <Image
+              src="/assets/blog/brand/hero-background.jpg.png"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          </div>
+          <div className="blog-hero-mobile-content bg-[#031126]">
+            <div className="mx-auto w-full max-w-[1500px] px-6 py-14 sm:px-8 sm:py-16">
+              <p className="text-xs font-extrabold uppercase tracking-[0.27em] text-[#e3ad51] sm:text-sm">Blog Grupo Vittore</p>
+              <div className="mt-7 h-px w-14 bg-[#e3ad51]" />
+              <h1 className="blog-hero-mobile-title mt-9 max-w-[760px] font-serif text-[clamp(2.45rem,10.8vw,3.2rem)] font-medium leading-[1.04] tracking-[-0.035em]">
+                <span className="block">Conteúdo estratégico</span>
+                <span className="block">para empresas que</span>
+                <span className="block">querem crescer com</span>
+                <span className="block">mais clareza.</span>
+              </h1>
+              <p className="mt-8 max-w-[720px] text-[1.08rem] leading-[1.62] text-[#f4f1eb] sm:text-xl sm:leading-9">
+                Artigos sobre vendas, marketing, materiais gráficos, tecnologia, automação e crescimento empresarial para apoiar decisões mais conscientes e operações mais estruturadas.
+              </p>
+              <div className="mt-10 h-px w-14 bg-[#e3ad51]" />
+            </div>
+          </div>
+        </div>
+
+        <div className="relative hidden min-h-[min(45.5vw,800px)] lg:block">
+          <Image
+            src="/assets/blog/brand/hero-background.jpg.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="z-0 object-cover object-center"
+          />
+          <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#031126]/[0.98] via-[#031126]/[0.72] to-[#031126]/[0.12]" />
+          <div className="relative z-20 mx-auto flex min-h-[min(45.5vw,800px)] w-full max-w-[1500px] items-center px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24 xl:px-16">
+            <div className="max-w-[790px]">
+              <p className="text-xs font-extrabold uppercase tracking-[0.27em] text-[#e3ad51] sm:text-sm">Blog Grupo Vittore</p>
+              <div className="mt-8 h-px w-14 bg-[#e3ad51]" />
+              <h1 className="mt-12 max-w-[820px] font-serif text-[clamp(2.65rem,5.8vw,4.7rem)] font-medium leading-[0.98] tracking-[-0.038em]">
+                Conteúdo estratégico para empresas que querem crescer com mais clareza.
+              </h1>
+              <p className="mt-8 max-w-[690px] text-lg leading-8 text-[#f4f1eb] sm:text-xl sm:leading-9">
+                Artigos sobre vendas, marketing, materiais gráficos, tecnologia, automação e crescimento empresarial para apoiar decisões mais conscientes e operações mais estruturadas.
+              </p>
+              <div className="mt-12 h-px w-14 bg-[#e3ad51]" />
+            </div>
           </div>
         </div>
       </section>
@@ -329,7 +360,17 @@ export function BlogHome() {
           <article className="group grid overflow-hidden rounded-[28px] border border-[#b29157]/35 bg-[#fffdf9] text-[#071026] shadow-[0_22px_60px_rgba(9,14,31,0.08)] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.84fr)]">
             <div className="p-7 sm:p-10 lg:p-12">
               <PostMeta post={highlightedPost} />
-              <h3 className="mt-6 max-w-[760px] font-serif text-[clamp(2rem,4vw,3.45rem)] font-medium leading-[1.02] tracking-[-0.025em] text-[#07142d] transition-colors group-hover:text-[#031126]">
+              <h3 className="blog-highlight-title-mobile mt-6 max-w-[760px] font-serif text-[clamp(2rem,8vw,2.7rem)] font-medium leading-[1.06] tracking-[-0.025em] text-[#07142d] transition-colors group-hover:text-[#031126] lg:hidden">
+                {highlightedPost.slug === "gargalos-comerciais-antes-de-investir-em-trafego" ? (
+                  <>
+                    <span className="block">Como identificar</span>
+                    <span className="block">gargalos comerciais</span>
+                    <span className="block">antes de investir mais</span>
+                    <span className="block">em tráfego</span>
+                  </>
+                ) : highlightedPost.title}
+              </h3>
+              <h3 className="mt-6 hidden max-w-[760px] font-serif text-[clamp(2rem,4vw,3.45rem)] font-medium leading-[1.02] tracking-[-0.025em] text-[#07142d] transition-colors group-hover:text-[#031126] lg:block">
                 {highlightedPost.title}
               </h3>
               <p className="mt-6 max-w-[690px] text-lg leading-8 text-[#34435a] sm:text-xl sm:leading-9">

@@ -17,14 +17,15 @@ test("institutional home follows the approved section order and content", async 
   ]);
   const home = `${page}\n${hero}\n${materials}\n${assessoria}\n${blog}\n${cta}`;
 
-  assert.match(hero, /Grupo Vittore:/);
-  assert.match(hero, /crescimento, presença e/);
+  assert.match(hero, /Grupo Vittore/);
+  assert.match(hero, /Crescimento, presença e/);
   assert.match(hero, /estrutura para empresas que/);
   assert.match(hero, /vender melhor\./);
   assert.match(hero, /hero-background\.jpg\.png/);
   assert.doesNotMatch(hero, /Ecossistema Grupo Vittore/);
   assert.match(hero, /consultoria empresarial/i);
-  assert.match(materials, /Produção e entrega para todo o Brasil/);
+  assert.match(materials, /Produção e entrega para todo o/);
+  assert.match(materials, /bandeira-brasil\.png\.png[\s\S]*Brasil/);
   assert.match(assessoria, /Diagnóstico e clareza comercial/);
   assert.match(home, /Conhecer nossas frentes/);
   assert.match(home, /Ver Assessoria Comercial/);
@@ -55,9 +56,50 @@ test("institutional home follows the approved section order and content", async 
     "Marketing, vendas e tecnologia: como conectar as três áreas",
     "O que uma empresa precisa organizar antes de escalar aquisição",
     "CRM não é só cadastro: é controle da operação comercial",
+    "Crescimento previsível começa com clareza sobre o processo",
   ]) {
     assert.match(blog, new RegExp(title));
   }
+});
+
+test("institutional mobile refinement keeps the approved menu untouched and composes the requested mobile sections", async () => {
+  const [hero, materials, assessoria, blog, cta, header] = await Promise.all([
+    read("src/app/_components/home-hero.tsx"),
+    read("src/app/_components/home-materiais-graficos.tsx"),
+    read("src/app/_components/home-assessoria-comercial.tsx"),
+    read("src/app/_components/home-blog.tsx"),
+    read("src/app/_components/home-cta.tsx"),
+    read("src/app/_components/site-header.tsx"),
+  ]);
+
+  assert.match(hero, /className="home-hero-mobile-visual[^\"]*"/);
+  assert.match(hero, /className="home-hero-mobile-content[^\"]*"/);
+  assert.match(hero, /aspect-\[1\.38\/1\]/);
+  assert.match(hero, /Grupo Vittore/);
+  assert.match(hero, /Crescimento, presença e/);
+  assert.doesNotMatch(hero, /Grupo Vittore:<\/span>/);
+  assert.doesNotMatch(hero, /<span[^>]*>crescimento, presença e/);
+
+  assert.match(materials, /Materiais Gráficos/);
+  assert.match(materials, /Personalizados/);
+  assert.match(materials, /whitespace-nowrap/);
+  assert.match(materials, /bandeira-brasil\.png\.png[\s\S]*Brasil/);
+
+  assert.match(assessoria, /Tecnologia e Automação Empresarial/i);
+  assert.match(assessoria, /home-pillar-title-mobile/);
+  assert.match(assessoria, /Tecnologia e Automação[\s\S]*Empresarial/);
+  assert.match(assessoria, /text-\[1\.5rem\]/);
+
+  assert.match(blog, /const articles = \[/);
+  assert.equal((blog.match(/title:/g) ?? []).length, 6);
+  assert.match(blog, /crescimento previsível começa com clareza sobre o processo/i);
+  assert.match(blog, /artigo-crescimento-previsivel\.png\.png/);
+  assert.match(blog, /home-blog-title-mobile/);
+  assert.match(blog, /home-blog-article-title-mobile/);
+
+  assert.match(cta, /hidden[^\"]*lg:block/);
+  assert.match(cta, /home-cta-title-mobile/);
+  assert.match(header, /const navigation = \[/);
 });
 
 test("institutional header uses the official logo and exact navigation", async () => {

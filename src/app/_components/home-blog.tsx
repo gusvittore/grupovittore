@@ -9,6 +9,7 @@ const articles = [
     category: "Gestão comercial",
     title:
       "Como identificar gargalos comerciais antes de investir mais em tráfego",
+    mobileTitle: ["Como identificar", "gargalos comerciais", "antes de investir mais", "em tráfego"],
     description:
       "Prévia visual de conteúdo sobre leitura comercial, sinais de ineficiência e tomada de decisão antes de ampliar investimento.",
     image:
@@ -17,6 +18,7 @@ const articles = [
   {
     category: "Marca e presença",
     title: "Por que materiais gráficos ainda fortalecem a presença da marca",
+    mobileTitle: ["Por que materiais gráficos", "ainda fortalecem a", "presença da marca"],
     description:
       "Prévia visual de conteúdo sobre reconhecimento, percepção de valor e presença física da marca no relacionamento com o mercado.",
     image:
@@ -25,6 +27,7 @@ const articles = [
   {
     category: "Estratégia integrada",
     title: "Marketing, vendas e tecnologia: como conectar as três áreas",
+    mobileTitle: ["Marketing, vendas e", "tecnologia: como conectar", "as três áreas"],
     description:
       "Prévia visual de conteúdo sobre alinhamento operacional, clareza de dados e integração entre frentes de crescimento.",
     image:
@@ -33,6 +36,7 @@ const articles = [
   {
     category: "Crescimento",
     title: "O que uma empresa precisa organizar antes de escalar aquisição",
+    mobileTitle: ["O que uma empresa", "precisa organizar antes", "de escalar aquisição"],
     description:
       "Prévia visual de conteúdo sobre processo, estrutura comercial, acompanhamento e eficiência antes de ampliar captação.",
     image:
@@ -41,10 +45,19 @@ const articles = [
   {
     category: "Tecnologia e vendas",
     title: "CRM não é só cadastro: é controle da operação comercial",
+    mobileTitle: ["CRM não é só cadastro:", "é controle da operação", "comercial"],
     description:
       "CRM não é apenas uma lista de contatos. Ele ajuda a acompanhar oportunidades, organizar o processo comercial e dar mais controle à operação de vendas.",
     image:
       "/assets/home-institucional/brand/sessao-4-crm-cadastro.png.png",
+  },
+  {
+    category: "Crescimento empresarial",
+    title: "Crescimento previsível começa com clareza sobre o processo",
+    mobileTitle: ["Crescimento previsível", "começa com clareza", "sobre o processo"],
+    description:
+      "Antes de buscar mais volume, a empresa precisa entender como sua operação transforma atenção em oportunidade e oportunidade em receita.",
+    image: "/assets/blog/brand/artigo-crescimento-previsivel.png.png",
   },
 ] as const;
 
@@ -88,8 +101,10 @@ export function HomeBlog() {
             <p className="text-xs font-extrabold uppercase tracking-[0.27em] text-[#8a5b18] sm:text-sm">
               Blog estratégico
             </p>
-            <h2 className="mt-5 max-w-[720px] font-serif text-[clamp(2.8rem,4vw,4rem)] font-medium leading-[0.98] tracking-[-0.025em] text-[#07142d]">
-              Conhecimento para decisões empresariais mais claras
+            <h2 className="mt-5 max-w-[720px] font-serif text-[clamp(2.35rem,8vw,3.2rem)] font-medium leading-[1.02] tracking-[-0.025em] text-[#07142d] sm:text-[clamp(2.8rem,4vw,4rem)]">
+              <span className="home-blog-title-mobile block sm:inline">Conhecimento para</span>{" "}
+              <span className="home-blog-title-mobile block sm:inline">decisões empresariais</span>{" "}
+              <span className="home-blog-title-mobile block sm:inline">mais claras</span>
             </h2>
           </div>
           <p className="text-lg leading-8 text-[#263752] sm:text-xl sm:leading-9">
@@ -144,8 +159,11 @@ export function HomeBlog() {
                   <span className="font-serif text-2xl text-[#b29157]">0{index + 1}</span>
                 </div>
                 <span className="mt-3 h-0.5 w-8 bg-[#a56a19]" />
-                <h3 className="mt-5 font-serif text-[clamp(1.7rem,2.5vw,2.2rem)] font-semibold leading-[1.1] text-[#07142d]">
-                  {article.title}
+                <h3 className="mt-5 font-serif text-[clamp(1.48rem,6.6vw,1.82rem)] font-semibold leading-[1.08] text-[#07142d] sm:text-[clamp(1.7rem,2.5vw,2.2rem)]">
+                  <span className="home-blog-article-title-mobile block sm:hidden">
+                    {article.mobileTitle.map((line) => <span key={line} className="block">{line}</span>)}
+                  </span>
+                  <span className="hidden sm:block">{article.title}</span>
                 </h3>
                 <p className="mt-5 text-lg leading-8 text-[#34435a] sm:text-xl sm:leading-9">
                   {article.description}

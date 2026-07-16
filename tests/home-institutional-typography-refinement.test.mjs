@@ -14,8 +14,8 @@ test("hero institucional segue a nova referência com fundo oficial e título co
     /\/assets\/home-institucional\/brand\/hero-background\.jpg\.png/,
   );
   for (const line of [
-    "Grupo Vittore:",
-    "crescimento, presença e",
+    "Grupo Vittore",
+    "Crescimento, presença e",
     "estrutura para empresas que",
   ]) {
     assert.match(hero, new RegExp(`home-hero-title-line[^>]*>\\s*${line}`));
@@ -81,12 +81,14 @@ test("blog e CTA final usam títulos controlados e descrições mais legíveis",
   ]);
 
   assert.match(blog, /Blog estratégico/);
-  assert.match(blog, /Conhecimento para decisões empresariais mais claras/);
+  assert.match(blog, /Conhecimento para/);
+  assert.match(blog, /decisões empresariais/);
+  assert.match(blog, /mais claras/);
   assert.match(
     blog,
     /O blog do Grupo Vittore reúne leitura estratégica, conteúdo prático e visão de mercado/,
   );
-  assert.match(blog, /text-\[clamp\(2\.8rem,4vw,4rem\)\]/);
+  assert.match(blog, /sm:text-\[clamp\(2\.8rem,4vw,4rem\)\]/);
   assert.match(blog, /font-semibold/);
   assert.match(blog, /sm:text-xl sm:leading-9/);
 
