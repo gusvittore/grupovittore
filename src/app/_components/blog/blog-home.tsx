@@ -9,6 +9,8 @@ import {
   type BlogCategory,
   type BlogPost,
 } from "../../../content/blog";
+import { InstitutionalCtaActions } from "../cta-actions";
+import { ControlledTitle } from "../controlled-title";
 
 const PAGE_SIZE = 10;
 
@@ -74,7 +76,7 @@ function ArticleCard({ post }: { post: BlogPost }) {
     <article className="group flex min-h-[430px] flex-col overflow-hidden rounded-[22px] border border-[#b29157]/25 bg-[#fffdf9] shadow-[0_16px_42px_rgba(9,14,31,0.045)] transition hover:-translate-y-0.5 hover:border-[#e3ad51]/60 hover:bg-[#031126] hover:shadow-[0_20px_48px_rgba(9,14,31,0.14)] sm:min-h-[470px]">
       <div className="relative aspect-[16/9] overflow-hidden bg-[#0b1d38]">
         <Image
-          src={post.image}
+          src={post.coverImage}
           alt=""
           fill
           loading="eager"
@@ -85,10 +87,13 @@ function ArticleCard({ post }: { post: BlogPost }) {
       <div className="flex flex-1 flex-col p-6 sm:p-7">
         <PostMeta post={post} />
         <h3 className="mt-5 font-serif text-[clamp(1.55rem,2.5vw,2.05rem)] font-semibold leading-[1.08] tracking-[-0.018em] text-[#07142d] transition-colors group-hover:text-[#fbf8f4]">
-          {post.title}
+          <span className="lg:hidden">
+            <ControlledTitle lines={post.homeCardTitleMobileLines} />
+          </span>
+          <span className="hidden lg:block">{post.title}</span>
         </h3>
         <p className="mt-4 text-base leading-7 text-[#34435a] transition-colors group-hover:text-[#dce2ea] sm:text-lg sm:leading-8">
-          {post.description}
+          {post.excerpt}
         </p>
         <div className="mt-auto flex flex-wrap items-end justify-between gap-4 pt-7">
           <div className="flex flex-wrap gap-2" aria-label="Tags do artigo">
@@ -265,7 +270,7 @@ export function BlogHome() {
       if (!matchesCategory) return false;
       if (!normalizedQuery) return true;
 
-      return [post.title, post.description, post.category, ...post.tags]
+      return [post.title, post.excerpt, post.category, ...post.tags]
         .join(" ")
         .toLocaleLowerCase("pt-BR")
         .includes(normalizedQuery);
@@ -308,10 +313,14 @@ export function BlogHome() {
               <p className="text-xs font-extrabold uppercase tracking-[0.27em] text-[#e3ad51] sm:text-sm">Blog Grupo Vittore</p>
               <div className="mt-7 h-px w-14 bg-[#e3ad51]" />
               <h1 className="blog-hero-mobile-title mt-9 max-w-[760px] font-serif text-[clamp(2.45rem,10.8vw,3.2rem)] font-medium leading-[1.04] tracking-[-0.035em]">
-                <span className="block">Conteúdo estratégico</span>
-                <span className="block">para empresas que</span>
-                <span className="block">querem crescer com</span>
-                <span className="block">mais clareza.</span>
+                <ControlledTitle
+                  lines={[
+                    "Conteúdo estratégico",
+                    "para empresas que",
+                    "querem crescer com",
+                    "mais clareza",
+                  ]}
+                />
               </h1>
               <p className="mt-8 max-w-[720px] text-[1.08rem] leading-[1.62] text-[#f4f1eb] sm:text-xl sm:leading-9">
                 Artigos sobre vendas, marketing, materiais gráficos, tecnologia, automação e crescimento empresarial para apoiar decisões mais conscientes e operações mais estruturadas.
@@ -361,27 +370,25 @@ export function BlogHome() {
             <div className="p-7 sm:p-10 lg:p-12">
               <PostMeta post={highlightedPost} />
               <h3 className="blog-highlight-title-mobile mt-6 max-w-[760px] font-serif text-[clamp(2rem,8vw,2.7rem)] font-medium leading-[1.06] tracking-[-0.025em] text-[#07142d] transition-colors group-hover:text-[#031126] lg:hidden">
-                {highlightedPost.slug === "gargalos-comerciais-antes-de-investir-em-trafego" ? (
-                  <>
-                    <span className="block">Como identificar</span>
-                    <span className="block">gargalos comerciais</span>
-                    <span className="block">antes de investir mais</span>
-                    <span className="block">em tráfego</span>
-                  </>
-                ) : highlightedPost.title}
+                <ControlledTitle
+                  lines={
+                    highlightedPost.blogFeaturedTitleMobileLines ??
+                    highlightedPost.homeCardTitleMobileLines
+                  }
+                />
               </h3>
               <h3 className="mt-6 hidden max-w-[760px] font-serif text-[clamp(2rem,4vw,3.45rem)] font-medium leading-[1.02] tracking-[-0.025em] text-[#07142d] transition-colors group-hover:text-[#031126] lg:block">
                 {highlightedPost.title}
               </h3>
               <p className="mt-6 max-w-[690px] text-lg leading-8 text-[#34435a] sm:text-xl sm:leading-9">
-                {highlightedPost.description}
+                {highlightedPost.excerpt}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <PostLink post={highlightedPost} />
               </div>
             </div>
             <div className="relative min-h-[280px] overflow-hidden border-t border-[#b29157]/25 bg-[#0b1d38] lg:border-l lg:border-t-0">
-              <Image src={highlightedPost.image} alt="" fill sizes="(max-width: 1023px) 100vw, 560px" className="object-cover transition duration-500 group-hover:scale-[1.02]" />
+              <Image src={highlightedPost.coverImage} alt="" fill sizes="(max-width: 1023px) 100vw, 560px" className="object-cover transition duration-500 group-hover:scale-[1.02]" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#031126]/45 via-transparent to-transparent" />
               <span className="absolute bottom-6 left-6 font-serif text-5xl leading-none text-[#e3ad51]">“</span>
             </div>
@@ -470,11 +477,14 @@ export function BlogHome() {
                     </div>
                     <article className="grid overflow-hidden rounded-[18px] border border-[#b29157]/35 bg-[#fbf8f4] sm:grid-cols-[220px_minmax(0,1fr)]">
                       <div className="relative min-h-[150px] bg-[#0b1d38] sm:min-h-full">
-                        <Image src={post.image} alt="" fill sizes="(max-width: 639px) 100vw, 220px" className="object-cover" />
+                        <Image src={post.coverImage} alt="" fill sizes="(max-width: 639px) 100vw, 220px" className="object-cover" />
                       </div>
                       <div className="p-5 sm:p-6">
                         <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#956119]">{post.readingTime}</p>
-                        <h4 className="mt-3 font-serif text-[1.45rem] font-semibold leading-[1.1] text-[#07142d] sm:text-[1.6rem]">{post.title}</h4>
+                        <h4 className="mt-3 font-serif text-[1.45rem] font-semibold leading-[1.1] text-[#07142d] sm:text-[1.6rem]">
+                          <span className="sm:hidden"><ControlledTitle lines={post.homeCardTitleMobileLines} /></span>
+                          <span className="hidden sm:block">{post.title}</span>
+                        </h4>
                         <p className="mt-3 text-[1.06rem] leading-7 text-[#536074] sm:text-[1.1rem] sm:leading-7">{articleDescription}</p>
                         <button type="button" onClick={() => selectCategory(category)} className="mt-5 inline-flex items-center gap-3 text-sm font-extrabold uppercase tracking-[0.12em] text-[#8a5b18] transition hover:text-[#031126]">
                           Ver conteúdos <ArrowIcon />
@@ -498,14 +508,7 @@ export function BlogHome() {
               Os conteúdos do Grupo Vittore ajudam a entender gargalos, oportunidades e caminhos. A assessoria comercial aprofunda essa clareza e transforma estratégia em processo, acompanhamento e direção.
             </p>
           </div>
-          <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-[min(575px,42vw)] lg:flex-col">
-            <Link href="/assessoria-comercial" className="flex h-12 w-full items-center justify-center gap-3 rounded-full bg-[#e3ad51] px-5 text-center text-sm font-extrabold uppercase tracking-[0.11em] text-[#031126] transition hover:bg-[#f0c77e]">
-              Conhecer Assessoria Comercial <ArrowIcon />
-            </Link>
-            <Link href="/materiais-impressos" className="flex h-12 w-full items-center justify-center gap-3 rounded-full border border-[#e3ad51]/60 px-5 text-center text-sm font-extrabold uppercase tracking-[0.11em] text-[#e3ad51] transition hover:bg-[#e3ad51] hover:text-[#031126]">
-              Conhecer Materiais Gráficos <ArrowIcon />
-            </Link>
-          </div>
+          <InstitutionalCtaActions />
         </div>
       </section>
     </main>

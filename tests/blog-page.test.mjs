@@ -66,8 +66,8 @@ test("institutional refinement keeps the home article preview, founder block, an
     read("src/content/blog/index.ts"),
   ]);
 
-  assert.match(homeBlog, /CRM não é só cadastro: é controle da operação comercial/);
-  assert.match(homeBlog, /sessao-4-crm-cadastro\.png\.png/);
+  assert.match(blogData, /CRM não é só cadastro: é controle da operação comercial/);
+  assert.match(blogData, /sessao-4-crm-cadastro\.png\.png/);
   assert.match(aboutPage, /ceo-gustavo-asterio\.png\.png/);
   assert.match(aboutPage, /Gustavo Astério/);
   assert.match(aboutPage, /Fundador do Grupo Vittore \| Assessor de Crescimento Empresarial/);
@@ -100,10 +100,10 @@ test("blog refinement keeps the editorial hierarchy and scoped sidebar system", 
   assert.match(blogHome, /lg:grid-cols-\[minmax\(230px,0\.42fr\)_minmax\(0,1fr\)\]/);
   assert.match(blogHome, /Arquivo editorial/);
   assert.match(blogHome, /categoryBlocks\.map/);
-  assert.match(blogHome, /post\.image/);
+  assert.match(blogHome, /post\.coverImage/);
   assert.match(blogHome, /Antes de aumentar o investimento em mídia/);
-  assert.match(blogHome, /h-12 w-full/);
-  assert.match(blogHome, /lg:w-\[min\(575px,42vw\)\]/);
+  assert.match(blogHome, /InstitutionalCtaActions/);
+
   assert.match(docs, /Sobre o Autor/);
   assert.match(docs, /2 colunas/);
   for (const reference of [
@@ -135,7 +135,7 @@ test("blog archive supports ten-post pagination and the complete editorial sideb
   assert.match(blogHome, /banner-sidebar-materiais-graficos-2\.png\.png/);
   assert.match(blogHome, /Banner Materiais Gráficos Personalizados Grupo Vittore/);
   assert.match(blogHome, /href="\/materiais-impressos"/);
-  assert.match(blogHome, /Conhecer Assessoria Comercial/);
+  assert.match(blogHome, /InstitutionalCtaActions/);
   assert.match(blogHome, /h-10 w-10/);
   assert.match(blogHome, /sm:text-\[1\.02rem\]/);
   assert.match(blogHome, /sm:text-\[1\.15rem\]/);
@@ -144,7 +144,10 @@ test("blog archive supports ten-post pagination and the complete editorial sideb
 });
 
 test("blog mobile hero and editorial title composition follow the approved stacked reference", async () => {
-  const blogHome = await read("src/app/_components/blog/blog-home.tsx");
+  const [blogHome, blogData] = await Promise.all([
+    read("src/app/_components/blog/blog-home.tsx"),
+    read("src/content/blog/index.ts"),
+  ]);
 
   assert.match(blogHome, /className="blog-hero-mobile-visual[^\"]*"/);
   assert.match(blogHome, /className="blog-hero-mobile-content[^\"]*"/);
@@ -155,8 +158,6 @@ test("blog mobile hero and editorial title composition follow the approved stack
   assert.match(blogHome, /querem crescer com/);
   assert.match(blogHome, /mais clareza\./);
   assert.match(blogHome, /className="blog-highlight-title-mobile[^\"]*"/);
-  assert.match(blogHome, /Como identificar/);
-  assert.match(blogHome, /gargalos comerciais/);
-  assert.match(blogHome, /antes de investir mais/);
-  assert.match(blogHome, /em tráfego/);
+  assert.match(blogHome, /blogFeaturedTitleMobileLines/);
+  assert.match(blogData, /"Como identificar", "gargalos comerciais", "antes de investir mais", "em tráfego"/);
 });

@@ -7,7 +7,7 @@ async function read(path) {
 }
 
 test("home institucional usa a copy oficial, os assets oficiais e a ordem aprovada", async () => {
-  const [page, heroSource, materialsSource, assessoriaSource, blogSource, ctaSource] =
+  const [page, heroSource, materialsSource, assessoriaSource, blogSource, ctaSource, blogData] =
     await Promise.all([
       read("src/app/page.tsx"),
       read("src/app/_components/home-hero.tsx"),
@@ -15,8 +15,9 @@ test("home institucional usa a copy oficial, os assets oficiais e a ordem aprova
       read("src/app/_components/home-assessoria-comercial.tsx"),
       read("src/app/_components/home-blog.tsx"),
       read("src/app/_components/home-cta.tsx"),
+      read("src/content/blog/index.ts"),
     ]);
-  const home = [page, heroSource, materialsSource, assessoriaSource, blogSource, ctaSource].join("\n");
+  const home = [page, heroSource, materialsSource, assessoriaSource, blogSource, ctaSource, blogData].join("\n");
 
   for (const marker of [
     'id="home-hero"',

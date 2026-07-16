@@ -26,3 +26,31 @@ Artigos podem contextualizar a assessoria comercial, consultoria, materiais grá
 - preços, tickets, planos, pacotes ou mensalidades;
 - dados de audiência sem fonte;
 - conteúdo completo inventado quando a pauta ainda é apenas uma prévia.
+
+## Padrão obrigatório de títulos visuais
+
+O campo `title` continua sendo o título real do artigo e deve ser usado para SEO, slug, metadata, busca, acessibilidade e página do artigo. A diagramação mobile não deve depender da quebra automática do navegador.
+
+Cada novo post usado na Home ou no Blog deve trazer:
+
+- `title`: título real/SEO;
+- `excerpt`: descrição resumida;
+- `category`;
+- `coverImage`;
+- `homeCardTitleMobileLines`: array obrigatório de linhas controladas para cards da Home;
+- `homeCardTitleDesktopLines`: opcional, apenas quando a composição desktop exigir linhas próprias;
+- `blogFeaturedTitleMobileLines`: opcional para a leitura em destaque;
+- `homeCard`: apresentação específica da prévia da Home, quando imagem, categoria ou descrição diferirem do artigo.
+
+As linhas devem seguir estas regras:
+
+- mínimo de 2, ideal de 3 a 4 e máximo de 5 linhas;
+- manter grupos semânticos como “gargalos comerciais”, “operação comercial” e “decisões empresariais” juntos;
+- não deixar “e”, “de”, “para” ou “com” isolados;
+- evitar uma única palavra na última linha;
+- renderizar cada linha em um `span` com `display: block` no mobile;
+- manter o título SEO separado do título visual.
+
+O componente comum `src/app/_components/controlled-title.tsx` é o responsável pela renderização. Números de cards usam `formatDisplayNumber(index)`, que aplica `String(index + 1).padStart(2, "0")`, junto de `white-space: nowrap`, `tabular-nums` e largura mínima para impedir que `06` seja dividido.
+
+A Home institucional deve exibir seis artigos no bloco Blog Estratégico. O CTA final da Home e o CTA final do Blog usam o componente compartilhado `InstitutionalCtaActions`, com os textos `Conhecer Assessoria Comercial` e `Conhecer Materiais Gráficos`, mantendo o mesmo tamanho, raio, preenchimento e empilhamento mobile.

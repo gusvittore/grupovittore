@@ -7,21 +7,25 @@ async function read(path) {
 }
 
 test("hero institucional segue a nova referência com fundo oficial e título controlado", async () => {
-  const hero = await read("src/app/_components/home-hero.tsx");
+  const [hero, blogData] = await Promise.all([
+    read("src/app/_components/home-hero.tsx"),
+    read("src/content/blog/index.ts"),
+  ]);
 
   assert.match(
     hero,
     /\/assets\/home-institucional\/brand\/hero-background\.jpg\.png/,
   );
   for (const line of [
-    "Grupo Vittore",
+    "Grupo Vittore:",
     "Crescimento, presença e",
-    "estrutura para empresas que",
+    "estrutura para empresas",
+    "que querem vender melhor",
   ]) {
-    assert.match(hero, new RegExp(`home-hero-title-line[^>]*>\\s*${line}`));
+    assert.match(hero, new RegExp(line.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&")));
   }
-  assert.match(hero, /home-hero-title-line[^>]*>\s*querem/);
-  assert.match(hero, /vender melhor\./);
+  assert.match(hero, /ControlledTitle/);
+  assert.match(hero, /heroTitleLines/);
   assert.match(hero, /lg:text-\[clamp\(3\.6rem,4\.2vw,4\.8rem\)\]/);
   assert.match(hero, /max-w-\[680px\]/);
   assert.match(hero, /sm:text-xl sm:leading-9/);
@@ -75,9 +79,10 @@ test("assessoria apresenta descrições ampliadas e remove apenas os separadores
 });
 
 test("blog e CTA final usam títulos controlados e descrições mais legíveis", async () => {
-  const [blog, cta] = await Promise.all([
+  const [blog, cta, blogData] = await Promise.all([
     read("src/app/_components/home-blog.tsx"),
     read("src/app/_components/home-cta.tsx"),
+    read("src/content/blog/index.ts"),
   ]);
 
   assert.match(blog, /Blog estratégico/);
@@ -91,6 +96,7 @@ test("blog e CTA final usam títulos controlados e descrições mais legíveis",
   assert.match(blog, /sm:text-\[clamp\(2\.8rem,4vw,4rem\)\]/);
   assert.match(blog, /font-semibold/);
   assert.match(blog, /sm:text-xl sm:leading-9/);
+  assert.equal((blogData.match(/homeCardTitleMobileLines: \[/g) ?? []).length, 6);
 
   for (const line of [
     "Conheça a frente estratégica",

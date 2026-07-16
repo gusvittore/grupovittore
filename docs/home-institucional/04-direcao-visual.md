@@ -180,3 +180,13 @@ O mobile deve continuar premium, institucional e organizado, sem perder a hierar
 ## 12. Sintese final
 
 A home institucional deve parecer a pagina principal de uma marca premium, estrategica e madura. O resultado visual precisa ser claro, sofisticado, institucional e fiel as referencias, sem se confundir com a linguagem da landing `/assessoria-comercial`.
+
+## Padrao definitivo de titulacao mobile
+
+Titulos importantes da Home não devem depender da quebra automática do navegador. O título real permanece separado do título visual sempre que a composição exigir controle editorial.
+
+Para cards de artigos, as linhas ficam nos dados locais dos posts em `homeCardTitleMobileLines`. Cada item deve usar de 2 a 5 linhas, preferencialmente 3 ou 4, sem conectivos ou palavras isoladas. A renderização deve usar o componente `src/app/_components/controlled-title.tsx`, com um `span` por linha e `display: block` no mobile. A Home exibe seis cards no bloco Blog Estratégico.
+
+Os números são gerados com `String(index + 1).padStart(2, "0")` e tratados como unidade indivisível com `white-space: nowrap`, `inline-flex`, `tabular-nums`, `shrink-0` e largura mínima. Assim, o sexto card aparece como `06`, nunca como `0` e `6` em linhas separadas.
+
+O CTA final usa `Conhecer Assessoria Comercial` e mantém o padrão compartilhado de botões com o CTA final do Blog. As bolinhas douradas permanecem restritas ao desktop.

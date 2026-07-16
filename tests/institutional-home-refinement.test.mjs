@@ -7,20 +7,21 @@ async function read(path) {
 }
 
 test("institutional home follows the approved section order and content", async () => {
-  const [page, hero, materials, assessoria, blog, cta] = await Promise.all([
+  const [page, hero, materials, assessoria, blog, cta, data] = await Promise.all([
     read("src/app/page.tsx"),
     read("src/app/_components/home-hero.tsx"),
     read("src/app/_components/home-materiais-graficos.tsx"),
     read("src/app/_components/home-assessoria-comercial.tsx"),
     read("src/app/_components/home-blog.tsx"),
     read("src/app/_components/home-cta.tsx"),
+    read("src/content/blog/index.ts"),
   ]);
-  const home = `${page}\n${hero}\n${materials}\n${assessoria}\n${blog}\n${cta}`;
+  const home = `${page}\n${hero}\n${materials}\n${assessoria}\n${blog}\n${cta}\n${data}`;
 
   assert.match(hero, /Grupo Vittore/);
   assert.match(hero, /Crescimento, presença e/);
-  assert.match(hero, /estrutura para empresas que/);
-  assert.match(hero, /vender melhor\./);
+  assert.match(hero, /estrutura para empresas/);
+  assert.match(hero, /vender melhor/);
   assert.match(hero, /hero-background\.jpg\.png/);
   assert.doesNotMatch(hero, /Ecossistema Grupo Vittore/);
   assert.match(hero, /consultoria empresarial/i);
@@ -28,7 +29,7 @@ test("institutional home follows the approved section order and content", async 
   assert.match(materials, /bandeira-brasil\.png\.png[\s\S]*Brasil/);
   assert.match(assessoria, /Diagnóstico e clareza comercial/);
   assert.match(home, /Conhecer nossas frentes/);
-  assert.match(home, /Ver Assessoria Comercial/);
+  assert.match(home, /Conhecer Assessoria Comercial/);
   assert.match(materials, /id="servicos"/);
   assert.match(materials, /id="materiais-graficos"/);
   assert.match(assessoria, /id="assessoria-comercial"/);
@@ -58,18 +59,19 @@ test("institutional home follows the approved section order and content", async 
     "CRM não é só cadastro: é controle da operação comercial",
     "Crescimento previsível começa com clareza sobre o processo",
   ]) {
-    assert.match(blog, new RegExp(title));
+    assert.match(data, new RegExp(title));
   }
 });
 
 test("institutional mobile refinement keeps the approved menu untouched and composes the requested mobile sections", async () => {
-  const [hero, materials, assessoria, blog, cta, header] = await Promise.all([
+  const [hero, materials, assessoria, blog, cta, header, data] = await Promise.all([
     read("src/app/_components/home-hero.tsx"),
     read("src/app/_components/home-materiais-graficos.tsx"),
     read("src/app/_components/home-assessoria-comercial.tsx"),
     read("src/app/_components/home-blog.tsx"),
     read("src/app/_components/home-cta.tsx"),
     read("src/app/_components/site-header.tsx"),
+    read("src/content/blog/index.ts"),
   ]);
 
   assert.match(hero, /className="home-hero-mobile-visual[^\"]*"/);
@@ -90,10 +92,10 @@ test("institutional mobile refinement keeps the approved menu untouched and comp
   assert.match(assessoria, /Tecnologia e Automação[\s\S]*Empresarial/);
   assert.match(assessoria, /text-\[1\.5rem\]/);
 
-  assert.match(blog, /const articles = \[/);
-  assert.equal((blog.match(/title:/g) ?? []).length, 6);
-  assert.match(blog, /crescimento previsível começa com clareza sobre o processo/i);
-  assert.match(blog, /artigo-crescimento-previsivel\.png\.png/);
+  assert.match(blog, /const articles = BLOG_POSTS/);
+  assert.equal((data.match(/homeCardTitleMobileLines: \[/g) ?? []).length, 6);
+  assert.match(data, /crescimento previsível começa com clareza sobre o processo/i);
+  assert.match(data, /artigo-crescimento-previsivel\.png\.png/);
   assert.match(blog, /home-blog-title-mobile/);
   assert.match(blog, /home-blog-article-title-mobile/);
 

@@ -1,16 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ControlledTitle } from "./controlled-title";
 
 const heroCopy = {
   eyebrow: "Hub de Crescimento Empresarial",
-  titleLines: [
-    "Grupo Vittore",
-    "Crescimento, presença e",
-    "estrutura para empresas que",
-  ],
   description:
     "O Grupo Vittore atua em frentes complementares para ajudar empresas a crescer com mais clareza, presença e controle. Unimos assessoria comercial, consultoria empresarial, materiais gráficos personalizados, produção e entrega para todo o Brasil, além de conteúdo estratégico para fortalecer a operação e a comunicação da marca no mercado.",
 } as const;
+
+const heroTitleLines = [
+  "Grupo Vittore:",
+  "Crescimento, presença e",
+  "estrutura para empresas",
+  "que querem vender melhor",
+] as const;
 
 function HeroTitle({ mobile = false }: { mobile?: boolean }) {
   return (
@@ -21,12 +24,10 @@ function HeroTitle({ mobile = false }: { mobile?: boolean }) {
           : "mt-8 max-w-[700px] font-serif text-[clamp(2.7rem,11vw,4.1rem)] font-medium leading-[1.02] tracking-[-0.025em] text-[#fbf8f4] lg:text-[clamp(3.6rem,4.2vw,4.8rem)] lg:leading-[1.03]"
       }
     >
-      <span className="home-hero-title-line block">Grupo Vittore</span>
-      <span className="home-hero-title-line block">Crescimento, presença e</span>
-      <span className="home-hero-title-line block">estrutura para empresas que</span>
-      <span className="home-hero-title-line block">
-        querem <strong className="font-medium text-[#e1aa4c]">vender melhor.</strong>
-      </span>
+      <ControlledTitle
+        lines={heroTitleLines}
+        className="[&>span:last-child]:text-[#e1aa4c]"
+      />
     </h1>
   );
 }

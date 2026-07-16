@@ -98,9 +98,10 @@ export function HomeMateriaisGraficos() {
             <div className="flex-1">
               <h3
                 aria-label="Produção e entrega para todo o Brasil"
-                className="flex flex-wrap items-center gap-2 text-sm font-extrabold uppercase tracking-[0.13em] text-[#835719] sm:text-base"
+                className="text-sm font-extrabold uppercase tracking-[0.13em] text-[#835719] sm:text-base"
               >
-                Produção e entrega para todo o
+                <span className="block sm:inline">Produção e entrega para</span>{" "}
+                <span className="block sm:inline">todo o </span>
                 <span className="inline-flex items-center gap-2 whitespace-nowrap">
                   <Image
                     src="/assets/home-institucional/icons/bandeira-brasil.png.png"
@@ -109,7 +110,7 @@ export function HomeMateriaisGraficos() {
                     height={500}
                     className="h-5 w-7 rounded-[2px] object-cover"
                   />
-                  Brasil
+                  <span>Brasil</span>
                 </span>
               </h3>
               <p className="mt-2 text-lg leading-8 text-[#263752] sm:text-[1.18rem]">
