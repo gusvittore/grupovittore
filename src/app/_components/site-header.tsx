@@ -19,7 +19,7 @@ function NavigationLinks({ mobile = false }: { mobile?: boolean }) {
       className={
         mobile
           ? "grid gap-1 border-t border-[#b29157]/20 px-5 py-4"
-          : "hidden items-center justify-center gap-6 text-sm font-semibold text-[#101a31] lg:flex xl:gap-9"
+          : "hidden items-center justify-center gap-6 text-[0.98rem] font-semibold text-[#101a31] lg:flex lg:text-[1.05rem] xl:gap-9"
       }
     >
       {navigation.map((item) => (

@@ -5,21 +5,21 @@ const commercialPillars = [
   {
     title: "Marketing e geração de demanda",
     description:
-      "Atração de oportunidades qualificadas, campanhas, posicionamento e estrutura para gerar demanda com mais intenção.",
+      "Estruturamos campanhas, posicionamento e jornadas para atrair oportunidades com mais intenção, conectando comunicação, oferta e canais de aquisição de forma mais estratégica.",
     image:
       "/assets/home-institucional/brand/sessao-3-marketing-geracao-demanda.png.png",
   },
   {
     title: "Vendas e performance comercial",
     description:
-      "Processo, acompanhamento, método comercial, organização da jornada e melhoria contínua da conversão.",
+      "Organizamos processo, acompanhamento e método comercial para que cada oportunidade tenha direção, próximo passo definido e maior chance de conversão em receita.",
     image:
       "/assets/home-institucional/brand/sessao-3-vendas-perfomance-comercial.png.png",
   },
   {
     title: "Tecnologia e automação empresarial",
     description:
-      "CRM, automações, inteligência artificial e dados organizados para dar escala e controle à operação.",
+      "Aplicamos CRM, automações, inteligência artificial e organização de dados para reduzir improvisos, dar escala à operação e aumentar o controle sobre o crescimento.",
     image:
       "/assets/home-institucional/brand/sessao-3-tecnologia-automacao-empresarial.png.png",
   },
@@ -37,17 +37,14 @@ export function HomeAssessoriaComercial() {
       <div className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8 sm:py-24 lg:px-12 lg:py-28 xl:px-16">
         <div className="grid gap-12 lg:grid-cols-[minmax(330px,0.74fr)_minmax(600px,1.26fr)] lg:items-center lg:gap-16">
           <div className="max-w-[520px]">
-            <div className="flex items-center gap-5">
-              <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-[#e1aa47] sm:text-sm">
-                Principal frente estratégica
-              </p>
-              <span className="h-px flex-1 bg-[#c78a31]/75" />
-            </div>
-            <h2 className="mt-8 font-serif text-[clamp(3.6rem,5.6vw,5.8rem)] font-medium leading-[0.9] tracking-[-0.02em] text-[#fbf8f4]">
+            <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-[#e1aa47] sm:text-sm">
+              Principal frente estratégica
+            </p>
+            <h2 className="mt-8 font-serif text-[clamp(3rem,4.2vw,4.5rem)] font-medium leading-[0.94] tracking-[-0.02em] text-[#fbf8f4]">
               Assessoria<br />Comercial
             </h2>
             <span className="mt-8 block h-0.5 w-16 bg-[#d79c3f]" />
-            <p className="mt-8 text-base leading-8 text-[#e0e3e9] sm:text-lg sm:leading-9">
+            <p className="mt-8 text-lg leading-8 text-[#e0e3e9] sm:text-xl sm:leading-9">
               Para empresas que já possuem alguma estrutura, mas ainda sentem falta de previsibilidade, clareza sobre gargalos e um método para transformar oportunidades em receita.
             </p>
             <Link
@@ -73,17 +70,15 @@ export function HomeAssessoriaComercial() {
               <h3 className="font-serif text-[clamp(2rem,3vw,3rem)] font-medium leading-tight text-[#fbf8f4]">
                 Diagnóstico e clareza comercial
               </h3>
-              <span className="mt-4 block h-0.5 w-10 bg-[#d99d3f]" />
-              <p className="mt-5 text-base leading-8 text-[#d8dce4] sm:text-lg">
-                Mapeamento de gargalos, visão do processo e definição de prioridades para decisões mais seguras.
+              <p className="mt-5 text-lg leading-8 text-[#d8dce4] sm:text-[1.2rem] sm:leading-9">
+                Mapeamos os principais gargalos da operação comercial, identificamos onde as oportunidades estão sendo perdidas e organizamos prioridades para decisões mais seguras. O objetivo é dar clareza sobre processo, demanda, atendimento, conversão e acompanhamento, criando uma base mais previsível para crescimento.
               </p>
             </div>
           </article>
         </div>
 
-        <div className="mx-auto mt-12 max-w-[1080px] text-center">
-          <span className="mx-auto block h-px w-10 bg-[#d59a3a]" />
-          <p className="mt-5 text-lg leading-8 text-[#e2e4e9] sm:text-xl sm:leading-9">
+        <div className="mx-auto mt-12 max-w-[1240px] text-center">
+          <p className="text-lg leading-8 text-[#e2e4e9] sm:text-[1.35rem] sm:leading-9">
             A falta de controle, o marketing e as vendas desconectados, o acompanhamento inconsistente e os dados dispersos são sinais de uma operação que precisa de processo, acompanhamento e tecnologia para gerar resultados sustentáveis.
           </p>
         </div>
@@ -108,7 +103,7 @@ export function HomeAssessoriaComercial() {
                   {pillar.title}
                 </h3>
                 <span className="mt-3 block h-0.5 w-10 bg-[#d99d3f]" />
-                <p className="mt-4 text-base leading-7 text-[#d1d6df]">
+                <p className="mt-4 text-lg leading-8 text-[#d1d6df] sm:text-[1.16rem]">
                   {pillar.description}
                 </p>
               </div>

@@ -117,6 +117,18 @@ Diretrizes:
 
 A home nao deve parecer montada com tipografia generica ou excessivamente promocional.
 
+## Preferência de diagramação e tipografia do usuário
+
+- Títulos devem ser mais controlados, elegantes e bem quebrados em linhas.
+- Descrições devem ser mais legíveis e um pouco maiores.
+- O padrão deve ser consistente em todas as seções.
+- Evitar títulos grandes demais e descrições pequenas demais.
+- Cards devem ter subtítulos fortes, mas descrições legíveis.
+- A mesma família tipográfica deve ser mantida nas descrições em toda a página.
+- Descrições de hero, seções e cards não podem ficar pequenas demais.
+- Ajustes de fonte devem preservar harmonia premium, sem ficar grotescos.
+- Evitar mistura visual de famílias tipográficas em descrições.
+
 ## 8. Botoes e CTAs
 
 Os CTAs da home devem manter aparencia institucional.

@@ -38,6 +38,14 @@ const articles = [
     image:
       "/assets/home-institucional/brand/sessao-4-empresa-organizar.png.png",
   },
+  {
+    category: "Tecnologia e vendas",
+    title: "CRM não é só cadastro: é controle da operação comercial",
+    description:
+      "CRM não é apenas uma lista de contatos. Ele ajuda a acompanhar oportunidades, organizar o processo comercial e dar mais controle à operação de vendas.",
+    image:
+      "/assets/home-institucional/brand/sessao-4-crm-cadastro.png.png",
+  },
 ] as const;
 
 export function HomeBlog() {
@@ -78,14 +86,14 @@ export function HomeBlog() {
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.64fr)_auto] lg:items-end lg:gap-12">
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[0.27em] text-[#8a5b18] sm:text-sm">
-              Conteúdo e repertório
+              Blog estratégico
             </p>
-            <h2 className="mt-5 max-w-[760px] font-serif text-[clamp(3.2rem,5.2vw,5.5rem)] font-medium leading-[0.94] tracking-[-0.025em] text-[#07142d]">
-              Ideias para decisões empresariais mais claras
+            <h2 className="mt-5 max-w-[720px] font-serif text-[clamp(2.8rem,4vw,4rem)] font-medium leading-[0.98] tracking-[-0.025em] text-[#07142d]">
+              Conhecimento para decisões empresariais mais claras
             </h2>
           </div>
-          <p className="text-base leading-8 text-[#263752] sm:text-lg sm:leading-9">
-            O Blog do Grupo Vittore amplia a leitura estratégica da empresa sobre crescimento, operação, materiais, posicionamento, marketing, vendas e tecnologia. Na home, ele aparece como uma prévia elegante de conteúdo, reforçando autoridade e incentivando o visitante a aprofundar temas relevantes.
+          <p className="text-lg leading-8 text-[#263752] sm:text-xl sm:leading-9">
+            O blog do Grupo Vittore reúne leitura estratégica, conteúdo prático e visão de mercado para apoiar empresas que querem crescer com mais clareza.
           </p>
           <div className="flex gap-3">
             <button
@@ -136,10 +144,10 @@ export function HomeBlog() {
                   <span className="font-serif text-2xl text-[#b29157]">0{index + 1}</span>
                 </div>
                 <span className="mt-3 h-0.5 w-8 bg-[#a56a19]" />
-                <h3 className="mt-5 font-serif text-[clamp(1.8rem,3vw,2.55rem)] font-medium leading-[1.08] text-[#07142d]">
+                <h3 className="mt-5 font-serif text-[clamp(1.7rem,2.5vw,2.2rem)] font-semibold leading-[1.1] text-[#07142d]">
                   {article.title}
                 </h3>
-                <p className="mt-5 text-base leading-7 text-[#34435a] sm:text-lg sm:leading-8">
+                <p className="mt-5 text-lg leading-8 text-[#34435a] sm:text-xl sm:leading-9">
                   {article.description}
                 </p>
                 <Link

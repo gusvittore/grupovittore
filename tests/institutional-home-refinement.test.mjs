@@ -17,12 +17,13 @@ test("institutional home follows the approved section order and content", async 
   ]);
   const home = `${page}\n${hero}\n${materials}\n${assessoria}\n${blog}\n${cta}`;
 
-  assert.match(
-    hero,
-    /Grupo Vittore: crescimento, presença e estrutura para empresas que querem vender melhor/,
-  );
-  assert.match(hero, /Ecossistema Grupo Vittore/);
-  assert.match(hero, /Consultoria Empresarial/);
+  assert.match(hero, /Grupo Vittore:/);
+  assert.match(hero, /crescimento, presença e/);
+  assert.match(hero, /estrutura para empresas que/);
+  assert.match(hero, /vender melhor\./);
+  assert.match(hero, /hero-background\.jpg\.png/);
+  assert.doesNotMatch(hero, /Ecossistema Grupo Vittore/);
+  assert.match(hero, /consultoria empresarial/i);
   assert.match(materials, /Produção e entrega para todo o Brasil/);
   assert.match(assessoria, /Diagnóstico e clareza comercial/);
   assert.match(home, /Conhecer nossas frentes/);
@@ -53,6 +54,7 @@ test("institutional home follows the approved section order and content", async 
     "Por que materiais gráficos ainda fortalecem a presença da marca",
     "Marketing, vendas e tecnologia: como conectar as três áreas",
     "O que uma empresa precisa organizar antes de escalar aquisição",
+    "CRM não é só cadastro: é controle da operação comercial",
   ]) {
     assert.match(blog, new RegExp(title));
   }
@@ -108,6 +110,7 @@ test("institutional footer is complete and placeholder copy is accented", async 
   assert.doesNotMatch(placeholder, /Agendar diagn[óo]stico/i);
   assert.match(services, /Serviços/);
   assert.match(materials, /Materiais Gráficos/);
-  assert.match(blog, /Conteúdo estratégico/);
+  assert.match(blog, /BlogHome/);
+  assert.match(blog, /Conteúdo sobre Vendas, Marketing e Crescimento Empresarial/);
   assert.match(about, /estratégia/);
 });

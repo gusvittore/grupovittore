@@ -28,25 +28,6 @@ const materialBenefits = [
   },
 ] as const;
 
-function DeliveryIcon() {
-  return (
-    <svg
-      viewBox="0 0 64 48"
-      aria-hidden="true"
-      className="h-12 w-16 flex-none text-[#9b651c]"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.8"
-    >
-      <path d="M4 8h34v28H4zM38 18h11l9 10v8H38zM11 15h17M11 22h11" />
-      <circle cx="15" cy="38" r="5" />
-      <circle cx="49" cy="38" r="5" />
-    </svg>
-  );
-}
-
 export function HomeMateriaisGraficos() {
   return (
     <section id="servicos" className="scroll-mt-24 bg-[#fbf8f4] text-[#071026]">
@@ -55,20 +36,18 @@ export function HomeMateriaisGraficos() {
         className="mx-auto grid w-full max-w-[1500px] scroll-mt-24 gap-12 px-5 py-20 sm:px-8 sm:py-24 lg:grid-cols-[minmax(330px,0.72fr)_minmax(650px,1.28fr)] lg:gap-16 lg:px-12 lg:py-28 xl:px-16"
       >
         <div className="flex max-w-[520px] flex-col lg:py-10">
-          <div className="flex items-center gap-5">
-            <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-[#86591b] sm:text-sm">
-              Presença além do digital
-            </p>
-            <span className="h-px flex-1 bg-[#b29157]/65" />
-          </div>
-          <h2 className="mt-8 font-serif text-[clamp(3.2rem,5vw,5.4rem)] font-medium leading-[0.95] tracking-[-0.025em] text-[#06132d]">
-            Materiais Gráficos Personalizados
+          <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-[#86591b] sm:text-sm">
+            Presença além do digital
+          </p>
+          <h2 className="mt-8 font-serif text-[clamp(2.8rem,4vw,4rem)] font-medium leading-[0.98] tracking-[-0.025em] text-[#06132d]">
+            <span className="lg:block">Materiais Gráficos</span>{" "}
+            <span className="lg:block">Personalizados</span>
           </h2>
           <span className="mt-9 h-0.5 w-20 bg-[#9a651b]" />
-          <p className="mt-9 font-serif text-2xl font-semibold leading-[1.5] text-[#10203b] sm:text-[1.75rem]">
+          <p className="mt-9 font-serif text-[1.65rem] font-semibold leading-[1.48] text-[#10203b] sm:text-[1.9rem]">
             Materiais impressos que fortalecem sua marca, comunicam com clareza e geram resultados no mundo físico.
           </p>
-          <p className="mt-7 text-base leading-8 text-[#263752] sm:text-lg sm:leading-9">
+          <p className="mt-7 text-lg leading-8 text-[#263752] sm:text-xl sm:leading-9">
             Do cartão de visita ao material institucional completo, cuidamos de cada detalhe: criação estratégica, produção com qualidade e entrega segura para todo o Brasil. Mais do que impressão, oferecemos presença, credibilidade e conexão real com pessoas.
           </p>
           <Link
@@ -99,7 +78,7 @@ export function HomeMateriaisGraficos() {
                   <h3 className="font-serif text-[1.75rem] font-semibold leading-tight text-[#07142d] sm:text-[2rem]">
                     {benefit.title}
                   </h3>
-                  <p className="mt-3 text-base leading-7 text-[#243651] sm:text-lg sm:leading-8">
+                  <p className="mt-3 text-[1.05rem] leading-8 text-[#243651] sm:text-[1.18rem] sm:leading-8">
                     {benefit.description}
                   </p>
                 </div>
@@ -108,17 +87,30 @@ export function HomeMateriaisGraficos() {
           </div>
 
           <div className="mt-4 flex flex-col gap-5 rounded-[18px] border border-[#b29157]/20 bg-[#fffdf9] px-6 py-6 shadow-[0_8px_22px_rgba(9,14,31,0.04)] sm:flex-row sm:items-center sm:px-8">
-            <DeliveryIcon />
+            <Image
+              src="/assets/home-institucional/icons/producao-entrega.png.png"
+              alt="Produção e entrega"
+              width={500}
+              height={500}
+              className="h-16 w-16 flex-none object-contain"
+            />
             <span className="hidden h-14 w-px bg-[#b29157]/45 sm:block" />
             <div className="flex-1">
-              <h3 className="text-sm font-extrabold uppercase tracking-[0.13em] text-[#835719] sm:text-base">
+              <h3 className="flex flex-wrap items-center gap-2 text-sm font-extrabold uppercase tracking-[0.13em] text-[#835719] sm:text-base">
                 Produção e entrega para todo o Brasil
+                <Image
+                  src="/assets/home-institucional/icons/bandeira-brasil.png.png"
+                  alt="Bandeira do Brasil"
+                  width={760}
+                  height={500}
+                  className="h-5 w-7 rounded-[2px] object-cover"
+                />
               </h3>
-              <p className="mt-2 text-base leading-7 text-[#263752] sm:text-lg">
+              <p className="mt-2 text-lg leading-8 text-[#263752] sm:text-[1.18rem]">
                 Estrutura própria de produção, controle de qualidade e logística segura para que seus materiais cheguem com excelência, onde você estiver.
               </p>
             </div>
-            <span className="font-serif text-4xl text-[#b29157]/65" aria-hidden="true">◇</span>
+
           </div>
         </div>
       </div>

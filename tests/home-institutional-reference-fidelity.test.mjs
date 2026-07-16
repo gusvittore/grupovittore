@@ -40,16 +40,18 @@ test("home institucional usa a copy oficial, os assets oficiais e a ordem aprova
   assert.ok(blog < cta);
 
   for (const copy of [
-    "Ecossistema Grupo Vittore",
-    "Consultoria Empresarial",
-    "Atuação nacional e internacional",
     "Produção e entrega para todo o Brasil",
     "Diagnóstico e clareza comercial",
-    "Conheça a frente estratégica de crescimento comercial",
     "Grupo Vittore.",
   ]) {
     assert.match(home, new RegExp(copy));
   }
+
+  assert.match(heroSource, /hero-background\.jpg\.png/);
+  assert.match(heroSource, /consultoria empresarial/i);
+  assert.doesNotMatch(heroSource, /Ecossistema Grupo Vittore/);
+  assert.match(ctaSource, /Conheça a frente estratégica/);
+  assert.match(ctaSource, /de crescimento comercial/);
 
   for (const asset of [
     "/assets/home-institucional/brand/sessao-2-presenca-marca.png.png",

@@ -86,9 +86,11 @@ test("institutional site structure preserves assessoria landing and adds the req
   assert.match(institutionalHomeSource, /href="\/assessoria-comercial"/);
 
   assert.match(servicesPage, /PlaceholderPage/);
-  assert.match(aboutPage, /PlaceholderPage/);
+  assert.doesNotMatch(aboutPage, /PlaceholderPage/);
+  assert.match(aboutPage, /Sobre o Grupo Vittore/);
   assert.match(materialsPage, /PlaceholderPage/);
-  assert.match(blogPage, /PlaceholderPage/);
+  assert.match(blogPage, /BlogHome/);
+  assert.match(blogPage, /Conteúdo sobre Vendas, Marketing e Crescimento Empresarial/);
   assert.match(placeholder, /href="\/"/);
   assert.match(placeholder, /href="\/assessoria-comercial"/);
 
