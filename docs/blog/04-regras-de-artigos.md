@@ -69,3 +69,13 @@ Composições obrigatórias atuais:
 
 - Hero do Blog: `Conteúdo estratégico` / `para empresas que` / `querem crescer com` / `mais clareza`.
 - Leitura em destaque: `Como identificar` / `gargalos comerciais` / `antes de investir mais` / `em tráfego`.
+
+## Hierarquia secundária dos cards no mobile
+
+- O título principal da seção permanece maior que o subtítulo de apoio.
+- O título de card deve ser menor que o subtítulo de seção e manter peso editorial suficiente.
+- A descrição permanece legível, mas não compete com o título.
+- O texto de rodapé é institucional e discreto.
+- Em `Últimos artigos`, a escala mobile dos títulos deve preservar as linhas controladas com folga dentro do card.
+- Em `Conteúdos por categoria`, `Vendas`, `Marketing`, `Materiais Gráficos` e `Tecnologia` são títulos internos de categoria, não títulos principais da página.
+- Validar em `375px`, `390px` e `430px`, sem alterar imagens, categorias, descrições, links ou estrutura editorial.

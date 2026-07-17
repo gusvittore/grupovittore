@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MOBILE_SECTION_TITLE_CLASS } from "./controlled-title";
+import {
+  MOBILE_CARD_TITLE_CLASS,
+  MOBILE_SECTION_TITLE_CLASS,
+} from "./controlled-title";
 
 const materialBenefits = [
   {
@@ -45,7 +48,7 @@ export function HomeMateriaisGraficos() {
             <span className="block whitespace-nowrap">Personalizados</span>
           </h2>
           <span className="mt-9 h-0.5 w-20 bg-[#9a651b]" />
-          <p className="mt-9 font-serif text-[1.65rem] font-semibold leading-[1.48] text-[#10203b] sm:text-[1.9rem]">
+          <p className="mt-9 font-serif text-[1.4rem] font-semibold leading-[1.48] text-[#10203b] sm:text-[1.9rem]">
             Materiais impressos que fortalecem sua marca, comunicam com clareza e geram resultados no mundo físico.
           </p>
           <p className="mt-7 text-lg leading-8 text-[#263752] sm:text-xl sm:leading-9">
@@ -76,7 +79,7 @@ export function HomeMateriaisGraficos() {
                   />
                 </div>
                 <div className="px-6 pb-6 pt-5">
-                  <h3 className="font-serif text-[1.75rem] font-semibold leading-tight text-[#07142d] sm:text-[2rem]">
+                  <h3 className={`${MOBILE_CARD_TITLE_CLASS} text-[#07142d] sm:text-[2rem] sm:leading-tight`}>
                     {benefit.title}
                   </h3>
                   <p className="mt-3 text-[1.05rem] leading-8 text-[#243651] sm:text-[1.18rem] sm:leading-8">
@@ -103,7 +106,7 @@ export function HomeMateriaisGraficos() {
               >
                 <span className="block sm:inline">Produção e entrega para</span>{" "}
                 <span className="inline-flex items-center gap-2 whitespace-nowrap">
-                  <span>todo o</span>
+                  <span>todo o Brasil</span>
                   <Image
                     src="/assets/home-institucional/icons/bandeira-brasil.png.png"
                     alt="Bandeira do Brasil"
@@ -111,7 +114,6 @@ export function HomeMateriaisGraficos() {
                     height={500}
                     className="h-5 w-7 rounded-[2px] object-cover"
                   />
-                  <span>Brasil</span>
                 </span>
               </h3>
               <p className="mt-2 text-lg leading-8 text-[#263752] sm:text-[1.18rem]">

@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MOBILE_SECTION_TITLE_CLASS } from "./controlled-title";
+import {
+  MOBILE_CARD_TITLE_CLASS,
+  MOBILE_SECTION_TITLE_CLASS,
+} from "./controlled-title";
 
 const commercialPillars = [
   {
@@ -68,7 +71,7 @@ export function HomeAssessoriaComercial() {
               <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_62%,rgba(0,7,23,0.55))]" />
             </div>
             <div className="px-7 pb-8 pt-6 sm:px-9 sm:pb-9">
-              <h3 className="font-serif text-[clamp(2rem,3vw,3rem)] font-medium leading-tight text-[#fbf8f4]">
+              <h3 className={`${MOBILE_CARD_TITLE_CLASS} text-[#fbf8f4] sm:text-[clamp(2rem,3vw,3rem)] sm:font-medium sm:leading-tight`}>
                 Diagnóstico e clareza comercial
               </h3>
               <p className="mt-5 text-lg leading-8 text-[#d8dce4] sm:text-[1.2rem] sm:leading-9">
@@ -100,7 +103,7 @@ export function HomeAssessoriaComercial() {
                 />
               </div>
               <div className="px-6 pb-7 pt-5">
-                <h3 className="font-serif text-[1.5rem] font-medium leading-[1.08] text-[#fbf8f4] sm:text-[2rem]">
+                <h3 className={`${MOBILE_CARD_TITLE_CLASS} text-[#fbf8f4] sm:text-[2rem] sm:font-medium sm:leading-[1.08]`}>
                   {pillar.title === "Tecnologia e Automação Empresarial" ? (
                     <>
                       <span className="home-pillar-title-mobile block sm:hidden">Tecnologia e Automação<br />Empresarial</span>

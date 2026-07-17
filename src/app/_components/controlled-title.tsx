@@ -3,6 +3,9 @@ type TitleTag = "h1" | "h2" | "h3" | "h4";
 export const MOBILE_SECTION_TITLE_CLASS =
   "font-serif text-[clamp(2rem,7vw,2.55rem)] font-medium leading-[1.02] tracking-[-0.025em]";
 
+export const MOBILE_CARD_TITLE_CLASS =
+  "font-serif text-[1.45rem] font-semibold leading-[1.12]";
+
 type ControlledTitleProps = {
   lines: readonly string[];
   className?: string;

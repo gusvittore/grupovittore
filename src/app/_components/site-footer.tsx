@@ -63,7 +63,7 @@ export function SiteFooter() {
                 className="h-auto w-[220px] object-contain sm:w-[265px]"
               />
             </Link>
-            <h2 className="mt-7 font-serif text-2xl font-semibold text-[#101d36] sm:text-[1.7rem]">
+            <h2 className="mt-7 font-serif text-xl font-semibold text-[#101d36] sm:text-[1.7rem]">
               Hub de Crescimento Empresarial
             </h2>
             <p className="mt-4 text-base leading-8 text-[#24334d] sm:text-lg sm:leading-9">

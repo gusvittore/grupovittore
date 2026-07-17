@@ -10,7 +10,10 @@ import {
   type BlogPost,
 } from "../../../content/blog";
 import { InstitutionalCtaActions } from "../cta-actions";
-import { ControlledTitle } from "../controlled-title";
+import {
+  ControlledTitle,
+  MOBILE_CARD_TITLE_CLASS,
+} from "../controlled-title";
 
 const PAGE_SIZE = 10;
 
@@ -86,7 +89,7 @@ function ArticleCard({ post }: { post: BlogPost }) {
       </div>
       <div className="flex flex-1 flex-col p-6 sm:p-7">
         <PostMeta post={post} />
-        <h3 className="mt-5 font-serif text-[clamp(1.55rem,2.5vw,2.05rem)] font-semibold leading-[1.08] tracking-[-0.018em] text-[#07142d] transition-colors group-hover:text-[#fbf8f4]">
+        <h3 className={`mt-5 ${MOBILE_CARD_TITLE_CLASS} tracking-[-0.018em] text-[#07142d] transition-colors group-hover:text-[#fbf8f4] sm:text-[1.55rem] sm:leading-[1.08] lg:text-[clamp(1.55rem,2.5vw,2.05rem)]`}>
           <span className="lg:hidden">
             <ControlledTitle
               lines={post.blogCardTitleMobileLines ?? post.homeCardTitleMobileLines}
@@ -474,7 +477,7 @@ export function BlogHome() {
                 <section key={category} className="border-t border-[#b29157]/25 py-7 sm:py-8">
                   <div className="grid gap-7 lg:grid-cols-[minmax(230px,0.42fr)_minmax(0,1fr)] lg:items-center lg:gap-12">
                     <div>
-                      <h3 className="font-serif text-[2.1rem] font-semibold leading-tight text-[#07142d] sm:text-[2.4rem]">{category}</h3>
+                      <h3 className="font-serif text-[1.8rem] font-semibold leading-tight text-[#07142d] sm:text-[2.4rem]">{category}</h3>
                       <p className="mt-4 text-[1.1rem] leading-8 text-[#536074] sm:text-[1.15rem] sm:leading-8">{description}</p>
                     </div>
                     <article className="grid overflow-hidden rounded-[18px] border border-[#b29157]/35 bg-[#fbf8f4] sm:grid-cols-[220px_minmax(0,1fr)]">

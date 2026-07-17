@@ -101,9 +101,10 @@ test("Brazil flag and label stay together as an indivisible inline group", async
   assert.match(materials, /inline-flex items-center gap-2 whitespace-nowrap/);
   assert.match(
     materials,
-    /inline-flex items-center gap-2 whitespace-nowrap[\s\S]*?<span>todo o<\/span>[\s\S]*?alt="Bandeira do Brasil"[\s\S]*?<span>Brasil<\/span>/,
+    /inline-flex items-center gap-2 whitespace-nowrap[\s\S]*?<span>todo o Brasil<\/span>[\s\S]*?alt="Bandeira do Brasil"/,
   );
   assert.doesNotMatch(materials, /className="block sm:inline">todo o/);
+  assert.doesNotMatch(materials, /alt="Bandeira do Brasil"[\s\S]*?<span>Brasil<\/span>/);
 });
 
 test("documentation defines nowrap visual lines and all post title contexts", async () => {

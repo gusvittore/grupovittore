@@ -206,4 +206,14 @@ Composições mobile aprovadas:
 - Hero: `Grupo Vittore:` / `Crescimento, presença e` / `estrutura para empresas` / `que querem vender` / `melhor`.
 - Blog Estratégico: `Conhecimento para` / `decisões empresariais` / `mais claras`.
 - CTA final: `Conheça a frente` / `estratégica de` / `crescimento comercial` / `do Grupo Vittore.`.
-- Produção nacional: `Produção e entrega para` / `todo o [bandeira] Brasil`. A segunda linha inteira é um único grupo indivisível.
+- Produção nacional: `Produção e entrega para` / `todo o Brasil [bandeira]`. A segunda linha inteira é um único grupo indivisível; a bandeira vem depois de Brasil e nunca se separa da expressão.
+
+### Hierarquia tipográfica secundária no mobile
+
+1. **Título principal da seção:** maior destaque e escala institucional aprovada.
+2. **Subtítulo de apoio:** menor que o título principal, mas ainda forte e legível.
+3. **Título de card:** menor que o subtítulo de apoio, com peso suficiente para leitura rápida.
+4. **Descrição:** legível e confortável, sem competir com o título do card.
+5. **Texto de rodapé:** menor, institucional e discreto abaixo do logotipo.
+
+Os cards de Materiais Gráficos e Assessoria usam uma escala mobile compartilhada. Ajustes dessa escala não devem modificar os títulos principais, as Heroes, a estrutura dos cards ou as descrições. O subtítulo `Hub de Crescimento Empresarial` do rodapé deve permanecer visualmente subordinado ao logotipo.

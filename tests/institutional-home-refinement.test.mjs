@@ -85,12 +85,12 @@ test("institutional mobile refinement keeps the approved menu untouched and comp
   assert.match(materials, /Materiais Gráficos/);
   assert.match(materials, /Personalizados/);
   assert.match(materials, /whitespace-nowrap/);
-  assert.match(materials, /bandeira-brasil\.png\.png[\s\S]*Brasil/);
+  assert.match(materials, /todo o Brasil[\s\S]*bandeira-brasil\.png\.png/);
 
   assert.match(assessoria, /Tecnologia e Automação Empresarial/i);
   assert.match(assessoria, /home-pillar-title-mobile/);
   assert.match(assessoria, /Tecnologia e Automação[\s\S]*Empresarial/);
-  assert.match(assessoria, /text-\[1\.5rem\]/);
+  assert.match(assessoria, /MOBILE_CARD_TITLE_CLASS/);
 
   assert.match(blog, /const articles = BLOG_POSTS/);
   assert.equal((data.match(/homeCardTitleMobileLines: \[/g) ?? []).length, 6);

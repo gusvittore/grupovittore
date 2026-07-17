@@ -6,7 +6,7 @@ async function read(path) {
   return readFile(new URL(`../${path}`, import.meta.url), "utf8");
 }
 
-test("sobre institucional apresenta estrutura completa, SEO e CTAs corretos", async () => {
+test("sobre institucional abre com storytelling editorial, sem subtítulos genéricos, e mantém SEO/CTAs corretos", async () => {
   const aboutPage = await read("src/app/sobre/page.tsx");
 
   assert.match(
@@ -15,24 +15,32 @@ test("sobre institucional apresenta estrutura completa, SEO e CTAs corretos", as
   );
   assert.match(
     aboutPage,
-    /Conheça o Grupo Vittore, um hub de crescimento empresarial/,
+    /Conheça a história do Grupo Vittore e como suas frentes/,
   );
 
   for (const marker of [
     "Sobre o Grupo Vittore",
-    "Um hub de crescimento empresarial criado para conectar presença, estratégia e estrutura comercial.",
-    "Uma empresa criada para conectar presença, estratégia e crescimento",
-    "Um hub de crescimento empresarial",
-    "Materiais gráficos personalizados",
-    "Assessoria comercial e estrutura de vendas",
-    "Consultoria empresarial e clareza estratégica",
-    "Marketing, vendas e tecnologia trabalhando juntos",
-    "Para quem o Grupo Vittore existe",
-    "Como pensamos crescimento empresarial",
-    "Uma estrutura para comunicar melhor, vender melhor e crescer com mais clareza",
+    "O Grupo Vittore nasceu de uma inquietação simples: muitas empresas não perdem crescimento por falta de esforço, mas por falta de clareza.",
+    "Vittore vem de vitória, em italiano.",
+    "A escolha de Marco Aurélio como símbolo nasce da mesma lógica.",
+    "Por isso, a empresa foi construída como um hub de crescimento empresarial.",
+    "Materiais Gráficos Personalizados",
+    "Assessoria Comercial",
+    "Consultoria Empresarial e Planejamento Estratégico",
+    "Marketing e Geração de Demanda",
+    "Vendas e Performance Comercial",
+    "Tecnologia e Automações",
+    "Para quem o Grupo Vittore é indicado",
+    "Como essas frentes se conectam",
   ]) {
     assert.match(aboutPage, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
+
+  assert.doesNotMatch(
+    aboutPage,
+    /Um hub de crescimento empresarial criado para conectar presença, estratégia e estrutura comercial\.|Uma empresa criada para conectar presença, estratégia e crescimento/i,
+  );
+  assert.doesNotMatch(aboutPage, /arquétipo/i);
 
   assert.match(aboutPage, /href="\/assessoria-comercial"/);
   assert.match(aboutPage, /href="\/materiais-impressos"/);
@@ -41,6 +49,37 @@ test("sobre institucional apresenta estrutura completa, SEO e CTAs corretos", as
   assert.match(aboutPage, /Gustavo Astério/);
   assert.match(aboutPage, /Fundador do Grupo Vittore \| Assessor de Crescimento Empresarial/);
   assert.match(aboutPage, /ceo-gustavo-asterio\.png\.png/);
+});
+
+test("sobre institucional controla títulos longos no mobile para evitar quebras ruins", async () => {
+  const aboutPage = await read("src/app/sobre/page.tsx");
+
+  assert.match(aboutPage, /ControlledTitle/);
+  assert.match(
+    aboutPage,
+    /const ABOUT_HERO_MOBILE_LINES = \[\s*"Sobre o",\s*"Grupo Vittore"\s*,?\s*\] as const/,
+  );
+  assert.match(
+    aboutPage,
+    /const ABOUT_CONSULTORIA_MOBILE_LINES = \[\s*"Consultoria Empresarial",\s*"e Planejamento",\s*"Estratégico"\s*,?\s*\] as const/,
+  );
+  assert.match(
+    aboutPage,
+    /const ABOUT_MATERIAIS_MOBILE_LINES = \[\s*"Materiais Gráficos",\s*"Personalizados"\s*,?\s*\] as const/,
+  );
+  assert.match(
+    aboutPage,
+    /const ABOUT_MARKETING_MOBILE_LINES = \[\s*"Marketing e Geração",\s*"de Demanda"\s*,?\s*\] as const/,
+  );
+  assert.match(
+    aboutPage,
+    /const ABOUT_VENDAS_MOBILE_LINES = \[\s*"Vendas e Performance",\s*"Comercial"\s*,?\s*\] as const/,
+  );
+  assert.match(
+    aboutPage,
+    /const ABOUT_TECNOLOGIA_MOBILE_LINES = \[\s*"Tecnologia",\s*"e Automações"\s*,?\s*\] as const/,
+  );
+  assert.match(aboutPage, /<ControlledTitle className="sm:hidden" lines=\{mobileLines\} \/>/);
 });
 
 test("cookie consent existe como client component e layout o renderiza uma única vez", async () => {
