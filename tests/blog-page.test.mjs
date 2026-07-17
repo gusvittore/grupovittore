@@ -59,8 +59,7 @@ test("blog supports future content routes without creating external infrastructu
 });
 
 test("institutional refinement keeps the home article preview, founder block, and blog hierarchy scoped", async () => {
-  const [homeBlog, aboutPage, blogHome, blogData] = await Promise.all([
-    read("src/app/_components/home-blog.tsx"),
+  const [aboutPage, blogHome, blogData] = await Promise.all([
     read("src/app/sobre/page.tsx"),
     read("src/app/_components/blog/blog-home.tsx"),
     read("src/content/blog/index.ts"),

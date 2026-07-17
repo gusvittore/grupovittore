@@ -8,7 +8,15 @@ const heroCopy = {
     "O Grupo Vittore atua em frentes complementares para ajudar empresas a crescer com mais clareza, presença e controle. Unimos assessoria comercial, consultoria empresarial, materiais gráficos personalizados, produção e entrega para todo o Brasil, além de conteúdo estratégico para fortalecer a operação e a comunicação da marca no mercado.",
 } as const;
 
-const heroTitleLines = [
+const heroTitleMobileLines = [
+  "Grupo Vittore:",
+  "Crescimento, presença e",
+  "estrutura para empresas",
+  "que querem vender",
+  "melhor",
+] as const;
+
+const heroTitleDesktopLines = [
   "Grupo Vittore:",
   "Crescimento, presença e",
   "estrutura para empresas",
@@ -20,12 +28,12 @@ function HeroTitle({ mobile = false }: { mobile?: boolean }) {
     <h1
       className={
         mobile
-          ? "mt-8 max-w-[710px] font-serif text-[clamp(1.8rem,7.6vw,2.3rem)] font-medium leading-[1.04] tracking-[-0.025em] text-[#fbf8f4]"
+          ? "mt-8 max-w-full font-serif text-[clamp(1.75rem,7.2vw,2.2rem)] font-medium leading-[1.04] tracking-[-0.025em] text-[#fbf8f4]"
           : "mt-8 max-w-[700px] font-serif text-[clamp(2.7rem,11vw,4.1rem)] font-medium leading-[1.02] tracking-[-0.025em] text-[#fbf8f4] lg:text-[clamp(3.6rem,4.2vw,4.8rem)] lg:leading-[1.03]"
       }
     >
       <ControlledTitle
-        lines={heroTitleLines}
+        lines={mobile ? heroTitleMobileLines : heroTitleDesktopLines}
         className="[&>span:last-child]:text-[#e1aa4c]"
       />
     </h1>

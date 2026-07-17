@@ -314,7 +314,7 @@ export function BlogHome() {
             <div className="mx-auto w-full max-w-[1500px] px-6 py-14 sm:px-8 sm:py-16">
               <p className="text-xs font-extrabold uppercase tracking-[0.27em] text-[#e3ad51] sm:text-sm">Blog Grupo Vittore</p>
               <div className="mt-7 h-px w-14 bg-[#e3ad51]" />
-              <h1 className="blog-hero-mobile-title mt-9 max-w-[760px] font-serif text-[clamp(2.15rem,10vw,2.8rem)] font-medium leading-[1.04] tracking-[-0.035em]">
+              <h1 className="blog-hero-mobile-title mt-9 max-w-full font-serif text-[clamp(2rem,8.8vw,2.5rem)] font-medium leading-[1.04] tracking-[-0.035em]">
                 <ControlledTitle
                   lines={[
                     "Conteúdo estratégico",
@@ -371,7 +371,7 @@ export function BlogHome() {
           <article className="group grid overflow-hidden rounded-[28px] border border-[#b29157]/35 bg-[#fffdf9] text-[#071026] shadow-[0_22px_60px_rgba(9,14,31,0.08)] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.84fr)]">
             <div className="p-7 sm:p-10 lg:p-12">
               <PostMeta post={highlightedPost} />
-              <h3 className="blog-highlight-title-mobile mt-6 max-w-[760px] font-serif text-[clamp(1.95rem,8vw,2.7rem)] font-medium leading-[1.06] tracking-[-0.025em] text-[#07142d] transition-colors group-hover:text-[#031126] lg:hidden">
+              <h3 className="blog-highlight-title-mobile mt-6 max-w-full font-serif text-[clamp(1.75rem,7vw,2.2rem)] font-medium leading-[1.06] tracking-[-0.025em] text-[#07142d] transition-colors group-hover:text-[#031126] lg:hidden">
                 <ControlledTitle
                   lines={
                     highlightedPost.blogFeaturedTitleMobileLines ??

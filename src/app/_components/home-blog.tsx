@@ -4,7 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { BLOG_POSTS } from "../../content/blog";
-import { ControlledTitle, formatDisplayNumber } from "./controlled-title";
+import {
+  ControlledTitle,
+  formatDisplayNumber,
+  MOBILE_SECTION_TITLE_CLASS,
+} from "./controlled-title";
 
 const articles = BLOG_POSTS;
 const homeBlogTitleMobileLines = [
@@ -53,7 +57,7 @@ export function HomeBlog() {
             <p className="text-xs font-extrabold uppercase tracking-[0.27em] text-[#8a5b18] sm:text-sm">
               Blog estratégico
             </p>
-            <h2 className="mt-5 max-w-[720px] font-serif text-[clamp(2.35rem,8vw,3.2rem)] font-medium leading-[1.02] tracking-[-0.025em] text-[#07142d] sm:text-[clamp(2.8rem,4vw,4rem)]">
+            <h2 className={`mt-5 ${MOBILE_SECTION_TITLE_CLASS} max-w-full text-[#07142d] sm:max-w-[720px] sm:text-[clamp(2.8rem,4vw,4rem)]`}>
               <span className="home-blog-title-mobile sm:hidden">
                 <ControlledTitle lines={homeBlogTitleMobileLines} />
               </span>

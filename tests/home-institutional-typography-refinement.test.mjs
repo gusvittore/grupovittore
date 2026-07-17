@@ -7,10 +7,7 @@ async function read(path) {
 }
 
 test("hero institucional segue a nova referência com fundo oficial e título controlado", async () => {
-  const [hero, blogData] = await Promise.all([
-    read("src/app/_components/home-hero.tsx"),
-    read("src/content/blog/index.ts"),
-  ]);
+  const hero = await read("src/app/_components/home-hero.tsx");
 
   assert.match(
     hero,
@@ -25,7 +22,10 @@ test("hero institucional segue a nova referência com fundo oficial e título co
     assert.match(hero, new RegExp(line.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&")));
   }
   assert.match(hero, /ControlledTitle/);
-  assert.match(hero, /heroTitleLines/);
+  assert.match(hero, /heroTitleMobileLines/);
+  assert.match(hero, /heroTitleDesktopLines/);
+  assert.match(hero, /"que querem vender"/);
+  assert.match(hero, /"melhor"/);
   assert.match(hero, /lg:text-\[clamp\(3\.6rem,4\.2vw,4\.8rem\)\]/);
   assert.match(hero, /max-w-\[680px\]/);
   assert.match(hero, /sm:text-xl sm:leading-9/);

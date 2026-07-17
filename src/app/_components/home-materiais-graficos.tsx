@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { MOBILE_SECTION_TITLE_CLASS } from "./controlled-title";
 
 const materialBenefits = [
   {
@@ -39,7 +40,7 @@ export function HomeMateriaisGraficos() {
           <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-[#86591b] sm:text-sm">
             Presença além do digital
           </p>
-          <h2 className="mt-8 font-serif text-[clamp(2.25rem,9.6vw,3rem)] font-medium leading-[1] tracking-[-0.025em] text-[#06132d] sm:text-[clamp(2.8rem,4vw,4rem)]">
+          <h2 className={`mt-8 ${MOBILE_SECTION_TITLE_CLASS} max-w-full text-[#06132d] sm:text-[clamp(2.8rem,4vw,4rem)]`}>
             <span className="block whitespace-nowrap">Materiais Gráficos</span>
             <span className="block whitespace-nowrap">Personalizados</span>
           </h2>
@@ -101,8 +102,8 @@ export function HomeMateriaisGraficos() {
                 className="text-sm font-extrabold uppercase tracking-[0.13em] text-[#835719] sm:text-base"
               >
                 <span className="block sm:inline">Produção e entrega para</span>{" "}
-                <span className="block sm:inline">todo o </span>
                 <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                  <span>todo o</span>
                   <Image
                     src="/assets/home-institucional/icons/bandeira-brasil.png.png"
                     alt="Bandeira do Brasil"

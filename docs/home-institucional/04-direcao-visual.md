@@ -192,3 +192,18 @@ Se uma linha controlada não couber em 375px, deve-se reduzir levemente o font-s
 Os números são gerados com `String(index + 1).padStart(2, "0")` e tratados como unidade indivisível com `white-space: nowrap`, `inline-flex`, `tabular-nums`, `shrink-0` e largura mínima. Assim, o sexto card aparece como `06`, nunca como `0` e `6` em linhas separadas.
 
 O CTA final usa `Conhecer Assessoria Comercial` e mantém o padrão compartilhado de botões com o CTA final do Blog. As bolinhas douradas permanecem restritas ao desktop.
+
+### Regra de ouro contra corte lateral
+
+- Toda linha controlada deve ser testada pelos glifos em `375px`, `390px` e `430px`, e não apenas pelo `scrollWidth` do container.
+- Se a linha não couber com folga em `375px`, reduzir o font-size mobile, o tracking ou o padding local; se ainda não couber, revisar a quebra editorial.
+- Nunca usar `overflow-hidden` ou `overflow-x-hidden` para mascarar texto cortado. Proteções gerais de página não substituem o encaixe real do texto.
+- Títulos, descrições, botões e cards devem respeitar `max-width: 100%` e o padding lateral do container.
+- Os títulos institucionais equivalentes de Materiais Gráficos, Assessoria Comercial e Blog Estratégico usam a mesma escala mobile; Hero e CTA podem ter escalas próprias.
+
+Composições mobile aprovadas:
+
+- Hero: `Grupo Vittore:` / `Crescimento, presença e` / `estrutura para empresas` / `que querem vender` / `melhor`.
+- Blog Estratégico: `Conhecimento para` / `decisões empresariais` / `mais claras`.
+- CTA final: `Conheça a frente` / `estratégica de` / `crescimento comercial` / `do Grupo Vittore.`.
+- Produção nacional: `Produção e entrega para` / `todo o [bandeira] Brasil`. A segunda linha inteira é um único grupo indivisível.

@@ -56,3 +56,16 @@ As linhas devem seguir estas regras:
 O componente comum `src/app/_components/controlled-title.tsx` é o responsável pela renderização. Números de cards usam `formatDisplayNumber(index)`, que aplica `String(index + 1).padStart(2, "0")`, junto de `white-space: nowrap`, `tabular-nums` e largura mínima para impedir que `06` seja dividido.
 
 A Home institucional deve exibir seis artigos no bloco Blog Estratégico. O CTA final da Home e o CTA final do Blog usam o componente compartilhado `InstitutionalCtaActions`, com os textos `Conhecer Assessoria Comercial` e `Conhecer Materiais Gráficos`, mantendo o mesmo tamanho, raio, preenchimento e empilhamento mobile.
+
+## Validação obrigatória contra overflow mobile
+
+- Testar cada linha controlada pelos glifos em `375px`, `390px` e `430px`.
+- Se qualquer palavra tocar ou ultrapassar o limite útil, reduzir o font-size mobile, o tracking ou o padding antes de publicar; se necessário, alterar a quebra editorial aprovada.
+- Nunca usar `overflow-hidden` ou `overflow-x-hidden` para mascarar palavras cortadas.
+- `white-space: nowrap` só pode permanecer quando a linha inteira cabe de verdade em `375px`.
+- Títulos, descrições, botões e cards devem respeitar a largura útil do container e `max-width: 100%`.
+
+Composições obrigatórias atuais:
+
+- Hero do Blog: `Conteúdo estratégico` / `para empresas que` / `querem crescer com` / `mais clareza`.
+- Leitura em destaque: `Como identificar` / `gargalos comerciais` / `antes de investir mais` / `em tráfego`.

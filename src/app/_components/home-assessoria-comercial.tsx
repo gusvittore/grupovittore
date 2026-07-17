@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { MOBILE_SECTION_TITLE_CLASS } from "./controlled-title";
 
 const commercialPillars = [
   {
@@ -40,7 +41,7 @@ export function HomeAssessoriaComercial() {
             <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-[#e1aa47] sm:text-sm">
               Principal frente estratégica
             </p>
-            <h2 className="mt-8 font-serif text-[clamp(3rem,4.2vw,4.5rem)] font-medium leading-[0.94] tracking-[-0.02em] text-[#fbf8f4]">
+            <h2 className={`mt-8 ${MOBILE_SECTION_TITLE_CLASS} max-w-full text-[#fbf8f4] sm:text-[clamp(3rem,4.2vw,4.5rem)] sm:leading-[0.94] sm:tracking-[-0.02em]`}>
               Assessoria<br />Comercial
             </h2>
             <span className="mt-8 block h-0.5 w-16 bg-[#d79c3f]" />

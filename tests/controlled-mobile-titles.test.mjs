@@ -60,8 +60,8 @@ test("Home and Blog use the shared final CTA action pattern", async () => {
   assert.match(homeCta, /InstitutionalCtaActions/);
   assert.match(homeCta, /Conheça a frente/);
   assert.match(homeCta, /ControlledTitle/);
-  assert.match(homeCta, /"estratégia de"/);
-  assert.doesNotMatch(homeCta, /estratégica de/);
+  assert.match(homeCta, /"estratégica de"/);
+  assert.doesNotMatch(homeCta, /"estratégia de"/);
   assert.doesNotMatch(homeCta, /Ver Assessoria Comercial/);
   assert.match(blogHome, /InstitutionalCtaActions/);
   assert.match(blogHome, /post\.blogCardTitleMobileLines \?\?/);
@@ -78,10 +78,14 @@ test("mobile hero and featured titles use exact controlled lines", async () => {
     "Grupo Vittore:",
     "Crescimento, presença e",
     "estrutura para empresas",
-    "que querem vender melhor",
+    "que querem vender",
+    "melhor",
   ]) {
     assert.match(hero, new RegExp(line.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&")));
   }
+  assert.match(hero, /const heroTitleMobileLines = \[/);
+  assert.match(hero, /const heroTitleDesktopLines = \[/);
+  assert.match(hero, /lines=\{mobile \? heroTitleMobileLines : heroTitleDesktopLines\}/);
   assert.match(hero, /ControlledTitle/);
   assert.match(blogHome, /blogFeaturedTitleMobileLines/);
   assert.match(blogHome, /ControlledTitle/);
@@ -95,7 +99,11 @@ test("Brazil flag and label stay together as an indivisible inline group", async
   const materials = await read("src/app/_components/home-materiais-graficos.tsx");
 
   assert.match(materials, /inline-flex items-center gap-2 whitespace-nowrap/);
-  assert.match(materials, /alt="Bandeira do Brasil"[\s\S]*?<span>Brasil<\/span>/);
+  assert.match(
+    materials,
+    /inline-flex items-center gap-2 whitespace-nowrap[\s\S]*?<span>todo o<\/span>[\s\S]*?alt="Bandeira do Brasil"[\s\S]*?<span>Brasil<\/span>/,
+  );
+  assert.doesNotMatch(materials, /className="block sm:inline">todo o/);
 });
 
 test("documentation defines nowrap visual lines and all post title contexts", async () => {
@@ -110,17 +118,38 @@ test("documentation defines nowrap visual lines and all post title contexts", as
   assert.match(docs, /blogFeaturedTitleMobileLines/);
   assert.match(docs, /white-space: nowrap/);
   assert.match(docs, /reduzir[^\n]*font-size mobile/i);
+  assert.match(docs, /375px/);
+  assert.match(docs, /que querem vender[\s\S]*melhor/);
+  assert.match(docs, /todo o[\s\S]*bandeira[\s\S]*Brasil/i);
+  assert.match(docs, /nunca[^\n]*overflow-hidden/i);
 });
 
 test("mobile title scales keep the longest controlled lines inside 375px", async () => {
-  const [hero, homeBlog, blogHome] = await Promise.all([
+  const [hero, homeBlog, homeCta, blogHome] = await Promise.all([
     read("src/app/_components/home-hero.tsx"),
     read("src/app/_components/home-blog.tsx"),
+    read("src/app/_components/home-cta.tsx"),
     read("src/app/_components/blog/blog-home.tsx"),
   ]);
 
-  assert.match(hero, /text-\[clamp\(1\.8rem,7\.6vw,2\.3rem\)\]/);
+  assert.match(hero, /text-\[clamp\(1\.75rem,7\.2vw,2\.2rem\)\]/);
   assert.match(homeBlog, /text-\[clamp\(1\.28rem,5\.35vw,1\.62rem\)\]/);
-  assert.match(blogHome, /blog-hero-mobile-title[^\n]*text-\[clamp\(2\.15rem,10vw,2\.8rem\)\]/);
-  assert.match(blogHome, /blog-highlight-title-mobile[^\n]*text-\[clamp\(1\.95rem,8vw,2\.7rem\)\]/);
+  assert.match(homeCta, /text-\[clamp\(1\.9rem,7\.8vw,2\.6rem\)\]/);
+  assert.match(blogHome, /blog-hero-mobile-title[^\n]*text-\[clamp\(2rem,8\.8vw,2\.5rem\)\]/);
+  assert.match(blogHome, /blog-highlight-title-mobile[^\n]*text-\[clamp\(1\.75rem,7vw,2\.2rem\)\]/);
+});
+
+test("equivalent Home section headings share one mobile scale", async () => {
+  const [component, materials, assessoria, homeBlog] = await Promise.all([
+    read("src/app/_components/controlled-title.tsx"),
+    read("src/app/_components/home-materiais-graficos.tsx"),
+    read("src/app/_components/home-assessoria-comercial.tsx"),
+    read("src/app/_components/home-blog.tsx"),
+  ]);
+
+  assert.match(component, /export const MOBILE_SECTION_TITLE_CLASS/);
+  assert.match(component, /text-\[clamp\(2rem,7vw,2\.55rem\)\]/);
+  for (const source of [materials, assessoria, homeBlog]) {
+    assert.match(source, /MOBILE_SECTION_TITLE_CLASS/);
+  }
 });
