@@ -9,7 +9,7 @@ type ControlledTitleProps = {
 export function ControlledTitle({
   lines,
   className,
-  lineClassName = "block",
+  lineClassName = "block whitespace-nowrap",
 }: ControlledTitleProps) {
   return (
     <span className={className}>
@@ -34,7 +34,7 @@ export function ResponsiveControlledTitle({
   desktopLines,
   desktopTitle,
   className,
-  lineClassName = "block",
+  lineClassName = "block whitespace-nowrap",
 }: ResponsiveControlledTitleProps) {
   const desktopContent = desktopLines ?? (desktopTitle ? [desktopTitle] : lines);
 

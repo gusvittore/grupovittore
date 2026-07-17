@@ -7,6 +7,11 @@ import { BLOG_POSTS } from "../../content/blog";
 import { ControlledTitle, formatDisplayNumber } from "./controlled-title";
 
 const articles = BLOG_POSTS;
+const homeBlogTitleMobileLines = [
+  "Conhecimento para",
+  "decisões empresariais",
+  "mais claras",
+] as const;
 
 export function HomeBlog() {
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -49,9 +54,12 @@ export function HomeBlog() {
               Blog estratégico
             </p>
             <h2 className="mt-5 max-w-[720px] font-serif text-[clamp(2.35rem,8vw,3.2rem)] font-medium leading-[1.02] tracking-[-0.025em] text-[#07142d] sm:text-[clamp(2.8rem,4vw,4rem)]">
-              <span className="home-blog-title-mobile block sm:inline">Conhecimento para</span>{" "}
-              <span className="home-blog-title-mobile block sm:inline">decisões empresariais</span>{" "}
-              <span className="home-blog-title-mobile block sm:inline">mais claras</span>
+              <span className="home-blog-title-mobile sm:hidden">
+                <ControlledTitle lines={homeBlogTitleMobileLines} />
+              </span>
+              <span className="hidden sm:inline">
+                Conhecimento para decisões empresariais mais claras
+              </span>
             </h2>
           </div>
           <p className="text-lg leading-8 text-[#263752] sm:text-xl sm:leading-9">
@@ -108,7 +116,7 @@ export function HomeBlog() {
                   </span>
                 </div>
                 <span className="mt-3 h-0.5 w-8 bg-[#a56a19]" />
-                <h3 className="mt-5 font-serif text-[clamp(1.48rem,6.6vw,1.82rem)] font-semibold leading-[1.08] text-[#07142d] sm:text-[clamp(1.7rem,2.5vw,2.2rem)]">
+                <h3 className="mt-5 font-serif text-[clamp(1.28rem,5.35vw,1.62rem)] font-semibold leading-[1.08] text-[#07142d] sm:text-[clamp(1.7rem,2.5vw,2.2rem)]">
                   <span className="home-blog-article-title-mobile block sm:hidden">
                     <ControlledTitle lines={article.homeCardTitleMobileLines} />
                   </span>

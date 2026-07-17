@@ -28,6 +28,7 @@ export type BlogPost = {
   image: string;
   homeCardTitleMobileLines: readonly string[];
   homeCardTitleDesktopLines?: readonly string[];
+  blogCardTitleMobileLines?: readonly string[];
   blogFeaturedTitleMobileLines?: readonly string[];
   homeCard: HomeCardPresentation;
   featured?: boolean;

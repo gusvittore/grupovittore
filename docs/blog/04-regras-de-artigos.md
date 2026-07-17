@@ -39,6 +39,7 @@ Cada novo post usado na Home ou no Blog deve trazer:
 - `coverImage`;
 - `homeCardTitleMobileLines`: array obrigatório de linhas controladas para cards da Home;
 - `homeCardTitleDesktopLines`: opcional, apenas quando a composição desktop exigir linhas próprias;
+- `blogCardTitleMobileLines`: opcional para cards do arquivo do Blog; quando ausente, o card reutiliza `homeCardTitleMobileLines`;
 - `blogFeaturedTitleMobileLines`: opcional para a leitura em destaque;
 - `homeCard`: apresentação específica da prévia da Home, quando imagem, categoria ou descrição diferirem do artigo.
 
@@ -48,7 +49,8 @@ As linhas devem seguir estas regras:
 - manter grupos semânticos como “gargalos comerciais”, “operação comercial” e “decisões empresariais” juntos;
 - não deixar “e”, “de”, “para” ou “com” isolados;
 - evitar uma única palavra na última linha;
-- renderizar cada linha em um `span` com `display: block` no mobile;
+- renderizar cada linha em um `span` com `display: block` e `white-space: nowrap` no mobile;
+- se uma linha controlada não couber em 375px, reduzir levemente o font-size mobile ou o padding do contexto; nunca remover o array nem permitir quebra interna;
 - manter o título SEO separado do título visual.
 
 O componente comum `src/app/_components/controlled-title.tsx` é o responsável pela renderização. Números de cards usam `formatDisplayNumber(index)`, que aplica `String(index + 1).padStart(2, "0")`, junto de `white-space: nowrap`, `tabular-nums` e largura mínima para impedir que `06` seja dividido.

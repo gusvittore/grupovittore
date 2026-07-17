@@ -20,7 +20,7 @@ function HeroTitle({ mobile = false }: { mobile?: boolean }) {
     <h1
       className={
         mobile
-          ? "mt-8 max-w-[710px] font-serif text-[clamp(2.45rem,10.8vw,3.25rem)] font-medium leading-[1.04] tracking-[-0.025em] text-[#fbf8f4]"
+          ? "mt-8 max-w-[710px] font-serif text-[clamp(1.8rem,7.6vw,2.3rem)] font-medium leading-[1.04] tracking-[-0.025em] text-[#fbf8f4]"
           : "mt-8 max-w-[700px] font-serif text-[clamp(2.7rem,11vw,4.1rem)] font-medium leading-[1.02] tracking-[-0.025em] text-[#fbf8f4] lg:text-[clamp(3.6rem,4.2vw,4.8rem)] lg:leading-[1.03]"
       }
     >

@@ -185,7 +185,9 @@ A home institucional deve parecer a pagina principal de uma marca premium, estra
 
 Titulos importantes da Home não devem depender da quebra automática do navegador. O título real permanece separado do título visual sempre que a composição exigir controle editorial.
 
-Para cards de artigos, as linhas ficam nos dados locais dos posts em `homeCardTitleMobileLines`. Cada item deve usar de 2 a 5 linhas, preferencialmente 3 ou 4, sem conectivos ou palavras isoladas. A renderização deve usar o componente `src/app/_components/controlled-title.tsx`, com um `span` por linha e `display: block` no mobile. A Home exibe seis cards no bloco Blog Estratégico.
+Para cards de artigos, as linhas ficam nos dados locais dos posts em `homeCardTitleMobileLines`; cards do Blog podem declarar `blogCardTitleMobileLines` e a leitura em destaque pode declarar `blogFeaturedTitleMobileLines`. Cada item deve usar de 2 a 5 linhas, preferencialmente 3 ou 4, sem conectivos ou palavras isoladas. A renderização deve usar o componente `src/app/_components/controlled-title.tsx`, com um `span` por linha, `display: block` e `white-space: nowrap` no mobile. A Home exibe seis cards no bloco Blog Estratégico.
+
+Se uma linha controlada não couber em 375px, deve-se reduzir levemente o font-size mobile ou o padding do contexto. Não se deve remover o array, permitir quebra interna ou devolver a decisão de linha ao navegador.
 
 Os números são gerados com `String(index + 1).padStart(2, "0")` e tratados como unidade indivisível com `white-space: nowrap`, `inline-flex`, `tabular-nums`, `shrink-0` e largura mínima. Assim, o sexto card aparece como `06`, nunca como `0` e `6` em linhas separadas.
 
