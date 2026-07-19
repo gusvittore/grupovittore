@@ -12,6 +12,7 @@ import {
   getBlogPostBySlug,
   getRelatedBlogPosts,
 } from "@/lib/blog/content";
+import type { BlogPostSummary } from "@/lib/blog/types";
 
 const SITE_URL = "https://grupovittore.com.br";
 
@@ -68,6 +69,73 @@ function formatPublicationDate(value: string) {
     year: "numeric",
     timeZone: "UTC",
   }).format(new Date(`${value}T00:00:00Z`));
+}
+
+function RelatedArticlesList({
+  relatedPosts,
+  variant = "flow",
+}: {
+  relatedPosts: BlogPostSummary[];
+  variant?: "flow" | "sidebar";
+}) {
+  if (relatedPosts.length === 0) return null;
+
+  const isSidebar = variant === "sidebar";
+
+  return (
+    <section
+      className={
+        isSidebar
+          ? "rounded-[18px] border border-[#b29157]/35 bg-[#fffdf9] p-6 sm:p-7"
+          : "mt-14 border-t border-[#b29157]/30 pt-10"
+      }
+    >
+      <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#956119]">
+        Continue lendo
+      </p>
+      <h2
+        className={
+          isSidebar
+            ? "mt-3 font-serif text-2xl font-semibold leading-tight text-[#07142d]"
+            : "mt-3 font-serif text-[clamp(2rem,5vw,2.8rem)] font-semibold leading-tight text-[#07142d]"
+        }
+      >
+        Artigos relacionados
+      </h2>
+      <div
+        className={
+          isSidebar
+            ? "mt-4 divide-y divide-[#b29157]/20"
+            : "mt-6 divide-y divide-[#b29157]/25 rounded-[18px] border border-[#b29157]/30 bg-[#fffdf9] px-5 sm:px-7"
+        }
+      >
+        {relatedPosts.map((relatedPost) => (
+          <Link
+            key={relatedPost.slug}
+            href={`/blog/${relatedPost.slug}`}
+            className={
+              isSidebar
+                ? "group block py-4 first:pt-0 last:pb-0"
+                : "group block py-6 first:pt-6 last:pb-6"
+            }
+          >
+            <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#956119]">
+              {relatedPost.category} · {relatedPost.readingTime}
+            </p>
+            <h3
+              className={
+                isSidebar
+                  ? "mt-2 font-serif text-base font-semibold leading-[1.25] text-[#07142d] transition group-hover:text-[#8a5b18] sm:text-lg"
+                  : "mt-3 font-serif text-[1.45rem] font-semibold leading-[1.15] text-[#07142d] transition group-hover:text-[#8a5b18] sm:text-[1.65rem]"
+              }
+            >
+              {relatedPost.title}
+            </h3>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
@@ -136,51 +204,42 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </header>
 
           <div className="mx-auto w-full max-w-[1180px] px-5 pb-20 pt-8 sm:px-8 sm:pb-24 sm:pt-12 lg:px-12">
-            <div className="relative aspect-[16/9] overflow-hidden rounded-[22px] border border-[#b29157]/30 bg-[#0b1d38] shadow-[0_22px_60px_rgba(9,14,31,0.08)]">
-              <Image
-                src={post.coverImage}
-                alt={post.coverAlt}
-                fill
-                priority
-                sizes="(max-width: 767px) 92vw, 1100px"
-                className="object-cover"
-              />
-            </div>
+            <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16">
+              <div className="min-w-0">
+                <div className="relative aspect-[16/9] overflow-hidden rounded-[22px] border border-[#b29157]/30 bg-[#0b1d38] shadow-[0_22px_60px_rgba(9,14,31,0.08)]">
+                  <Image
+                    src={post.coverImage}
+                    alt={post.coverAlt}
+                    fill
+                    priority
+                    sizes="(max-width: 767px) 92vw, (max-width: 1023px) 86vw, 760px"
+                    className="object-cover"
+                  />
+                </div>
 
-            <div className="mx-auto mt-12 max-w-[880px] sm:mt-16">
-              <MarkdownContent markdown={post.content} />
-              <BlogArticleCta categorySlug={post.categorySlug} />
+                <div className="mt-12 max-w-[780px] sm:mt-16">
+                  <MarkdownContent markdown={post.content} />
+                  <div className="lg:hidden">
+                    <BlogArticleCta categorySlug={post.categorySlug} />
+                  </div>
 
-              <div className="mx-auto mt-12 max-w-[520px]">
-                <BlogAuthorCard />
+                  <div className="mx-auto mt-12 max-w-[520px] lg:hidden">
+                    <BlogAuthorCard />
+                  </div>
+
+                  <div className="lg:hidden">
+                    <RelatedArticlesList relatedPosts={relatedPosts} />
+                  </div>
+                </div>
               </div>
 
-              {relatedPosts.length > 0 ? (
-                <section className="mt-14 border-t border-[#b29157]/30 pt-10">
-                  <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#956119]">
-                    Continue lendo
-                  </p>
-                  <h2 className="mt-3 font-serif text-[clamp(2rem,5vw,2.8rem)] font-semibold leading-tight text-[#07142d]">
-                    Artigos relacionados
-                  </h2>
-                  <div className="mt-6 divide-y divide-[#b29157]/25 rounded-[18px] border border-[#b29157]/30 bg-[#fffdf9] px-5 sm:px-7">
-                    {relatedPosts.map((relatedPost) => (
-                      <Link
-                        key={relatedPost.slug}
-                        href={`/blog/${relatedPost.slug}`}
-                        className="group block py-6 first:pt-6 last:pb-6"
-                      >
-                        <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#956119]">
-                          {relatedPost.category} · {relatedPost.readingTime}
-                        </p>
-                        <h3 className="mt-3 font-serif text-[1.45rem] font-semibold leading-[1.15] text-[#07142d] transition group-hover:text-[#8a5b18] sm:text-[1.65rem]">
-                          {relatedPost.title}
-                        </h3>
-                      </Link>
-                    ))}
-                  </div>
-                </section>
-              ) : null}
+              <aside className="hidden space-y-5 lg:sticky lg:top-28 lg:block lg:self-start">
+                <BlogAuthorCard />
+                <div className="hidden lg:block">
+                  <BlogArticleCta categorySlug={post.categorySlug} variant="sidebar" />
+                </div>
+                <RelatedArticlesList relatedPosts={relatedPosts} variant="sidebar" />
+              </aside>
             </div>
           </div>
         </article>

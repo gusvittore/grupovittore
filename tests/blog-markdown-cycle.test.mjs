@@ -174,7 +174,12 @@ test("individual article routes generate metadata, render Markdown, and select C
   assert.match(route, /notFound\(\)/);
   assert.match(route, /<h1/);
   assert.match(route, /<MarkdownContent markdown=\{post\.content\}/);
-  assert.match(route, /<BlogArticleCta categorySlug=\{post\.categorySlug\}/);
+  assert.match(route, /lg:grid-cols-\[minmax\(0,1fr\)_300px\]/);
+  assert.match(route, /<aside className="hidden space-y-5 lg:sticky lg:top-28 lg:block lg:self-start">/);
+  assert.match(route, /<div className="lg:hidden">\s*<BlogArticleCta categorySlug=\{post\.categorySlug\}/);
+  assert.match(route, /<div className="hidden lg:block">\s*<BlogArticleCta categorySlug=\{post\.categorySlug\} variant="sidebar"/);
+  assert.ok(route.indexOf("<BlogAuthorCard />") < route.indexOf("variant=\"sidebar\""));
+  assert.ok(route.indexOf("variant=\"sidebar\"") < route.indexOf("<RelatedArticlesList relatedPosts={relatedPosts} variant=\"sidebar\" />"));
   assert.match(route, /application\/ld\+json/);
   assert.match(route, /alternates:/);
   assert.match(route, /openGraph:/);
@@ -200,8 +205,21 @@ test("individual article routes generate metadata, render Markdown, and select C
   assert.doesNotMatch(markdown, /INLINE_PATTERN\.lastIndex/);
 
   assert.match(cta, /categorySlug === "materiais-graficos"/);
+  assert.match(cta, /variant = "flow"/);
+  assert.match(cta, /variant === "sidebar"/);
   assert.match(cta, /banner-sidebar-materiais-graficos-2\.png\.png/);
   assert.match(cta, /"\/materiais-impressos" : "\/assessoria-comercial"/);
   assert.match(cta, /banner-sidebar-assessoria\.png\.png/);
   assert.match(cta, /href=\{href\}/);
+});
+
+test("related articles prefer the same category and complete from real posts", async () => {
+  const content = await read("src/lib/blog/content.ts");
+
+  assert.match(content, /const sameCategory = posts\.filter/);
+  assert.match(content, /candidate\.categorySlug === post\.categorySlug/);
+  assert.match(content, /const fallback = posts\.filter/);
+  assert.match(content, /candidate\.categorySlug !== post\.categorySlug/);
+  assert.match(content, /return \[\.\.\.sameCategory, \.\.\.fallback\]/);
+  assert.match(content, /slice\(0, limit\)/);
 });

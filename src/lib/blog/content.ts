@@ -385,12 +385,15 @@ export function getAllBlogSlugs() {
 }
 
 export function getRelatedBlogPosts(post: BlogPost, limit = 3) {
-  return loadBlogPosts()
-    .filter(
-      (candidate) =>
-        candidate.slug !== post.slug &&
-        candidate.categorySlug === post.categorySlug,
-    )
+  const posts = loadBlogPosts().filter((candidate) => candidate.slug !== post.slug);
+  const sameCategory = posts.filter(
+    (candidate) => candidate.categorySlug === post.categorySlug,
+  );
+  const fallback = posts.filter(
+    (candidate) => candidate.categorySlug !== post.categorySlug,
+  );
+
+  return [...sameCategory, ...fallback]
     .slice(0, limit)
     .map(toSummary);
 }
