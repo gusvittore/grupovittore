@@ -6,6 +6,30 @@ async function read(path) {
   return readFile(new URL(`../${path}`, import.meta.url), "utf8");
 }
 
+async function readHomeBlog() {
+  const [server, client] = await Promise.all([
+    read("src/app/_components/home-blog.tsx"),
+    read("src/app/_components/home-blog-client.tsx"),
+  ]);
+  return `${server}\n${client}`;
+}
+
+async function readBlogHome() {
+  const [server, client] = await Promise.all([
+    read("src/app/_components/blog/blog-home.tsx"),
+    read("src/app/_components/blog/blog-home-client.tsx"),
+  ]);
+  return `${server}\n${client}`;
+}
+
+async function readBlogData() {
+  const [types, content] = await Promise.all([
+    read("src/lib/blog/types.ts"),
+    read("src/lib/blog/content.ts"),
+  ]);
+  return `${types}\n${content}`;
+}
+
 test("controlled title primitives are available for editorial mobile layouts", async () => {
   const component = await read("src/app/_components/controlled-title.tsx");
 
@@ -18,25 +42,24 @@ test("controlled title primitives are available for editorial mobile layouts", a
 });
 
 test("blog data carries SEO titles separately from controlled card lines", async () => {
-  const data = await read("src/content/blog/index.ts");
+  const data = await readBlogData();
 
   assert.match(data, /homeCardTitleMobileLines:/);
-  assert.match(data, /blogCardTitleMobileLines\?:/);
+  assert.match(data, /blogCardTitleMobileLines:/);
   assert.match(data, /blogFeaturedTitleMobileLines:/);
   assert.match(data, /homeCard:/);
-  assert.match(data, /title: "Como identificar gargalos comerciais antes de investir mais em tráfego"/);
-  assert.match(data, /"Como identificar", "gargalos comerciais", "antes de investir mais", "em tráfego"/);
-  assert.match(data, /"Por que materiais", "gráficos ainda fortalecem", "a presença da marca"/);
-  assert.match(data, /"Marketing, vendas", "e tecnologia: como", "conectar as três áreas\."/);
-  assert.match(data, /"O que uma empresa", "precisa organizar", "antes de escalar", "aquisição"/);
-  assert.match(data, /"CRM não é só", "cadastro: é controle", "da operação comercial"/);
-  assert.match(data, /"Crescimento previsível", "começa com clareza", "sobre o processo\."/);
+  assert.match(data, /"Como saber se a empresa"[\s\S]*"sem perder controle"/);
+  assert.match(data, /"Como montar um pipeline"[\s\S]*"realmente ajudam a vender"/);
+  assert.match(data, /"CRM não é cadastro:"[\s\S]*"de gestão comercial"/);
+  assert.match(data, /"Como avaliar a qualidade"[\s\S]*"custo por lead"/);
+  assert.match(data, /"Cartão de visita com"[\s\S]*"e quando atrapalha"/);
+  assert.match(data, /"Como fazer follow-up"[\s\S]*"da memória do vendedor"/);
 });
 
 test("Home renders six data-driven cards with indivisible display numbers", async () => {
-  const homeBlog = await read("src/app/_components/home-blog.tsx");
+  const homeBlog = await readHomeBlog();
 
-  assert.match(homeBlog, /const articles = BLOG_POSTS/);
+  assert.match(homeBlog, /getHomeBlogPosts/);
   assert.match(homeBlog, /homeCardTitleMobileLines/);
   assert.match(homeBlog, /homeBlogTitleMobileLines/);
   assert.match(homeBlog, /ControlledTitle lines=\{homeBlogTitleMobileLines\}/);
@@ -49,7 +72,7 @@ test("Home renders six data-driven cards with indivisible display numbers", asyn
 test("Home and Blog use the shared final CTA action pattern", async () => {
   const [homeCta, blogHome, actions] = await Promise.all([
     read("src/app/_components/home-cta.tsx"),
-    read("src/app/_components/blog/blog-home.tsx"),
+    readBlogHome(),
     read("src/app/_components/cta-actions.tsx"),
   ]);
 
@@ -71,7 +94,7 @@ test("Home and Blog use the shared final CTA action pattern", async () => {
 test("mobile hero and featured titles use exact controlled lines", async () => {
   const [hero, blogHome] = await Promise.all([
     read("src/app/_components/home-hero.tsx"),
-    read("src/app/_components/blog/blog-home.tsx"),
+    readBlogHome(),
   ]);
 
   for (const line of [
@@ -128,9 +151,9 @@ test("documentation defines nowrap visual lines and all post title contexts", as
 test("mobile title scales keep the longest controlled lines inside 375px", async () => {
   const [hero, homeBlog, homeCta, blogHome] = await Promise.all([
     read("src/app/_components/home-hero.tsx"),
-    read("src/app/_components/home-blog.tsx"),
+    readHomeBlog(),
     read("src/app/_components/home-cta.tsx"),
-    read("src/app/_components/blog/blog-home.tsx"),
+    readBlogHome(),
   ]);
 
   assert.match(hero, /text-\[clamp\(1\.75rem,7\.2vw,2\.2rem\)\]/);
@@ -145,7 +168,7 @@ test("equivalent Home section headings share one mobile scale", async () => {
     read("src/app/_components/controlled-title.tsx"),
     read("src/app/_components/home-materiais-graficos.tsx"),
     read("src/app/_components/home-assessoria-comercial.tsx"),
-    read("src/app/_components/home-blog.tsx"),
+    readHomeBlog(),
   ]);
 
   assert.match(component, /export const MOBILE_SECTION_TITLE_CLASS/);

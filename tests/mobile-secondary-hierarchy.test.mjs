@@ -6,6 +6,22 @@ async function read(path) {
   return readFile(new URL(`../${path}`, import.meta.url), "utf8");
 }
 
+async function readHomeBlog() {
+  const [server, client] = await Promise.all([
+    read("src/app/_components/home-blog.tsx"),
+    read("src/app/_components/home-blog-client.tsx"),
+  ]);
+  return `${server}\n${client}`;
+}
+
+async function readBlogHome() {
+  const [server, client] = await Promise.all([
+    read("src/app/_components/blog/blog-home.tsx"),
+    read("src/app/_components/blog/blog-home-client.tsx"),
+  ]);
+  return `${server}\n${client}`;
+}
+
 test("Home secondary typography follows the approved mobile hierarchy", async () => {
   const [controlled, materials, assessoria, footer] = await Promise.all([
     read("src/app/_components/controlled-title.tsx"),
@@ -43,12 +59,12 @@ test("Brazil delivery line keeps the label before the flag as one group", async 
 });
 
 test("Blog card and category titles use reduced mobile scales", async () => {
-  const blog = await read("src/app/_components/blog/blog-home.tsx");
+  const blog = await readBlogHome();
 
   assert.match(blog, /MOBILE_CARD_TITLE_CLASS/);
   assert.match(blog, /ArticleCard[\s\S]*?MOBILE_CARD_TITLE_CLASS[\s\S]*?sm:text-\[1\.55rem\]/);
   assert.match(blog, /lg:text-\[clamp\(1\.55rem,2\.5vw,2\.05rem\)\]/);
-  assert.match(blog, /<h3 className="font-serif text-\[1\.8rem\] font-semibold[^\n]*sm:text-\[2\.4rem\]">\{category\}<\/h3>/);
+  assert.match(blog, /<h3 className="font-serif text-\[1\.8rem\] font-semibold[^\n]*sm:text-\[2\.4rem\]">\{category\.label\}<\/h3>/);
   assert.doesNotMatch(blog, /className="mt-5 font-serif text-\[clamp\(1\.55rem,2\.5vw,2\.05rem\)\]/);
   assert.doesNotMatch(blog, /<h3 className="font-serif text-\[2\.1rem\]/);
 });
@@ -56,8 +72,8 @@ test("Blog card and category titles use reduced mobile scales", async () => {
 test("approved main mobile titles remain unchanged", async () => {
   const [homeHero, homeBlog, blog] = await Promise.all([
     read("src/app/_components/home-hero.tsx"),
-    read("src/app/_components/home-blog.tsx"),
-    read("src/app/_components/blog/blog-home.tsx"),
+    readHomeBlog(),
+    readBlogHome(),
   ]);
 
   assert.match(homeHero, /text-\[clamp\(1\.75rem,7\.2vw,2\.2rem\)\]/);

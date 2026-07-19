@@ -6,6 +6,22 @@ async function read(path) {
   return readFile(new URL(`../${path}`, import.meta.url), "utf8");
 }
 
+async function readHomeBlog() {
+  const [server, client] = await Promise.all([
+    read("src/app/_components/home-blog.tsx"),
+    read("src/app/_components/home-blog-client.tsx"),
+  ]);
+  return `${server}\n${client}`;
+}
+
+async function readBlogData() {
+  const [types, content] = await Promise.all([
+    read("src/lib/blog/types.ts"),
+    read("src/lib/blog/content.ts"),
+  ]);
+  return `${types}\n${content}`;
+}
+
 test("hero institucional segue a nova referência com fundo oficial e título controlado", async () => {
   const hero = await read("src/app/_components/home-hero.tsx");
 
@@ -80,9 +96,9 @@ test("assessoria apresenta descrições ampliadas e remove apenas os separadores
 
 test("blog e CTA final usam títulos controlados e descrições mais legíveis", async () => {
   const [blog, cta, blogData] = await Promise.all([
-    read("src/app/_components/home-blog.tsx"),
+    readHomeBlog(),
     read("src/app/_components/home-cta.tsx"),
-    read("src/content/blog/index.ts"),
+    readBlogData(),
   ]);
 
   assert.match(blog, /Blog estratégico/);
@@ -96,7 +112,8 @@ test("blog e CTA final usam títulos controlados e descrições mais legíveis",
   assert.match(blog, /sm:text-\[clamp\(2\.8rem,4vw,4rem\)\]/);
   assert.match(blog, /font-semibold/);
   assert.match(blog, /sm:text-xl sm:leading-9/);
-  assert.equal((blogData.match(/homeCardTitleMobileLines: \[/g) ?? []).length, 6);
+  assert.match(blogData, /TITLE_LINES_BY_SLUG/);
+  assert.match(blog, /getHomeBlogPosts/);
 
   for (const line of [
     "Conheça a frente estratégica",

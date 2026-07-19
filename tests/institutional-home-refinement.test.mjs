@@ -6,15 +6,31 @@ async function read(path) {
   return readFile(new URL(`../${path}`, import.meta.url), "utf8");
 }
 
+async function readHomeBlog() {
+  const [server, client] = await Promise.all([
+    read("src/app/_components/home-blog.tsx"),
+    read("src/app/_components/home-blog-client.tsx"),
+  ]);
+  return `${server}\n${client}`;
+}
+
+async function readBlogData() {
+  const [types, content] = await Promise.all([
+    read("src/lib/blog/types.ts"),
+    read("src/lib/blog/content.ts"),
+  ]);
+  return `${types}\n${content}`;
+}
+
 test("institutional home follows the approved section order and content", async () => {
   const [page, hero, materials, assessoria, blog, cta, data] = await Promise.all([
     read("src/app/page.tsx"),
     read("src/app/_components/home-hero.tsx"),
     read("src/app/_components/home-materiais-graficos.tsx"),
     read("src/app/_components/home-assessoria-comercial.tsx"),
-    read("src/app/_components/home-blog.tsx"),
+    readHomeBlog(),
     read("src/app/_components/home-cta.tsx"),
-    read("src/content/blog/index.ts"),
+    readBlogData(),
   ]);
   const home = `${page}\n${hero}\n${materials}\n${assessoria}\n${blog}\n${cta}\n${data}`;
 
@@ -51,15 +67,15 @@ test("institutional home follows the approved section order and content", async 
   assert.ok(assessoriaPosition < blogPosition);
   assert.ok(blogPosition < ctaPosition);
 
-  for (const title of [
-    "Como identificar gargalos comerciais antes de investir mais em tráfego",
-    "Por que materiais gráficos ainda fortalecem a presença da marca",
-    "Marketing, vendas e tecnologia: como conectar as três áreas",
-    "O que uma empresa precisa organizar antes de escalar aquisição",
-    "CRM não é só cadastro: é controle da operação comercial",
-    "Crescimento previsível começa com clareza sobre o processo",
+  for (const slug of [
+    "como-escolher-acabamento-de-cartao-de-visita-profissional-sem-exagerar-no-custo",
+    "como-saber-se-a-empresa-esta-pronta-para-crescer-sem-perder-controle",
+    "crescer-sem-processo-aumenta-caos-empresa",
+    "como-montar-pipeline-comercial",
+    "crm-nao-e-cadastro-gestao-comercial",
+    "quais-indicadores-comerciais-mostram-onde-sua-venda-esta-travando",
   ]) {
-    assert.match(data, new RegExp(title));
+    assert.match(data, new RegExp(slug));
   }
 });
 
@@ -68,10 +84,10 @@ test("institutional mobile refinement keeps the approved menu untouched and comp
     read("src/app/_components/home-hero.tsx"),
     read("src/app/_components/home-materiais-graficos.tsx"),
     read("src/app/_components/home-assessoria-comercial.tsx"),
-    read("src/app/_components/home-blog.tsx"),
+    readHomeBlog(),
     read("src/app/_components/home-cta.tsx"),
     read("src/app/_components/site-header.tsx"),
-    read("src/content/blog/index.ts"),
+    readBlogData(),
   ]);
 
   assert.match(hero, /className="home-hero-mobile-visual[^\"]*"/);
@@ -92,10 +108,10 @@ test("institutional mobile refinement keeps the approved menu untouched and comp
   assert.match(assessoria, /Tecnologia e Automação[\s\S]*Empresarial/);
   assert.match(assessoria, /MOBILE_CARD_TITLE_CLASS/);
 
-  assert.match(blog, /const articles = BLOG_POSTS/);
-  assert.equal((data.match(/homeCardTitleMobileLines: \[/g) ?? []).length, 6);
-  assert.match(data, /crescimento previsível começa com clareza sobre o processo/i);
-  assert.match(data, /artigo-crescimento-previsivel\.png\.png/);
+  assert.match(blog, /getHomeBlogPosts/);
+  assert.match(data, /TITLE_LINES_BY_SLUG/);
+  assert.match(data, /como-saber-se-a-empresa-esta-pronta-para-crescer-sem-perder-controle/);
+  assert.match(data, /capa-empresa-pronta-para-crescer-sem-perder-controle\.png/);
   assert.match(blog, /home-blog-title-mobile/);
   assert.match(blog, /home-blog-article-title-mobile/);
 

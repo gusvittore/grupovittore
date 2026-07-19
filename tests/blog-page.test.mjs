@@ -10,11 +10,28 @@ async function exists(path) {
   await access(new URL(`../${path}`, import.meta.url));
 }
 
+async function readBlogHome() {
+  const [server, client, types] = await Promise.all([
+    read("src/app/_components/blog/blog-home.tsx"),
+    read("src/app/_components/blog/blog-home-client.tsx"),
+    read("src/lib/blog/types.ts"),
+  ]);
+  return `${server}\n${client}\n${types}`;
+}
+
+async function readBlogData() {
+  const [types, content] = await Promise.all([
+    read("src/lib/blog/types.ts"),
+    read("src/lib/blog/content.ts"),
+  ]);
+  return `${types}\n${content}`;
+}
+
 test("blog home has scalable local content and editorial sections", async () => {
   const [page, blogComponent, data] = await Promise.all([
     read("src/app/blog/page.tsx"),
-    read("src/app/_components/blog/blog-home.tsx"),
-    read("src/content/blog/index.ts"),
+    readBlogHome(),
+    readBlogData(),
   ]);
 
   assert.match(page, /metadata/);
@@ -27,17 +44,17 @@ test("blog home has scalable local content and editorial sections", async () => 
   assert.match(blogComponent, /Transforme leitura em estrutura comercial/);
   assert.match(blogComponent, /Nenhum conteúdo encontrado/);
   assert.match(data, /export type BlogPost/);
-  assert.match(data, /featured: true/);
+  assert.match(data, /COVER_BY_SLUG/);
   assert.match(data, /Gestão Comercial/);
   assert.match(data, /Crescimento Empresarial/);
 
-  for (const title of [
-    "Como identificar gargalos comerciais antes de investir mais em tráfego",
-    "Por que materiais gráficos ainda fortalecem a presença da marca",
-    "Marketing, vendas e tecnologia: como conectar as três áreas",
-    "CRM não é só cadastro: é controle da operação comercial",
+  for (const slug of [
+    "como-saber-se-a-empresa-esta-pronta-para-crescer-sem-perder-controle",
+    "crm-nao-e-cadastro-gestao-comercial",
+    "avaliar-qualidade-dos-leads-alem-do-custo-por-lead",
+    "cartao-de-visita-com-qr-code",
   ]) {
-    assert.match(data, new RegExp(title));
+    assert.match(data, new RegExp(slug));
   }
 });
 
@@ -52,7 +69,7 @@ test("blog supports future content routes without creating external infrastructu
     exists("docs/blog/05-regras-codex-hermes.md"),
   ]);
 
-  const data = await read("src/content/blog/index.ts");
+  const data = await readBlogData();
   assert.match(data, /slug:/);
   assert.doesNotMatch(data, /views|viewCount|visualiza/i);
   assert.doesNotMatch(data, /https?:\/\//);
@@ -61,12 +78,12 @@ test("blog supports future content routes without creating external infrastructu
 test("institutional refinement keeps the home article preview, founder block, and blog hierarchy scoped", async () => {
   const [aboutPage, blogHome, blogData] = await Promise.all([
     read("src/app/sobre/page.tsx"),
-    read("src/app/_components/blog/blog-home.tsx"),
-    read("src/content/blog/index.ts"),
+    readBlogHome(),
+    readBlogData(),
   ]);
 
-  assert.match(blogData, /CRM não é só cadastro: é controle da operação comercial/);
-  assert.match(blogData, /sessao-4-crm-cadastro\.png\.png/);
+  assert.match(blogData, /crm-nao-e-cadastro-gestao-comercial/);
+  assert.match(blogData, /capa-crm-rotina-de-gestao-comercial\.png/);
   assert.match(aboutPage, /ceo-gustavo-asterio\.png\.png/);
   assert.match(aboutPage, /Gustavo Astério/);
   assert.match(aboutPage, /Fundador do Grupo Vittore \| Assessor de Crescimento Empresarial/);
@@ -74,13 +91,13 @@ test("institutional refinement keeps the home article preview, founder block, an
   assert.match(blogHome, /placeholder="Buscar por vendas, marketing, materiais gráficos, CRM\.\.\."/);
   assert.doesNotMatch(blogHome, /function CategoryPill/);
   assert.match(blogHome, /hover:bg-\[#031126\]/);
-  assert.match(blogData, /artigo-identificar-gargalos\.png\.png/);
-  assert.match(blogData, /artigo-crm-cadastro\.png\.png/);
+  assert.match(blogData, /capa-empresa-pronta-para-crescer-sem-perder-controle\.png/);
+  assert.match(blogData, /capa-crm-rotina-de-gestao-comercial\.png/);
 });
 
 test("blog refinement keeps the editorial hierarchy and scoped sidebar system", async () => {
   const [blogHome, docs] = await Promise.all([
-    read("src/app/_components/blog/blog-home.tsx"),
+    readBlogHome(),
     read("docs/blog/02-estrutura-blog.md"),
   ]);
 
@@ -100,7 +117,7 @@ test("blog refinement keeps the editorial hierarchy and scoped sidebar system", 
   assert.match(blogHome, /Arquivo editorial/);
   assert.match(blogHome, /categoryBlocks\.map/);
   assert.match(blogHome, /post\.coverImage/);
-  assert.match(blogHome, /Antes de aumentar o investimento em mídia/);
+  assert.match(blogHome, /Processo comercial, acompanhamento de oportunidades/);
   assert.match(blogHome, /InstitutionalCtaActions/);
 
   assert.match(docs, /Sobre o Autor/);
@@ -117,8 +134,8 @@ test("blog refinement keeps the editorial hierarchy and scoped sidebar system", 
 });
 
 test("blog archive supports ten-post pagination and the complete editorial sidebar", async () => {
-  const blogHome = await read("src/app/_components/blog/blog-home.tsx");
-  const blogData = await read("src/content/blog/index.ts");
+  const blogHome = await readBlogHome();
+  const blogData = await readBlogData();
 
   assert.match(blogHome, /const PAGE_SIZE = 10/);
   assert.match(blogHome, /Math\.ceil\(latestPosts\.length \/ PAGE_SIZE\)/);
@@ -139,13 +156,13 @@ test("blog archive supports ten-post pagination and the complete editorial sideb
   assert.match(blogHome, /sm:text-\[1\.02rem\]/);
   assert.match(blogHome, /sm:text-\[1\.15rem\]/);
   assert.match(blogHome, /sm:text-\[1\.1rem\]/);
-  assert.match(blogData, /slug: "crescimento-previsivel-comeca-com-clareza"[\s\S]*artigo-crescimento-previsivel\.png\.png/);
+  assert.match(blogData, /"crescer-sem-processo-aumenta-caos-empresa"[\s\S]*capa-crescer-sem-processo-aumenta-caos-na-empresa\.png\.png/);
 });
 
 test("blog mobile hero and editorial title composition follow the approved stacked reference", async () => {
   const [blogHome, blogData] = await Promise.all([
-    read("src/app/_components/blog/blog-home.tsx"),
-    read("src/content/blog/index.ts"),
+    readBlogHome(),
+    readBlogData(),
   ]);
 
   assert.match(blogHome, /className="blog-hero-mobile-visual[^\"]*"/);
@@ -158,5 +175,5 @@ test("blog mobile hero and editorial title composition follow the approved stack
   assert.match(blogHome, /mais clareza\./);
   assert.match(blogHome, /className="blog-highlight-title-mobile[^\"]*"/);
   assert.match(blogHome, /blogFeaturedTitleMobileLines/);
-  assert.match(blogData, /"Como identificar", "gargalos comerciais", "antes de investir mais", "em tráfego"/);
+  assert.match(blogData, /"Como escolher acabamento"[\s\S]*"profissional sem exagerar"[\s\S]*"no custo"/);
 });

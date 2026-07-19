@@ -6,6 +6,22 @@ async function read(path) {
   return readFile(new URL(`../${path}`, import.meta.url), "utf8");
 }
 
+async function readHomeBlog() {
+  const [server, client] = await Promise.all([
+    read("src/app/_components/home-blog.tsx"),
+    read("src/app/_components/home-blog-client.tsx"),
+  ]);
+  return `${server}\n${client}`;
+}
+
+async function readBlogData() {
+  const [types, content] = await Promise.all([
+    read("src/lib/blog/types.ts"),
+    read("src/lib/blog/content.ts"),
+  ]);
+  return `${types}\n${content}`;
+}
+
 test("home institucional usa a copy oficial, os assets oficiais e a ordem aprovada", async () => {
   const [page, heroSource, materialsSource, assessoriaSource, blogSource, ctaSource, blogData] =
     await Promise.all([
@@ -13,9 +29,9 @@ test("home institucional usa a copy oficial, os assets oficiais e a ordem aprova
       read("src/app/_components/home-hero.tsx"),
       read("src/app/_components/home-materiais-graficos.tsx"),
       read("src/app/_components/home-assessoria-comercial.tsx"),
-      read("src/app/_components/home-blog.tsx"),
+      readHomeBlog(),
       read("src/app/_components/home-cta.tsx"),
-      read("src/content/blog/index.ts"),
+      readBlogData(),
     ]);
   const home = [page, heroSource, materialsSource, assessoriaSource, blogSource, ctaSource, blogData].join("\n");
 
@@ -63,10 +79,10 @@ test("home institucional usa a copy oficial, os assets oficiais e a ordem aprova
     "/assets/home-institucional/brand/sessao-3-marketing-geracao-demanda.png.png",
     "/assets/home-institucional/brand/sessao-3-vendas-perfomance-comercial.png.png",
     "/assets/home-institucional/brand/sessao-3-tecnologia-automacao-empresarial.png.png",
-    "/assets/home-institucional/brand/sessao-4-identificar-gargalos.png.png",
-    "/assets/home-institucional/brand/sessao-4-materiais-fortalecem-presenca.png.png",
-    "/assets/home-institucional/brand/sessao-4-marketing-vendas-tecnologia.png.png",
-    "/assets/home-institucional/brand/sessao-4-empresa-organizar.png.png",
+    "/assets/blog/articles/images/materiais-graficos/07-26/capa-acabamento-cartao-de-visita-profissional.png.png",
+    "/assets/blog/articles/images/crescimento-empresarial/07-26/capa-empresa-pronta-para-crescer-sem-perder-controle.png",
+    "/assets/blog/articles/images/crescimento-empresarial/07-26/capa-crescer-sem-processo-aumenta-caos-na-empresa.png.png",
+    "/assets/blog/articles/images/gestao-comercial/07-26/capa-pipeline-comercial-etapas-que-ajudam-a-vender.png",
   ]) {
     assert.match(home, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
