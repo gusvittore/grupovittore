@@ -183,11 +183,11 @@ A home institucional deve parecer a pagina principal de uma marca premium, estra
 
 ## Padrao definitivo de titulacao mobile
 
-Titulos importantes da Home não devem depender da quebra automática do navegador. O título real permanece separado do título visual sempre que a composição exigir controle editorial.
+Títulos institucionais importantes da Home podem manter composição editorial controlada. Títulos dinâmicos de cards de artigos, porém, precisam ter fallback automático seguro para qualquer `title` vindo do Markdown.
 
-Para cards de artigos, as linhas ficam nos dados locais dos posts em `homeCardTitleMobileLines`; cards do Blog podem declarar `blogCardTitleMobileLines` e a leitura em destaque pode declarar `blogFeaturedTitleMobileLines`. Cada item deve usar de 2 a 5 linhas, preferencialmente 3 ou 4, sem conectivos ou palavras isoladas. A renderização deve usar o componente `src/app/_components/controlled-title.tsx`, com um `span` por linha, `display: block` e `white-space: nowrap` no mobile. A Home exibe seis cards no bloco Blog Estratégico.
+Para cards de artigos, `homeCardTitleMobileLines`, `blogCardTitleMobileLines` e `blogFeaturedTitleMobileLines` são dicas visuais opcionais. A renderização deve usar `src/app/_components/blog/article-card-title.tsx` (`ArticleCardTitle`), com `white-space: normal`, quebra natural, `min-w-0` e `max-w-full`. Mesmo uma linha visual sugerida pode quebrar internamente se o espaço útil for menor. A Home exibe seis cards no bloco Blog Estratégico.
 
-Se uma linha controlada não couber em 375px, deve-se reduzir levemente o font-size mobile ou o padding do contexto. Não se deve remover o array, permitir quebra interna ou devolver a decisão de linha ao navegador.
+Se não houver linhas visuais, o componente deve renderizar o `title` completo automaticamente. Nenhum artigo novo pode depender de cadastro manual por slug. Se o texto não couber, ajustar largura, padding, font-size ou tracking sem truncar, ocultar ou alterar o título editorial.
 
 Os números são gerados com `String(index + 1).padStart(2, "0")` e tratados como unidade indivisível com `white-space: nowrap`, `inline-flex`, `tabular-nums`, `shrink-0` e largura mínima. Assim, o sexto card aparece como `06`, nunca como `0` e `6` em linhas separadas.
 
@@ -195,9 +195,10 @@ O CTA final usa `Conhecer Assessoria Comercial` e mantém o padrão compartilhad
 
 ### Regra de ouro contra corte lateral
 
-- Toda linha controlada deve ser testada pelos glifos em `375px`, `390px` e `430px`, e não apenas pelo `scrollWidth` do container.
-- Se a linha não couber com folga em `375px`, reduzir o font-size mobile, o tracking ou o padding local; se ainda não couber, revisar a quebra editorial.
+- Todo título dinâmico de card deve ser testado pelos glifos em `360px`, `375px`, `390px` e `430px`, e não apenas pelo `scrollWidth` do container.
+- Se o título não couber com folga, corrigir a área útil e reduzir font-size, tracking ou padding local sem alterar o conteúdo editorial.
 - Nunca usar `overflow-hidden` ou `overflow-x-hidden` para mascarar texto cortado. Proteções gerais de página não substituem o encaixe real do texto.
+- Nunca usar `white-space: nowrap`, `truncate` ou `line-clamp` em títulos dinâmicos de artigos.
 - Títulos, descrições, botões e cards devem respeitar `max-width: 100%` e o padding lateral do container.
 - Os títulos institucionais equivalentes de Materiais Gráficos, Assessoria Comercial e Blog Estratégico usam a mesma escala mobile; Hero e CTA podem ter escalas próprias.
 

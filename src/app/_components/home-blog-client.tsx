@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { BlogPostSummary } from "@/lib/blog/types";
+import { ArticleCardTitle } from "./blog/article-card-title";
 import {
   ControlledTitle,
   formatDisplayNumber,
@@ -128,7 +129,7 @@ export function HomeBlogClient({ articles }: { articles: BlogPostSummary[] }) {
           {articles.map((article, index) => (
             <article
               key={article.slug}
-              className="group flex min-h-[590px] w-[88%] min-w-[88%] shrink-0 snap-start flex-col overflow-hidden rounded-[22px] border border-[#b29157]/25 bg-[#fffdf9] shadow-[0_16px_42px_rgba(9,14,31,0.055)] sm:w-[62%] sm:min-w-[62%] lg:w-[46%] lg:min-w-[46%] xl:w-[40%] xl:min-w-[40%]"
+              className="group flex min-h-[590px] w-[88%] min-w-0 max-w-full shrink-0 snap-start flex-col overflow-hidden rounded-[22px] border border-[#b29157]/25 bg-[#fffdf9] shadow-[0_16px_42px_rgba(9,14,31,0.055)] sm:w-[62%] sm:min-w-[62%] lg:w-[46%] lg:min-w-[46%] xl:w-[40%] xl:min-w-[40%]"
             >
               <div className="relative aspect-[1.86/1] overflow-hidden bg-[#071026]">
                 <Image
@@ -139,7 +140,7 @@ export function HomeBlogClient({ articles }: { articles: BlogPostSummary[] }) {
                   className="object-cover transition duration-500 group-hover:scale-[1.02]"
                 />
               </div>
-              <div className="flex flex-1 flex-col px-6 pb-7 pt-5 sm:px-7">
+              <div className="flex min-w-0 max-w-full flex-1 flex-col px-6 pb-7 pt-5 sm:px-7">
                 <div className="flex items-start justify-between gap-5">
                   <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#956119]">
                     {article.homeCard.category}
@@ -149,12 +150,12 @@ export function HomeBlogClient({ articles }: { articles: BlogPostSummary[] }) {
                   </span>
                 </div>
                 <span className="mt-3 h-0.5 w-8 bg-[#a56a19]" />
-                <h3 className="mt-5 font-serif text-[clamp(1.28rem,5.35vw,1.62rem)] font-semibold leading-[1.08] text-[#07142d] sm:text-[clamp(1.7rem,2.5vw,2.2rem)]">
-                  <span className="home-blog-article-title-mobile block sm:hidden">
-                    <ControlledTitle lines={article.homeCardTitleMobileLines} />
-                  </span>
-                  <span className="hidden sm:block">{article.title}</span>
-                </h3>
+                <ArticleCardTitle
+                  title={article.title}
+                  visualLines={article.homeCardTitleMobileLines}
+                  variant="home-carousel"
+                  className="home-blog-article-title-mobile mt-5 text-[#07142d]"
+                />
                 <p className="mt-5 text-lg leading-8 text-[#34435a] sm:text-xl sm:leading-9">
                   {article.homeCard.description}
                 </p>

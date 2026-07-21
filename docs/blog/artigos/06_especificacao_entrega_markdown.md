@@ -1441,6 +1441,45 @@ Sempre informe a fonte ou o contexto.
 
 ---
 
+# Títulos dinâmicos em cards de artigos
+
+O campo editorial `title` é dinâmico e pode aparecer na Home institucional, na página `/blog`, em destaques, listagens, categorias e artigos relacionados.
+
+Todos esses contextos devem renderizar o título por meio do componente central `ArticleCardTitle`.
+
+## Regras obrigatórias
+
+1. O título completo vindo do Markdown deve permanecer legível dentro da área útil do card.
+2. Títulos dinâmicos de artigos não podem usar `nowrap`, `white-space: nowrap`, `whitespace-nowrap`, `text-nowrap`, `truncate` ou `line-clamp`.
+3. `overflow-hidden` no card ou no carrossel nunca pode ser usado para mascarar texto que ultrapassa a área útil.
+4. Card, área de conteúdo e título devem possuir limites seguros equivalentes a `min-w-0` e `max-w-full` quando participarem de layouts flex ou grid.
+5. O título deve permitir quebra natural com `whitespace-normal`, `break-words` e `overflow-wrap: break-word`.
+6. O padding direito precisa preservar respiro visual equivalente ou próximo ao padding esquerdo.
+7. O tamanho e o entrelinhamento precisam ser responsivos para títulos dinâmicos, sem alterar o título editorial.
+8. Novos artigos não podem exigir correção manual de diagramação para que o card funcione.
+
+## Título editorial e composição visual opcional
+
+O campo `title` continua sendo a fonte editorial obrigatória e o fallback seguro universal.
+
+Linhas visuais específicas, quando houver suporte técnico, são apenas uma composição opcional. Elas nunca podem ser requisito para carregar ou publicar um artigo. Mesmo quando fornecidas, cada linha deve poder quebrar naturalmente se o espaço disponível for menor que o previsto.
+
+O sistema não pode depender de um mapa obrigatório por slug. Se não houver linhas visuais, `ArticleCardTitle` deve renderizar automaticamente o `title` completo com largura e quebra seguras.
+
+## Validação responsiva obrigatória
+
+Ao integrar artigo novo ou alterar componentes de cards, testar os títulos reais em:
+
+- 360px;
+- 375px;
+- 390px;
+- 430px;
+- desktop.
+
+A validação deve verificar limites reais dos glifos e da caixa do título, padding lateral, ausência de overflow horizontal e presença integral de todas as palavras. Não é suficiente conferir apenas `scrollWidth` da página, porque um ancestral com `overflow-hidden` pode ocultar o defeito.
+
+---
+
 # Código
 
 Blocos de código só devem aparecer quando o tema exigir.

@@ -29,7 +29,7 @@ Artigos podem contextualizar a assessoria comercial, consultoria, materiais grá
 
 ## Padrão obrigatório de títulos visuais
 
-O campo `title` continua sendo o título real do artigo e deve ser usado para SEO, slug, metadata, busca, acessibilidade e página do artigo. A diagramação mobile não deve depender da quebra automática do navegador.
+O campo `title` continua sendo o título real do artigo e deve ser usado para SEO, slug, metadata, busca, acessibilidade, cards e página do artigo. Todo card deve possuir fallback automático seguro para esse valor.
 
 Cada novo post usado na Home ou no Blog deve trazer:
 
@@ -37,32 +37,32 @@ Cada novo post usado na Home ou no Blog deve trazer:
 - `excerpt`: descrição resumida;
 - `category`;
 - `coverImage`;
-- `homeCardTitleMobileLines`: array obrigatório de linhas controladas para cards da Home;
+- `homeCardTitleMobileLines`: opcional, como dica de composição para cards da Home;
 - `homeCardTitleDesktopLines`: opcional, apenas quando a composição desktop exigir linhas próprias;
-- `blogCardTitleMobileLines`: opcional para cards do arquivo do Blog; quando ausente, o card reutiliza `homeCardTitleMobileLines`;
+- `blogCardTitleMobileLines`: opcional para cards do arquivo do Blog;
 - `blogFeaturedTitleMobileLines`: opcional para a leitura em destaque;
 - `homeCard`: apresentação específica da prévia da Home, quando imagem, categoria ou descrição diferirem do artigo.
 
-As linhas devem seguir estas regras:
+Quando linhas visuais opcionais forem usadas, devem seguir estas regras:
 
 - mínimo de 2, ideal de 3 a 4 e máximo de 5 linhas;
 - manter grupos semânticos como “gargalos comerciais”, “operação comercial” e “decisões empresariais” juntos;
 - não deixar “e”, “de”, “para” ou “com” isolados;
 - evitar uma única palavra na última linha;
-- renderizar cada linha em um `span` com `display: block` e `white-space: nowrap` no mobile;
-- se uma linha controlada não couber em 375px, reduzir levemente o font-size mobile ou o padding do contexto; nunca remover o array nem permitir quebra interna;
+- renderizar cada linha em um `span` com `display: block`, `white-space: normal` e quebra interna segura;
+- se uma linha sugerida não couber, permitir quebra natural e ajustar responsivamente font-size, tracking ou padding;
 - manter o título SEO separado do título visual.
 
-O componente comum `src/app/_components/controlled-title.tsx` é o responsável pela renderização. Números de cards usam `formatDisplayNumber(index)`, que aplica `String(index + 1).padStart(2, "0")`, junto de `white-space: nowrap`, `tabular-nums` e largura mínima para impedir que `06` seja dividido.
+O componente comum `src/app/_components/blog/article-card-title.tsx` (`ArticleCardTitle`) é obrigatório em títulos de cards. Ele usa `title` como fallback completo, aceita linhas visuais opcionais e garante `min-w-0`, `max-w-full`, `white-space: normal`, `break-words` e `overflow-wrap: break-word`. A ausência de linhas manuais nunca pode bloquear um artigo novo. Números de cards continuam usando `formatDisplayNumber(index)`, que aplica `String(index + 1).padStart(2, "0")`, junto de `white-space: nowrap`, `tabular-nums` e largura mínima para impedir que `06` seja dividido.
 
 A Home institucional deve exibir seis artigos no bloco Blog Estratégico. O CTA final da Home e o CTA final do Blog usam o componente compartilhado `InstitutionalCtaActions`, com os textos `Conhecer Assessoria Comercial` e `Conhecer Materiais Gráficos`, mantendo o mesmo tamanho, raio, preenchimento e empilhamento mobile.
 
 ## Validação obrigatória contra overflow mobile
 
-- Testar cada linha controlada pelos glifos em `375px`, `390px` e `430px`.
-- Se qualquer palavra tocar ou ultrapassar o limite útil, reduzir o font-size mobile, o tracking ou o padding antes de publicar; se necessário, alterar a quebra editorial aprovada.
+- Testar todos os títulos reais pelos glifos em `360px`, `375px`, `390px` e `430px`.
+- Se qualquer palavra tocar ou ultrapassar o limite útil, corrigir largura, padding, quebra natural, font-size ou tracking no componente; não alterar o título editorial.
 - Nunca usar `overflow-hidden` ou `overflow-x-hidden` para mascarar palavras cortadas.
-- `white-space: nowrap` só pode permanecer quando a linha inteira cabe de verdade em `375px`.
+- Títulos dinâmicos de artigos nunca usam `white-space: nowrap`, `truncate` ou `line-clamp`.
 - Títulos, descrições, botões e cards devem respeitar a largura útil do container e `max-width: 100%`.
 
 Composições obrigatórias atuais:
@@ -76,6 +76,6 @@ Composições obrigatórias atuais:
 - O título de card deve ser menor que o subtítulo de seção e manter peso editorial suficiente.
 - A descrição permanece legível, mas não compete com o título.
 - O texto de rodapé é institucional e discreto.
-- Em `Últimos artigos`, a escala mobile dos títulos deve preservar as linhas controladas com folga dentro do card.
+- Em `Últimos artigos`, a escala mobile deve preservar o título completo com folga dentro do card, com ou sem linhas visuais opcionais.
 - Em `Conteúdos por categoria`, `Vendas`, `Marketing`, `Materiais Gráficos` e `Tecnologia` são títulos internos de categoria, não títulos principais da página.
-- Validar em `375px`, `390px` e `430px`, sem alterar imagens, categorias, descrições, links ou estrutura editorial.
+- Validar em `360px`, `375px`, `390px` e `430px`, sem alterar imagens, categorias, descrições, links ou estrutura editorial.

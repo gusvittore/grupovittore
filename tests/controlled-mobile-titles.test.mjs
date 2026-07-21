@@ -130,37 +130,45 @@ test("Brazil flag and label stay together as an indivisible inline group", async
   assert.doesNotMatch(materials, /alt="Bandeira do Brasil"[\s\S]*?<span>Brasil<\/span>/);
 });
 
-test("documentation defines nowrap visual lines and all post title contexts", async () => {
+test("documentation requires safe automatic fallbacks for every article card context", async () => {
   const [homeDocs, blogDocs] = await Promise.all([
     read("docs/home-institucional/04-direcao-visual.md"),
     read("docs/blog/04-regras-de-artigos.md"),
   ]);
   const docs = `${homeDocs}\n${blogDocs}`;
 
-  assert.match(docs, /homeCardTitleMobileLines/);
+  assert.match(docs, /ArticleCardTitle/);
+  assert.match(docs, /homeCardTitleMobileLines[^\n]*opciona/i);
   assert.match(docs, /blogCardTitleMobileLines/);
   assert.match(docs, /blogFeaturedTitleMobileLines/);
-  assert.match(docs, /white-space: nowrap/);
-  assert.match(docs, /reduzir[^\n]*font-size mobile/i);
-  assert.match(docs, /375px/);
+  assert.match(docs, /fallback[^\n]*seguro/i);
+  assert.match(docs, /white-space: normal/);
+  assert.match(docs, /nunca[^\n]*(?:white-space: nowrap|truncate|line-clamp)/i);
+  for (const width of ["360px", "375px", "390px", "430px"]) {
+    assert.match(docs, new RegExp(width));
+  }
   assert.match(docs, /que querem vender[\s\S]*melhor/);
   assert.match(docs, /todo o[\s\S]*bandeira[\s\S]*Brasil/i);
   assert.match(docs, /nunca[^\n]*overflow-hidden/i);
 });
 
-test("mobile title scales keep the longest controlled lines inside 375px", async () => {
-  const [hero, homeBlog, homeCta, blogHome] = await Promise.all([
+test("responsive scales keep dynamic article card titles inside their useful width", async () => {
+  const [hero, homeBlog, homeCta, blogHome, articleTitle] = await Promise.all([
     read("src/app/_components/home-hero.tsx"),
     readHomeBlog(),
     read("src/app/_components/home-cta.tsx"),
     readBlogHome(),
+    read("src/app/_components/blog/article-card-title.tsx"),
   ]);
 
   assert.match(hero, /text-\[clamp\(1\.75rem,7\.2vw,2\.2rem\)\]/);
-  assert.match(homeBlog, /text-\[clamp\(1\.28rem,5\.35vw,1\.62rem\)\]/);
+  assert.match(homeBlog, /ArticleCardTitle/);
+  assert.match(articleTitle, /"home-carousel":[\s\S]*text-\[clamp\(1\.24rem,5\.2vw,1\.56rem\)\]/);
   assert.match(homeCta, /text-\[clamp\(1\.9rem,7\.8vw,2\.6rem\)\]/);
   assert.match(blogHome, /blog-hero-mobile-title[^\n]*text-\[clamp\(2rem,8\.8vw,2\.5rem\)\]/);
-  assert.match(blogHome, /blog-highlight-title-mobile[^\n]*text-\[clamp\(1\.75rem,7vw,2\.2rem\)\]/);
+  assert.match(blogHome, /blog-highlight-title-mobile/);
+  assert.match(articleTitle, /featured:[\s\S]*text-\[clamp\(1\.6rem,6\.5vw,2\.05rem\)\]/);
+  assert.doesNotMatch(articleTitle, /(?:whitespace-|text-)?nowrap|truncate|line-clamp/);
 });
 
 test("equivalent Home section headings share one mobile scale", async () => {

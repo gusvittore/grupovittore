@@ -10,10 +10,8 @@ import {
   type BlogPostSummary,
 } from "@/lib/blog/types";
 import { InstitutionalCtaActions } from "../cta-actions";
-import {
-  ControlledTitle,
-  MOBILE_CARD_TITLE_CLASS,
-} from "../controlled-title";
+import { ControlledTitle } from "../controlled-title";
+import { ArticleCardTitle } from "./article-card-title";
 
 const PAGE_SIZE = 10;
 
@@ -75,7 +73,7 @@ function PostLink({ post }: { post: BlogPostSummary }) {
 
 function ArticleCard({ post }: { post: BlogPostSummary }) {
   return (
-    <article className="group flex min-h-[430px] flex-col overflow-hidden rounded-[22px] border border-[#b29157]/25 bg-[#fffdf9] shadow-[0_16px_42px_rgba(9,14,31,0.045)] transition hover:-translate-y-0.5 hover:border-[#e3ad51]/60 hover:bg-[#031126] hover:shadow-[0_20px_48px_rgba(9,14,31,0.14)] sm:min-h-[470px]">
+    <article className="group flex min-h-[430px] w-full min-w-0 max-w-full flex-col overflow-hidden rounded-[22px] border border-[#b29157]/25 bg-[#fffdf9] shadow-[0_16px_42px_rgba(9,14,31,0.045)] transition hover:-translate-y-0.5 hover:border-[#e3ad51]/60 hover:bg-[#031126] hover:shadow-[0_20px_48px_rgba(9,14,31,0.14)] sm:min-h-[470px]">
       <div className="relative aspect-[16/9] overflow-hidden bg-[#0b1d38]">
         <Image
           src={post.coverImage}
@@ -86,16 +84,14 @@ function ArticleCard({ post }: { post: BlogPostSummary }) {
           className="object-cover transition duration-500 group-hover:scale-[1.03]"
         />
       </div>
-      <div className="flex flex-1 flex-col p-6 sm:p-7">
+      <div className="flex min-w-0 max-w-full flex-1 flex-col p-6 sm:p-7">
         <PostMeta post={post} />
-        <h3 className={`mt-5 ${MOBILE_CARD_TITLE_CLASS} tracking-[-0.018em] text-[#07142d] transition-colors group-hover:text-[#fbf8f4] sm:text-[1.55rem] sm:leading-[1.08] lg:text-[clamp(1.55rem,2.5vw,2.05rem)]`}>
-          <span className="lg:hidden">
-            <ControlledTitle
-              lines={post.blogCardTitleMobileLines ?? post.homeCardTitleMobileLines}
-            />
-          </span>
-          <span className="hidden lg:block">{post.title}</span>
-        </h3>
+        <ArticleCardTitle
+          title={post.title}
+          visualLines={post.blogCardTitleMobileLines ?? post.homeCardTitleMobileLines}
+          variant="archive"
+          className="mt-5 text-[#07142d] transition-colors group-hover:text-[#fbf8f4]"
+        />
         <p className="mt-4 text-base leading-7 text-[#34435a] transition-colors group-hover:text-[#dce2ea] sm:text-lg sm:leading-8">
           {post.excerpt}
         </p>
@@ -215,9 +211,12 @@ function Sidebar({
         <div className="mt-4 divide-y divide-[#b29157]/20">
           {recommended.map((post) => (
             <Link key={post.slug} href={`/blog/${post.slug}`} className="group block py-4 first:pt-0 last:pb-0">
-              <p className="font-serif text-base font-semibold leading-[1.25] text-[#07142d] transition group-hover:text-[#8a5b18] sm:text-lg">
-                {post.title}
-              </p>
+              <ArticleCardTitle
+                as="p"
+                title={post.title}
+                variant="recommendation"
+                className="text-[#07142d] transition group-hover:text-[#8a5b18]"
+              />
               <p className="mt-2 text-sm leading-6 text-[#667084]">{post.readingTime}</p>
             </Link>
           ))}
@@ -344,20 +343,18 @@ export function BlogHomeClient({ posts }: { posts: BlogPostSummary[] }) {
         </div>
 
         {highlightedPost ? (
-          <article className="group grid overflow-hidden rounded-[28px] border border-[#b29157]/35 bg-[#fffdf9] text-[#071026] shadow-[0_22px_60px_rgba(9,14,31,0.08)] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.84fr)]">
-            <div className="p-7 sm:p-10 lg:p-12">
+          <article className="group grid min-w-0 max-w-full overflow-hidden rounded-[28px] border border-[#b29157]/35 bg-[#fffdf9] text-[#071026] shadow-[0_22px_60px_rgba(9,14,31,0.08)] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.84fr)]">
+            <div className="min-w-0 max-w-full p-7 sm:p-10 lg:p-12">
               <PostMeta post={highlightedPost} />
-              <h3 className="blog-highlight-title-mobile mt-6 max-w-full font-serif text-[clamp(1.75rem,7vw,2.2rem)] font-medium leading-[1.06] tracking-[-0.025em] text-[#07142d] transition-colors group-hover:text-[#031126] lg:hidden">
-                <ControlledTitle
-                  lines={
-                    highlightedPost.blogFeaturedTitleMobileLines ??
-                    highlightedPost.homeCardTitleMobileLines
-                  }
-                />
-              </h3>
-              <h3 className="mt-6 hidden max-w-[760px] font-serif text-[clamp(2rem,4vw,3.45rem)] font-medium leading-[1.02] tracking-[-0.025em] text-[#07142d] transition-colors group-hover:text-[#031126] lg:block">
-                {highlightedPost.title}
-              </h3>
+              <ArticleCardTitle
+                title={highlightedPost.title}
+                visualLines={
+                  highlightedPost.blogFeaturedTitleMobileLines ??
+                  highlightedPost.homeCardTitleMobileLines
+                }
+                variant="featured"
+                className="blog-highlight-title-mobile mt-6 text-[#07142d] transition-colors group-hover:text-[#031126] lg:max-w-[760px]"
+              />
               <p className="mt-6 max-w-[690px] text-lg leading-8 text-[#34435a] sm:text-xl sm:leading-9">
                 {highlightedPost.excerpt}
               </p>
@@ -453,16 +450,19 @@ export function BlogHomeClient({ posts }: { posts: BlogPostSummary[] }) {
                       <h3 className="font-serif text-[1.8rem] font-semibold leading-tight text-[#07142d] sm:text-[2.4rem]">{category.label}</h3>
                       <p className="mt-4 text-[1.1rem] leading-8 text-[#536074] sm:text-[1.15rem] sm:leading-8">{category.description}</p>
                     </div>
-                    <article className="grid overflow-hidden rounded-[18px] border border-[#b29157]/35 bg-[#fbf8f4] sm:grid-cols-[220px_minmax(0,1fr)]">
+                    <article className="grid min-w-0 max-w-full overflow-hidden rounded-[18px] border border-[#b29157]/35 bg-[#fbf8f4] sm:grid-cols-[220px_minmax(0,1fr)]">
                       <div className="relative min-h-[150px] bg-[#0b1d38] sm:min-h-full">
                         <Image src={post.coverImage} alt={post.coverAlt} fill sizes="(max-width: 639px) 100vw, 220px" className="object-cover" />
                       </div>
-                      <div className="p-5 sm:p-6">
+                      <div className="min-w-0 max-w-full p-5 sm:p-6">
                         <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#956119]">{post.readingTime}</p>
-                        <h4 className="mt-3 font-serif text-[1.45rem] font-semibold leading-[1.1] text-[#07142d] sm:text-[1.6rem]">
-                          <span className="sm:hidden"><ControlledTitle lines={post.homeCardTitleMobileLines} /></span>
-                          <span className="hidden sm:block">{post.title}</span>
-                        </h4>
+                        <ArticleCardTitle
+                          as="h4"
+                          title={post.title}
+                          visualLines={post.blogCardTitleMobileLines ?? post.homeCardTitleMobileLines}
+                          variant="category"
+                          className="mt-3 text-[#07142d]"
+                        />
                         <p className="mt-3 text-[1.06rem] leading-7 text-[#536074] sm:text-[1.1rem] sm:leading-7">{post.excerpt}</p>
                         <button type="button" onClick={() => selectCategory(category.label)} className="mt-5 inline-flex items-center gap-3 text-sm font-extrabold uppercase tracking-[0.12em] text-[#8a5b18] transition hover:text-[#031126]">
                           Ver conteúdos <ArrowIcon />

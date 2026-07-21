@@ -256,7 +256,7 @@ function parsePostFile(
   }
 
   const titleLines = TITLE_LINES_BY_SLUG[slug];
-  if (!titleLines || titleLines.join(" ") !== title) {
+  if (titleLines && titleLines.join(" ") !== title) {
     throw new Error(`${relativePath}: linhas visuais não preservam o título aprovado.`);
   }
 

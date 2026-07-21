@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BlogArticleCta } from "@/app/_components/blog/blog-article-cta";
+import { ArticleCardTitle } from "@/app/_components/blog/article-card-title";
 import { BlogAuthorCard } from "@/app/_components/blog/blog-author-card";
 import { MarkdownContent } from "@/app/_components/blog/markdown-content";
 import { SiteFooter } from "@/app/_components/site-footer";
@@ -122,15 +123,11 @@ function RelatedArticlesList({
             <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#956119]">
               {relatedPost.category} · {relatedPost.readingTime}
             </p>
-            <h3
-              className={
-                isSidebar
-                  ? "mt-2 font-serif text-base font-semibold leading-[1.25] text-[#07142d] transition group-hover:text-[#8a5b18] sm:text-lg"
-                  : "mt-3 font-serif text-[1.45rem] font-semibold leading-[1.15] text-[#07142d] transition group-hover:text-[#8a5b18] sm:text-[1.65rem]"
-              }
-            >
-              {relatedPost.title}
-            </h3>
+            <ArticleCardTitle
+              title={relatedPost.title}
+              variant={isSidebar ? "related-sidebar" : "related"}
+              className={`${isSidebar ? "mt-2" : "mt-3"} text-[#07142d] transition group-hover:text-[#8a5b18]`}
+            />
           </Link>
         ))}
       </div>

@@ -65,9 +65,9 @@ export type BlogPostSummary = {
   coverAlt: string;
   publishedAt?: string;
   period: typeof BLOG_CYCLE;
-  homeCardTitleMobileLines: readonly string[];
-  blogCardTitleMobileLines: readonly string[];
-  blogFeaturedTitleMobileLines: readonly string[];
+  homeCardTitleMobileLines?: readonly string[];
+  blogCardTitleMobileLines?: readonly string[];
+  blogFeaturedTitleMobileLines?: readonly string[];
   homeCard: HomeCardPresentation;
 };
 

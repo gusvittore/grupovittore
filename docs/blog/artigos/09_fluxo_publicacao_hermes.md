@@ -2109,6 +2109,30 @@ Execute as validações e informe exatamente o que foi alterado.
 
 ---
 
+# Gate de títulos de cards
+
+Antes de concluir a integração ou publicação de um artigo, o Hermes deve confirmar que o título dinâmico usa `ArticleCardTitle` em todos os cards aplicáveis:
+
+- carrossel Blog Estratégico da Home;
+- Leitura em destaque de `/blog`;
+- Últimos Artigos;
+- Conteúdos por Categoria;
+- artigos relacionados;
+- outros cards de artigo reutilizados pelo projeto.
+
+O título editorial e uma eventual composição visual são responsabilidades distintas. A composição visual manual é opcional; o fallback automático do título vindo do Markdown é obrigatório e deve funcionar sem cadastro adicional por slug.
+
+É proibido aplicar diretamente a títulos dinâmicos:
+
+- `nowrap` ou equivalentes;
+- `truncate`;
+- `line-clamp`;
+- `overflow-hidden` para esconder texto excedente.
+
+O QA deve cobrir todos os artigos reais em 360px, 375px, 390px, 430px e desktop. Verificar a caixa e os glifos do título dentro do card, além do overflow da página. Nenhuma palavra pode desaparecer, ser cortada ou ultrapassar o padding direito.
+
+---
+
 # Definição de tarefa concluída
 
 Uma publicação só está concluída quando:
