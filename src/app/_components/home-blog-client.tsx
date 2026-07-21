@@ -152,7 +152,6 @@ export function HomeBlogClient({ articles }: { articles: BlogPostSummary[] }) {
                 <span className="mt-3 h-0.5 w-8 bg-[#a56a19]" />
                 <ArticleCardTitle
                   title={article.title}
-                  visualLines={article.homeCardTitleMobileLines}
                   variant="home-carousel"
                   className="home-blog-article-title-mobile mt-5 text-[#07142d]"
                 />

@@ -60,7 +60,9 @@ test("Home renders six data-driven cards with indivisible display numbers", asyn
   const homeBlog = await readHomeBlog();
 
   assert.match(homeBlog, /getHomeBlogPosts/);
-  assert.match(homeBlog, /homeCardTitleMobileLines/);
+  assert.match(homeBlog, /ArticleCardTitle/);
+  assert.match(homeBlog, /variant="home-carousel"/);
+  assert.doesNotMatch(homeBlog, /visualLines=\{article\.homeCardTitleMobileLines\}/);
   assert.match(homeBlog, /homeBlogTitleMobileLines/);
   assert.match(homeBlog, /ControlledTitle lines=\{homeBlogTitleMobileLines\}/);
   assert.match(homeBlog, /formatDisplayNumber\(index\)/);

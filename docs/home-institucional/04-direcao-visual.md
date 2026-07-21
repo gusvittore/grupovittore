@@ -191,6 +191,14 @@ Se não houver linhas visuais, o componente deve renderizar o `title` completo a
 
 Os números são gerados com `String(index + 1).padStart(2, "0")` e tratados como unidade indivisível com `white-space: nowrap`, `inline-flex`, `tabular-nums`, `shrink-0` e largura mínima. Assim, o sexto card aparece como `06`, nunca como `0` e `6` em linhas separadas.
 
+### Títulos do carrossel Blog Estratégico na Home
+
+No carrossel da Home, os títulos dinâmicos dos artigos usam o `title` editorial completo com o variant `home-carousel` de `ArticleCardTitle`. Esse variant aplica `text-wrap: balance` sobre toda a frase e não depende das linhas visuais opcionais do artigo. Assim, a composição aproveita toda a largura interna disponível e não depende de correção manual por artigo.
+
+A quebra deve manter `white-space: normal`, não deve criar linha com palavra órfã quando houver uma distribuição melhor e precisa preservar o texto completo. `break-words` e `overflow-wrap: break-word` são apenas proteções extremas; nunca devem substituir o balanceamento, truncar conteúdo ou esconder erro de encaixe. A largura útil começa na margem esquerda atual do conteúdo e termina na margem direita interna do card, sem reservar para o número uma coluna vertical ao lado do título.
+
+O número serve apenas como referência visual para a margem direita do título. Categoria, número e tracinho não devem ser alterados ao corrigir a diagramação. Imagem, formato do card, carrossel, indicadores, link `Ler artigo`, botão `Acessar Blog` e navegação da última seta também permanecem inalterados.
+
 O CTA final usa `Conhecer Assessoria Comercial` e mantém o padrão compartilhado de botões com o CTA final do Blog. As bolinhas douradas permanecem restritas ao desktop.
 
 ### Regra de ouro contra corte lateral

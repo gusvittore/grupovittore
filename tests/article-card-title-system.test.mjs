@@ -61,6 +61,22 @@ test("Home, Blog cards, category cards, and related articles share ArticleCardTi
   assert.doesNotMatch(blog, /<ControlledTitle[\s\S]{0,180}(?:blogCardTitleMobileLines|blogFeaturedTitleMobileLines|homeCardTitleMobileLines)/);
 });
 
+test("Home carousel balances the complete dynamic title without per-article visual lines", async () => {
+  const [home, component] = await Promise.all([
+    read("src/app/_components/home-blog-client.tsx"),
+    read("src/app/_components/blog/article-card-title.tsx"),
+  ]);
+
+  assert.match(home, /<ArticleCardTitle[\s\S]{0,180}variant="home-carousel"/);
+  assert.doesNotMatch(
+    home,
+    /<ArticleCardTitle[\s\S]{0,180}visualLines=\{article\.homeCardTitleMobileLines\}/,
+  );
+  assert.match(component, /"home-carousel":[\s\S]{0,180}\[text-wrap:balance\]/);
+  assert.match(component, /"home-carousel":[\s\S]{0,180}sm:\[text-wrap:pretty\]/);
+  assert.match(component, /data-title-layout=\{hasVisualLines \? "optional-lines" : "automatic"\}/);
+});
+
 test("article card title documentation forbids clipping and requires mobile QA", async () => {
   const docs = await Promise.all([
     read("docs/blog/artigos/06_especificacao_entrega_markdown.md"),
@@ -75,4 +91,15 @@ test("article card title documentation forbids clipping and requires mobile QA",
   for (const width of ["360px", "375px", "390px", "430px"]) {
     assert.match(docs, new RegExp(width));
   }
+});
+
+test("Home documentation defines balanced carousel titles without changing card chrome", async () => {
+  const docs = await read("docs/home-institucional/04-direcao-visual.md");
+
+  assert.match(docs, /carrossel[^\n]*Home[^\n]*títulos?[^\n]*dinâmic/i);
+  assert.match(docs, /text-wrap:\s*balance/i);
+  assert.match(docs, /não[^\n]*correção manual[^\n]*artigo/i);
+  assert.match(docs, /não[^\n]*palavra órfã/i);
+  assert.match(docs, /número[^\n]*referência visual[^\n]*margem direita/i);
+  assert.match(docs, /categoria[^\n]*número[^\n]*(?:traço|tracinho)[^\n]*não[^\n]*alterad/i);
 });

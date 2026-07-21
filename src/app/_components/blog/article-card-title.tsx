@@ -19,19 +19,19 @@ type ArticleCardTitleProps = {
 
 const VARIANT_CLASSES: Record<ArticleCardTitleVariant, string> = {
   "home-carousel":
-    "text-[clamp(1.24rem,5.2vw,1.56rem)] font-semibold leading-[1.1] sm:text-[clamp(1.65rem,2.4vw,2.1rem)] sm:leading-[1.08]",
+    "[text-wrap:balance] text-[clamp(1.24rem,5.2vw,1.56rem)] font-semibold leading-[1.1] sm:[text-wrap:pretty] sm:text-[clamp(1.65rem,2.4vw,2.1rem)] sm:leading-[1.08]",
   featured:
-    "text-[clamp(1.6rem,6.5vw,2.05rem)] font-medium leading-[1.08] tracking-[-0.025em] lg:text-[clamp(2rem,4vw,3.45rem)] lg:leading-[1.02]",
+    "[text-wrap:pretty] text-[clamp(1.6rem,6.5vw,2.05rem)] font-medium leading-[1.08] tracking-[-0.025em] lg:text-[clamp(2rem,4vw,3.45rem)] lg:leading-[1.02]",
   archive:
-    "text-[clamp(1.32rem,5.5vw,1.55rem)] font-semibold leading-[1.12] tracking-[-0.018em] sm:text-[1.55rem] sm:leading-[1.08] lg:text-[clamp(1.55rem,2.5vw,2.05rem)]",
+    "[text-wrap:pretty] text-[clamp(1.32rem,5.5vw,1.55rem)] font-semibold leading-[1.12] tracking-[-0.018em] sm:text-[1.55rem] sm:leading-[1.08] lg:text-[clamp(1.55rem,2.5vw,2.05rem)]",
   category:
-    "text-[clamp(1.32rem,5.3vw,1.5rem)] font-semibold leading-[1.12] sm:text-[1.6rem] sm:leading-[1.1]",
+    "[text-wrap:pretty] text-[clamp(1.32rem,5.3vw,1.5rem)] font-semibold leading-[1.12] sm:text-[1.6rem] sm:leading-[1.1]",
   recommendation:
-    "text-base font-semibold leading-[1.25] sm:text-lg",
+    "[text-wrap:pretty] text-base font-semibold leading-[1.25] sm:text-lg",
   related:
-    "text-[clamp(1.3rem,5.3vw,1.45rem)] font-semibold leading-[1.16] sm:text-[1.65rem] sm:leading-[1.15]",
+    "[text-wrap:pretty] text-[clamp(1.3rem,5.3vw,1.45rem)] font-semibold leading-[1.16] sm:text-[1.65rem] sm:leading-[1.15]",
   "related-sidebar":
-    "text-base font-semibold leading-[1.25] sm:text-lg",
+    "[text-wrap:pretty] text-base font-semibold leading-[1.25] sm:text-lg",
 };
 
 const VISUAL_LINE_BREAKPOINT_CLASSES: Record<
@@ -64,7 +64,7 @@ export function ArticleCardTitle({
       data-article-title={title}
       data-title-layout={hasVisualLines ? "optional-lines" : "automatic"}
       data-title-variant={variant}
-      className={`min-w-0 max-w-full whitespace-normal break-words [overflow-wrap:break-word] [text-wrap:pretty] font-serif ${VARIANT_CLASSES[variant]} ${className}`}
+      className={`min-w-0 max-w-full whitespace-normal break-words [overflow-wrap:break-word] font-serif ${VARIANT_CLASSES[variant]} ${className}`}
     >
       {hasVisualLines ? (
         <>
