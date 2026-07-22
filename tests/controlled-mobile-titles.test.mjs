@@ -89,11 +89,11 @@ test("Home and Blog use the shared final CTA action pattern", async () => {
   assert.doesNotMatch(homeCta, /"estratégia de"/);
   assert.doesNotMatch(homeCta, /Ver Assessoria Comercial/);
   assert.match(blogHome, /InstitutionalCtaActions/);
-  assert.match(blogHome, /post\.blogCardTitleMobileLines \?\?/);
+  assert.doesNotMatch(blogHome, /visualLines=/);
   assert.doesNotMatch(blogHome, /Ver Assessoria Comercial/);
 });
 
-test("mobile hero and featured titles use exact controlled lines", async () => {
+test("mobile hero keeps controlled lines while the Blog featured title composes automatically", async () => {
   const [hero, blogHome] = await Promise.all([
     read("src/app/_components/home-hero.tsx"),
     readBlogHome(),
@@ -112,7 +112,9 @@ test("mobile hero and featured titles use exact controlled lines", async () => {
   assert.match(hero, /const heroTitleDesktopLines = \[/);
   assert.match(hero, /lines=\{mobile \? heroTitleMobileLines : heroTitleDesktopLines\}/);
   assert.match(hero, /ControlledTitle/);
-  assert.match(blogHome, /blogFeaturedTitleMobileLines/);
+  assert.doesNotMatch(blogHome, /blogFeaturedTitleMobileLines/);
+  assert.match(blogHome, /title=\{highlightedPost\.title\}/);
+  assert.match(blogHome, /variant="featured"/);
   assert.match(blogHome, /ControlledTitle/);
   assert.match(blogHome, /Conteúdo estratégico/);
   assert.match(blogHome, /para empresas que/);

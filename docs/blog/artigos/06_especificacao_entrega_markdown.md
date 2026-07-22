@@ -1466,6 +1466,14 @@ Linhas visuais específicas, quando houver suporte técnico, são apenas uma com
 
 O sistema não pode depender de um mapa obrigatório por slug. Se não houver linhas visuais, `ArticleCardTitle` deve renderizar automaticamente o `title` completo com largura e quebra seguras.
 
+## Regra específica para os previews da página `/blog`
+
+Na página `/blog`, a Leitura em destaque, Últimos Artigos, Conteúdos por Categoria e Leituras recomendadas não podem receber linhas visuais ou manuais cadastradas por artigo.
+
+Esses quatro contextos devem enviar o título editorial completo ao `ArticleCardTitle` e usar composição automática, sem reescrever o conteúdo do Markdown. Os variants exclusivos desses previews usam `text-wrap: balance` em todos os breakpoints para reduzir linhas órfãs no mobile, tablet e desktop, sem alterar fonte, escala ou largura do card.
+
+Campos legados de composição visual podem permanecer no tipo de dados por compatibilidade, mas não são consumidos pelos previews da página `/blog`. Artigos futuros devem funcionar automaticamente, sem cadastro adicional por slug e sem correção manual de quebra.
+
 ## Validação responsiva obrigatória
 
 Ao integrar artigo novo ou alterar componentes de cards, testar os títulos reais em:

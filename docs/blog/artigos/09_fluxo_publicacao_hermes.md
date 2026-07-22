@@ -2117,10 +2117,11 @@ Antes de concluir a integração ou publicação de um artigo, o Hermes deve con
 - Leitura em destaque de `/blog`;
 - Últimos Artigos;
 - Conteúdos por Categoria;
+- Leituras recomendadas;
 - artigos relacionados;
 - outros cards de artigo reutilizados pelo projeto.
 
-O título editorial e uma eventual composição visual são responsabilidades distintas. A composição visual manual é opcional; o fallback automático do título vindo do Markdown é obrigatório e deve funcionar sem cadastro adicional por slug.
+O título editorial e uma eventual composição visual são responsabilidades distintas. Na página `/blog`, os previews não devem receber linhas manuais por artigo: Leitura em destaque, Últimos Artigos, Conteúdos por Categoria e Leituras recomendadas renderizam o `title` completo com composição automática. Seus variants usam `text-wrap: balance` em todos os breakpoints para evitar linhas órfãs no mobile, tablet e desktop. O fallback automático vindo do Markdown é obrigatório e deve funcionar sem cadastro adicional por slug.
 
 É proibido aplicar diretamente a títulos dinâmicos:
 

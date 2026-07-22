@@ -77,6 +77,26 @@ test("Home carousel balances the complete dynamic title without per-article visu
   assert.match(component, /data-title-layout=\{hasVisualLines \? "optional-lines" : "automatic"\}/);
 });
 
+test("Blog previews balance complete dynamic titles without per-article visual lines", async () => {
+  const [blog, component] = await Promise.all([
+    read("src/app/_components/blog/blog-home-client.tsx"),
+    read("src/app/_components/blog/article-card-title.tsx"),
+  ]);
+
+  assert.equal((blog.match(/<ArticleCardTitle/g) ?? []).length, 4);
+  assert.doesNotMatch(blog, /visualLines=/);
+
+  for (const variant of ["featured", "archive", "category", "recommendation"]) {
+    const escapedVariant = variant.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    assert.match(component, new RegExp(`${escapedVariant}:[\\s\\S]{0,220}\\[text-wrap:balance\\]`));
+    assert.doesNotMatch(component, new RegExp(`${escapedVariant}:[\\s\\S]{0,220}sm:\\[text-wrap:pretty\\]`));
+  }
+
+  assert.match(blog, /title=\{highlightedPost\.title\}[\s\S]{0,120}variant="featured"/);
+  assert.match(blog, /title=\{post\.title\}[\s\S]{0,120}variant="archive"/);
+  assert.match(blog, /title=\{post\.title\}[\s\S]{0,120}variant="category"/);
+});
+
 test("article card title documentation forbids clipping and requires mobile QA", async () => {
   const docs = await Promise.all([
     read("docs/blog/artigos/06_especificacao_entrega_markdown.md"),
@@ -91,6 +111,22 @@ test("article card title documentation forbids clipping and requires mobile QA",
   for (const width of ["360px", "375px", "390px", "430px"]) {
     assert.match(docs, new RegExp(width));
   }
+});
+
+test("Blog documentation requires automatic preview titles without per-article composition", async () => {
+  const docs = await Promise.all([
+    read("docs/blog/04-regras-de-artigos.md"),
+    read("docs/blog/artigos/06_especificacao_entrega_markdown.md"),
+    read("docs/blog/artigos/09_fluxo_publicacao_hermes.md"),
+  ]);
+  const combined = docs.join("\n");
+
+  assert.match(combined, /Leitura em destaque[\s\S]*Últimos Artigos[\s\S]*Conteúdos por Categoria[\s\S]*Leituras recomendadas/i);
+  assert.match(combined, /página `\/blog`[^\n]*(?:não pode|não deve)[^\n]*linhas (?:visuais|manuais)/i);
+  assert.match(combined, /título (?:editorial )?completo[^\n]*composição automática/i);
+  assert.match(combined, /`text-wrap: balance`[^\n]*mobile/i);
+  assert.match(combined, /previews[^\n]*`text-wrap: balance`[^\n]*todos os breakpoints/i);
+  assert.match(combined, /artigos futuros[^\n]*(?:sem cadastro|sem correção|automaticamente)/i);
 });
 
 test("Home documentation defines balanced carousel titles without changing card chrome", async () => {

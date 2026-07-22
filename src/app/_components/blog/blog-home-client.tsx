@@ -88,7 +88,6 @@ function ArticleCard({ post }: { post: BlogPostSummary }) {
         <PostMeta post={post} />
         <ArticleCardTitle
           title={post.title}
-          visualLines={post.blogCardTitleMobileLines ?? post.homeCardTitleMobileLines}
           variant="archive"
           className="mt-5 text-[#07142d] transition-colors group-hover:text-[#fbf8f4]"
         />
@@ -348,10 +347,6 @@ export function BlogHomeClient({ posts }: { posts: BlogPostSummary[] }) {
               <PostMeta post={highlightedPost} />
               <ArticleCardTitle
                 title={highlightedPost.title}
-                visualLines={
-                  highlightedPost.blogFeaturedTitleMobileLines ??
-                  highlightedPost.homeCardTitleMobileLines
-                }
                 variant="featured"
                 className="blog-highlight-title-mobile mt-6 text-[#07142d] transition-colors group-hover:text-[#031126] lg:max-w-[760px]"
               />
@@ -459,7 +454,6 @@ export function BlogHomeClient({ posts }: { posts: BlogPostSummary[] }) {
                         <ArticleCardTitle
                           as="h4"
                           title={post.title}
-                          visualLines={post.blogCardTitleMobileLines ?? post.homeCardTitleMobileLines}
                           variant="category"
                           className="mt-3 text-[#07142d]"
                         />

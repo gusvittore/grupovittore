@@ -39,11 +39,11 @@ Cada novo post usado na Home ou no Blog deve trazer:
 - `coverImage`;
 - `homeCardTitleMobileLines`: opcional, como dica de composição para cards da Home;
 - `homeCardTitleDesktopLines`: opcional, apenas quando a composição desktop exigir linhas próprias;
-- `blogCardTitleMobileLines`: opcional para cards do arquivo do Blog;
-- `blogFeaturedTitleMobileLines`: opcional para a leitura em destaque;
+- `blogCardTitleMobileLines`: campo legado opcional, preservado apenas por compatibilidade de dados; os previews atuais de `/blog` não o consomem;
+- `blogFeaturedTitleMobileLines`: campo legado opcional, preservado apenas por compatibilidade de dados; a Leitura em destaque atual não o consome;
 - `homeCard`: apresentação específica da prévia da Home, quando imagem, categoria ou descrição diferirem do artigo.
 
-Quando linhas visuais opcionais forem usadas, devem seguir estas regras:
+Quando linhas visuais opcionais forem usadas em algum contexto ainda compatível fora dos previews da página `/blog`, devem seguir estas regras:
 
 - mínimo de 2, ideal de 3 a 4 e máximo de 5 linhas;
 - manter grupos semânticos como “gargalos comerciais”, “operação comercial” e “decisões empresariais” juntos;
@@ -53,7 +53,7 @@ Quando linhas visuais opcionais forem usadas, devem seguir estas regras:
 - se uma linha sugerida não couber, permitir quebra natural e ajustar responsivamente font-size, tracking ou padding;
 - manter o título SEO separado do título visual.
 
-O componente comum `src/app/_components/blog/article-card-title.tsx` (`ArticleCardTitle`) é obrigatório em títulos de cards. Ele usa `title` como fallback completo, aceita linhas visuais opcionais e garante `min-w-0`, `max-w-full`, `white-space: normal`, `break-words` e `overflow-wrap: break-word`. A ausência de linhas manuais nunca pode bloquear um artigo novo. Números de cards continuam usando `formatDisplayNumber(index)`, que aplica `String(index + 1).padStart(2, "0")`, junto de `white-space: nowrap`, `tabular-nums` e largura mínima para impedir que `06` seja dividido.
+O componente comum `src/app/_components/blog/article-card-title.tsx` (`ArticleCardTitle`) é obrigatório em títulos de cards. Ele usa `title` como fallback completo, aceita linhas visuais opcionais apenas onde o renderizador ainda as fornecer e garante `min-w-0`, `max-w-full`, `white-space: normal`, `break-words` e `overflow-wrap: break-word`. Na página `/blog`, Leitura em destaque, Últimos Artigos, Conteúdos por Categoria e Leituras recomendadas usam o título editorial completo com composição automática; esses previews não podem depender de linhas visuais ou manuais por artigo. Números de cards continuam usando `formatDisplayNumber(index)`, que aplica `String(index + 1).padStart(2, "0")`, junto de `white-space: nowrap`, `tabular-nums` e largura mínima para impedir que `06` seja dividido.
 
 A Home institucional deve exibir seis artigos no bloco Blog Estratégico. O CTA final da Home e o CTA final do Blog usam o componente compartilhado `InstitutionalCtaActions`, com os textos `Conhecer Assessoria Comercial` e `Conhecer Materiais Gráficos`, mantendo o mesmo tamanho, raio, preenchimento e empilhamento mobile.
 
@@ -68,7 +68,7 @@ A Home institucional deve exibir seis artigos no bloco Blog Estratégico. O CTA 
 Composições obrigatórias atuais:
 
 - Hero do Blog: `Conteúdo estratégico` / `para empresas que` / `querem crescer com` / `mais clareza`.
-- Leitura em destaque: `Como identificar` / `gargalos comerciais` / `antes de investir mais` / `em tráfego`.
+- Previews de artigos na página `/blog`: composição automática do `title` completo, com `text-wrap: balance` em todos os breakpoints para evitar linhas órfãs também em tablet e desktop.
 
 ## Hierarquia secundária dos cards no mobile
 
