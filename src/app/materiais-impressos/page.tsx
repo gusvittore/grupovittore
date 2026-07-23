@@ -303,6 +303,22 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
+function ControlledMobileTitle({
+  children,
+  className = "",
+  ariaLabel,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  ariaLabel?: string;
+}) {
+  return (
+    <span className={`materials-mobile-controlled-title ${className}`} aria-label={ariaLabel}>
+      {children}
+    </span>
+  );
+}
+
 function SectionShell({
   id,
   children,
@@ -382,7 +398,7 @@ function HeroBenefitIcon({ icon }: { icon: (typeof heroBenefits)[number]["icon"]
         alt=""
         width={56}
         height={56}
-        className="h-10 w-10 object-contain"
+        className="h-10 w-10 object-contain xl:h-[46px] xl:w-[46px]"
       />
     );
   }
@@ -408,7 +424,7 @@ function HeroBenefit({
 }) {
   return (
     <li className={`flex min-w-0 items-center gap-4 text-sm font-medium uppercase leading-5 tracking-[0.04em] text-[#FBF8F4]/90 ${className}`}>
-      <span className="flex h-11 w-11 flex-none items-center justify-center text-[#B29157]">
+      <span className={`flex flex-none items-center justify-center text-[#B29157] ${benefit.icon === "design" ? "h-11 w-11 xl:h-12 xl:w-12" : "h-11 w-11"}`}>
         <HeroBenefitIcon icon={benefit.icon} />
       </span>
       <span>{benefit.label}</span>
@@ -438,14 +454,19 @@ function HeroSection() {
       </div>
 
       <div className="materials-hero-mobile xl:hidden">
-        <div className="relative aspect-[1672/941] w-full overflow-hidden">
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,6,23,0.04)_42%,#000617_100%)]" />
+        <div className="materials-hero-mobile-image-spacer relative w-full overflow-hidden">
+          <div className="materials-hero-mobile-image-shade absolute inset-0" />
         </div>
 
         <div className="px-5 pb-16 pt-10 sm:px-8 sm:pb-20 sm:pt-12">
           <Eyebrow>Materiais Gráficos Personalizados</Eyebrow>
-          <h1 className="mt-6 max-w-[680px] text-balance font-serif text-[clamp(2.65rem,11.2vw,4.35rem)] font-medium leading-[0.96] tracking-[-0.035em]">
-            Autoridade que se toca: impressos <span className="text-[#B29157]">premium</span> que materializam sua marca.
+          <h1 className="mt-6 max-w-[24rem] font-serif text-[clamp(2rem,8.2vw,2.4rem)] font-medium leading-[0.98] tracking-[-0.035em] sm:max-w-[34rem] sm:text-[clamp(3.1rem,9vw,4rem)]">
+            <ControlledMobileTitle ariaLabel="Autoridade que se toca: impressos premium que materializam sua marca.">
+              <span className="block">Autoridade que</span>
+              <span className="block">se toca: impressos</span>
+              <span className="block"><span className="text-[#B29157]">premium</span> que</span>
+              <span className="block">materializam sua marca.</span>
+            </ControlledMobileTitle>
           </h1>
           <p className="mt-7 max-w-[690px] text-xl leading-9 text-[#FBF8F4]/88 sm:text-2xl sm:leading-10">
             Cartões de visita, pastas, envelopes, folders, panfletos e blocos personalizados para profissionais e empresas que querem transmitir mais confiança, sofisticação e valor em cada detalhe.
@@ -641,7 +662,7 @@ function CustomMadeSection() {
         </div>
 
         <div className="mt-10 flex justify-center xl:mt-9">
-          <WhatsAppButton className="materials-custom-cta w-full sm:w-auto">Solicitar orçamento pelo WhatsApp</WhatsAppButton>
+          <WhatsAppButton className="materials-custom-cta w-full sm:w-auto">Quero mais informações</WhatsAppButton>
         </div>
       </div>
     </section>
@@ -655,8 +676,14 @@ function FaqSection() {
         <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#B29157] sm:text-sm">
           Dúvidas frequentes
         </p>
-        <h2 className="mt-5 font-serif text-[clamp(2.05rem,5.8vw,4.05rem)] font-medium leading-[1.02] tracking-[-0.035em] text-[#090E1F]">
-          Antes de pedir seus materiais personalizados
+        <h2 className="mt-5 font-serif font-medium leading-[1.02] tracking-[-0.035em] text-[#090E1F]">
+          <ControlledMobileTitle className="materials-mobile-section-title sm:hidden" ariaLabel="Antes de pedir seus materiais personalizados">
+            <span className="block">Antes de pedir seus</span>
+            <span className="block">materiais personalizados</span>
+          </ControlledMobileTitle>
+          <span className="hidden text-[clamp(2.05rem,5.8vw,4.05rem)] sm:block">
+            Antes de pedir seus materiais personalizados
+          </span>
         </h2>
       </div>
       <div className="mx-auto mt-12 grid max-w-[920px] gap-4">
@@ -696,8 +723,14 @@ function FinalCtaSection() {
         <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#B29157] sm:text-sm">
           Sua marca no mundo físico
         </p>
-        <h2 className="materials-final-title-mobile mx-auto mt-7 max-w-[920px] text-balance font-serif text-[clamp(2.15rem,8.6vw,4rem)] font-medium leading-[1.04] tracking-[-0.028em] xl:hidden">
-          Se a sua apresentação precisa transmitir mais valor, comece pelo material que o cliente vê, toca e guarda.
+        <h2 className="materials-final-title-mobile mx-auto mt-7 max-w-[920px] font-serif text-[clamp(2.15rem,8.6vw,4rem)] font-medium leading-[1.04] tracking-[-0.028em] xl:hidden">
+          <ControlledMobileTitle className="materials-mobile-section-title" ariaLabel="Se a sua apresentação precisa transmitir mais valor, comece pelo material que o cliente vê, toca e guarda.">
+            <span className="block">Se a sua apresentação</span>
+            <span className="block">precisa transmitir mais valor,</span>
+            <span className="block">comece pelo material</span>
+            <span className="block">que o cliente vê, toca</span>
+            <span className="block">e guarda.</span>
+          </ControlledMobileTitle>
         </h2>
         <h2 className="materials-final-title-desktop mx-auto mt-7 hidden max-w-[980px] font-serif text-[4.05rem] font-medium leading-[1.06] tracking-[-0.018em] xl:block">
           <span className="block whitespace-nowrap">Se a sua apresentação</span>
@@ -804,6 +837,32 @@ function MaterialsPageStyles() {
         height: 36px;
       }
 
+      .materials-mobile-controlled-title {
+        display: block;
+        max-width: 100%;
+        text-wrap: normal;
+        word-break: normal;
+        overflow-wrap: normal;
+      }
+
+      .materials-mobile-section-title {
+        font-size: clamp(1.72rem, 7.2vw, 2.15rem);
+        line-height: 1.04;
+        letter-spacing: -0.03em;
+      }
+
+      .materials-hero-artwork-frame {
+        aspect-ratio: 941 / 760;
+      }
+
+      .materials-hero-mobile-image-spacer {
+        aspect-ratio: 941 / 760;
+      }
+
+      .materials-hero-mobile-image-shade {
+        background: linear-gradient(180deg, rgba(0, 6, 23, 0) 62%, rgba(0, 6, 23, 0.28) 84%, #000617 100%);
+      }
+
       .materials-hero-mobile ul > li {
         min-height: 64px;
         border-bottom: 1px solid rgba(178, 145, 87, 0.2);
@@ -811,7 +870,7 @@ function MaterialsPageStyles() {
       }
 
       .materials-floating-whatsapp {
-        bottom: max(5.5rem, env(safe-area-inset-bottom));
+        bottom: max(4.5rem, calc(env(safe-area-inset-bottom) + 1.25rem));
         opacity: 0;
         pointer-events: none;
         transform: translate3d(0, 18px, 0) scale(0.96);
@@ -826,6 +885,10 @@ function MaterialsPageStyles() {
       @media (min-width: 1280px) {
         .materials-hero {
           min-height: max(790px, 56.28vw);
+        }
+
+        .materials-hero-artwork-frame {
+          aspect-ratio: auto;
         }
 
         .materials-custom-made-section {
@@ -882,7 +945,7 @@ function MaterialsPageStyles() {
 
         .materials-floating-whatsapp {
           right: 1rem;
-          bottom: max(5rem, env(safe-area-inset-bottom));
+          bottom: max(4rem, calc(env(safe-area-inset-bottom) + 1rem));
         }
 
         .materials-floating-whatsapp img {
