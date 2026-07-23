@@ -1,151 +1,382 @@
-﻿# Estrutura da Landing Page, Materiais GrÃ¡ficos Personalizados
+# Estrutura atualizada da Landing Page, Materiais Impressos
 
-## DireÃ§Ã£o geral
+## Visão geral
 
-A landing page deve seguir a identidade visual da LP de Assessoria Comercial.
+A landing page de Materiais Impressos deve ser simplificada e reorganizada.
 
-Manter:
+A estrutura oficial agora contém apenas 6 seções.
 
-- mesma tipografia;
-- mesmo estilo de diagramaÃ§Ã£o;
-- mesmo padrÃ£o de botÃµes verdes;
-- mesma paleta;
-- mesmo rodapÃ© da LP de Assessoria Comercial;
-- ritmo visual premium;
-- seÃ§Ãµes amplas, com respiro;
-- alternÃ¢ncia entre azul marinho e off-white.
+```txt
+Seção 1: Hero, fundo azul marinho
+Seção 2: Confiança comprovada, fundo off-white
+Seção 3: Feito sob encomenda, fundo azul marinho
+Seção 4: FAQ, fundo off-white
+Seção 5: CTA final, fundo azul marinho
+Seção 6: Rodapé
+```
 
-## SeÃ§Ã£o 1, Hero principal
+## Seções que devem ser removidas
 
-Fundo: azul marinho.
+Remover da página atual:
 
-ConteÃºdo:
-- nÃ£o colocar logotipo dentro da Hero;
-- textos em off-white;
-- algumas palavras em dourado;
-- botÃ£o verde igual ao da LP de Assessoria Comercial;
-- CTA para WhatsApp.
+```txt
+Cartões de visita
+Pastas e envelopes
+Panfletos e folders
+Blocos de anotações
+qualquer seção individual de produto
+qualquer layout alternado produto por produto
+```
 
-Objetivo:
-Comunicar rapidamente que a pÃ¡gina nÃ£o Ã© sobre grÃ¡fica comum, mas sobre impressos premium que materializam autoridade.
+A nova página deve ficar mais curta, mais objetiva e mais premium.
 
-## SeÃ§Ã£o 2, CartÃµes de visita
+---
 
-Fundo: off-white.
+# Seção 1, Hero principal
 
-Layout:
-- tÃ­tulo e descriÃ§Ã£o Ã  esquerda;
-- fotos de cartÃµes de visita Ã  direita;
-- textos em azul marinho.
+## Fundo
 
-Objetivo:
-Apresentar cartÃµes de visita como peÃ§a de autoridade, nÃ£o apenas contato.
+Azul marinho da paleta oficial.
 
-## SeÃ§Ã£o 3, Pastas e envelopes
+## Objetivo
 
-Fundo: off-white.
+Comunicar imediatamente que o Grupo Vittore cria impressos premium que materializam autoridade e presença física de marca.
 
-Layout:
-- fotos de pastas e envelopes Ã  esquerda;
-- tÃ­tulo e descriÃ§Ã£o Ã  direita;
-- textos em azul marinho.
+## Layout
 
-Objetivo:
-Mostrar que materiais de apresentaÃ§Ã£o elevam a percepÃ§Ã£o em reuniÃµes, propostas e entregas.
+Seguir a referência visual aprovada pelo Gustavo.
 
-## SeÃ§Ã£o 4, Panfletos e folders
+A Hero deve conter:
 
-Fundo: off-white.
+```txt
+texto principal à esquerda
+imagem premium dos materiais à direita ou como composição hero
+botão verde de WhatsApp
+botão secundário, se já estiver no layout aprovado
+microcopy abaixo dos botões
+selos ou benefícios curtos abaixo
+```
 
-Layout:
-- tÃ­tulo e descriÃ§Ã£o Ã  esquerda;
-- fotos de panfletos e folders Ã  direita.
+## Imagem
 
-Objetivo:
-Mostrar que panfletos e folders podem ser estratÃ©gicos, elegantes e informativos, quando bem pensados.
+Usar a imagem aprovada da Hero enviada pelo Gustavo como referência principal.
 
-## SeÃ§Ã£o 5, ConfianÃ§a e diferenciais
+Não usar os mockups genéricos antigos da página atual.
 
-Fundo: azul marinho.
+## Copy base
 
-Layout:
-- informaÃ§Ãµes e benefÃ­cios Ã  esquerda;
-- tÃ­tulo e descriÃ§Ãµes Ã  direita;
-- textos em off-white e detalhes em dourado.
+Eyebrow:
 
-ConteÃºdos obrigatÃ³rios:
-- entrega para todo o Brasil;
-- pedidos somente por encomenda via WhatsApp;
-- tudo personalizado e exclusivo para cada cliente;
-- materiais premium;
-- orientaÃ§Ã£o no processo;
-- foco em profissionais e empresas que valorizam apresentaÃ§Ã£o.
+```txt
+Materiais Gráficos Personalizados
+```
 
-Objetivo:
-Passar confianÃ§a e explicar como funciona.
+Título:
 
-## SeÃ§Ã£o 6, Blocos de anotaÃ§Ãµes
+```txt
+Autoridade que se toca: impressos premium que materializam sua marca.
+```
 
-Fundo: off-white.
+Descrição:
 
-Layout:
-- fotos dos blocos Ã  esquerda;
-- tÃ­tulo e descriÃ§Ã£o Ã  direita.
+```txt
+Cartões de visita, pastas, envelopes, folders, panfletos e blocos personalizados para profissionais e empresas que querem transmitir mais confiança, sofisticação e valor em cada detalhe.
+```
 
-Objetivo:
-Mostrar blocos personalizados como material de relacionamento, presenÃ§a e cuidado institucional.
+Frase de apoio:
 
-## SeÃ§Ã£o 7, Prova social
+```txt
+Do conceito ao papel, presença que lidera.
+```
 
-Fundo: off-white.
+CTA principal:
 
-Layout:
-- tÃ­tulo centralizado;
-- subtÃ­tulo explicando mais de 200 avaliaÃ§Ãµes 5 estrelas no Google;
-- depoimentos em 2 linhas e 4 colunas visÃ­veis;
-- linha superior se move da direita para a esquerda;
-- linha inferior se move da esquerda para a direita;
-- cada depoimento com 5 estrelas.
+```txt
+Quero mais informações
+```
 
-Objetivo:
-ReforÃ§ar confianÃ§a, satisfaÃ§Ã£o e seguranÃ§a na compra.
+CTA secundário, se mantido:
 
-## SeÃ§Ã£o 8, FAQ
+```txt
+Conhecer materiais
+```
 
-Fundo: off-white.
+Microcopy:
 
-Layout:
-- tÃ­tulo centralizado;
-- perguntas e respostas frequentes;
-- textos em azul marinho;
-- acordeon ou cards de pergunta.
+```txt
+Pedidos sob encomenda pelo WhatsApp. Entregamos para todo o Brasil.
+```
 
-Objetivo:
-Reduzir objeÃ§Ãµes e orientar o visitante.
+Benefícios curtos:
 
-## SeÃ§Ã£o 9, CTA final
+```txt
+Acabamento premium
+Atendimento personalizado
+Entrega para todo Brasil
+Qualidade que transmite confiança
+Design estratégico para fortalecer sua marca
+Materiais que geram impacto
+Detalhes que fazem a diferença
+```
 
-Fundo: azul marinho.
+---
 
-ConteÃºdo:
-- copy persuasiva final;
-- botÃ£o verde para WhatsApp;
-- textos em off-white;
-- palavras-chave em dourado.
+# Seção 2, Confiança comprovada
 
-Objetivo:
-Encerrar com aÃ§Ã£o clara.
+## Fundo
 
-## SeÃ§Ã£o 10, RodapÃ©
+Off-white.
 
-Usar exatamente o mesmo rodapÃ© da LP de Assessoria Comercial.
+## Origem
 
-NÃ£o alterar:
-- estrutura;
-- logo;
-- textos;
-- links;
-- cores;
-- espaÃ§amento;
-- responsividade.
+Essa seção já existe na página atual mais abaixo. Ela deve ser movida para se tornar a segunda seção da página.
 
+## Objetivo
+
+Usar prova social cedo na página para gerar confiança.
+
+## Conteúdo
+
+Eyebrow:
+
+```txt
+Confiança comprovada
+```
+
+Título:
+
+```txt
+Mais de 200 avaliações no Google. Todas com 5 estrelas.
+```
+
+Descrição:
+
+```txt
+A confiança construída com nossos clientes aparece nos detalhes: no atendimento, na orientação, na produção e no cuidado com cada entrega.
+```
+
+## Estrutura visual
+
+Manter exatamente o estilo já criado pelo Hermes, desde que esteja visualmente bom:
+
+```txt
+depoimentos em cards
+5 estrelas em cada depoimento
+duas linhas em movimento
+linha superior movendo da direita para a esquerda
+linha inferior movendo da esquerda para a direita
+visual premium
+responsivo
+```
+
+## Regras
+
+```txt
+não inventar nomes de clientes
+não criar prints falsos
+não usar depoimentos com nomes falsos
+se houver depoimentos reais, usar reais
+se não houver, usar textos genéricos sem nome
+```
+
+---
+
+# Seção 3, Feito sob encomenda
+
+## Fundo
+
+Azul marinho.
+
+## Objetivo
+
+Explicar o funcionamento e reforçar personalização, atendimento, entrega e acabamento.
+
+## Conteúdo base
+
+Eyebrow:
+
+```txt
+Feito sob encomenda
+```
+
+Título:
+
+```txt
+Cada material é pensado para representar o nível da sua marca.
+```
+
+Descrição:
+
+```txt
+No Grupo Vittore, materiais gráficos não são tratados como produtos de prateleira. Cada pedido é feito sob encomenda, considerando o tipo de profissional, o público que ele atende, a imagem que deseja transmitir e o uso real do material.
+```
+
+## Blocos de benefício
+
+### Personalizado para cada cliente
+
+```txt
+Nada de material genérico. Cada projeto é orientado para comunicar a presença, o posicionamento e o padrão visual da sua marca.
+```
+
+### Pedidos pelo WhatsApp
+
+```txt
+Todo atendimento acontece de forma prática pelo WhatsApp, com orientação para entender o que você precisa e qual material faz mais sentido para sua marca.
+```
+
+### Entrega para todo o Brasil
+
+```txt
+Produzimos materiais personalizados e enviamos para clientes em todo o Brasil, mantendo cuidado na produção, acabamento e entrega.
+```
+
+### Acabamento com intenção
+
+```txt
+Papel, textura, formato e acabamento não são detalhes aleatórios. Eles ajudam a construir a percepção que o cliente terá da sua marca.
+```
+
+CTA:
+
+```txt
+Falar com o Grupo Vittore
+```
+
+---
+
+# Seção 4, FAQ
+
+## Fundo
+
+Off-white.
+
+## Objetivo
+
+Responder dúvidas frequentes e remover objeções antes do clique no WhatsApp.
+
+## Conteúdo
+
+Eyebrow:
+
+```txt
+Dúvidas frequentes
+```
+
+Título:
+
+```txt
+Antes de pedir seus materiais personalizados
+```
+
+## Perguntas
+
+```txt
+Os pedidos são feitos somente por encomenda?
+Vocês entregam para todo o Brasil?
+O pedido é feito pelo WhatsApp?
+Vocês trabalham para todos os públicos?
+Quais materiais vocês produzem?
+Vocês criam a arte ou preciso enviar pronta?
+Existe pedido mínimo?
+Quanto tempo demora para produzir?
+Posso pedir algo mais premium ou sofisticado?
+```
+
+## Regras visuais
+
+```txt
+manter fundo off-white
+texto em azul marinho
+layout centralizado
+acordeon ou cards de FAQ
+boa área de clique no mobile
+sem poluir
+```
+
+---
+
+# Seção 5, CTA final
+
+## Fundo
+
+Azul marinho.
+
+## Objetivo
+
+Encerrar a página com uma chamada forte para WhatsApp.
+
+## Conteúdo
+
+Eyebrow:
+
+```txt
+Sua marca no mundo físico
+```
+
+Título:
+
+```txt
+Se a sua apresentação precisa transmitir mais valor, comece pelo material que o cliente vê, toca e guarda.
+```
+
+Descrição:
+
+```txt
+Materiais gráficos personalizados ajudam sua marca a sair do comum e a ocupar uma presença mais profissional na mente do cliente. Do cartão à pasta, do folder ao bloco de anotações, cada detalhe pode reforçar autoridade, confiança e sofisticação.
+```
+
+CTA:
+
+```txt
+Quero mais informações
+```
+
+Microcopy:
+
+```txt
+Fale pelo WhatsApp e solicite seu material sob encomenda.
+```
+
+---
+
+# Seção 6, Rodapé
+
+## Regra absoluta
+
+Manter o rodapé exatamente como está.
+
+O rodapé atual está aprovado.
+
+Não alterar:
+
+```txt
+estrutura
+logo
+textos
+links
+cores
+espaçamentos
+tipografia
+responsividade
+posicionamento
+```
+
+Se o rodapé já está correto na página atual, apenas manter.
+
+---
+
+# Critério final de estrutura
+
+A página final deve estar nesta ordem:
+
+```txt
+Hero
+Confiança comprovada
+Feito sob encomenda
+FAQ
+CTA final
+Rodapé
+```
+
+Nada além disso.

@@ -1,111 +1,103 @@
-﻿# Regras de imagens e assets
+# Regras atualizadas de imagens e assets
 
-## Objetivo das imagens
+## Mudança principal
 
-As imagens da landing page devem reforÃ§ar a percepÃ§Ã£o premium da frente de Materiais GrÃ¡ficos Personalizados.
+A landing page não terá mais seções individuais por produto.
 
-Elas precisam comunicar:
-
-- sofisticaÃ§Ã£o;
-- acabamento;
-- profissionalismo;
-- cuidado;
-- autoridade;
-- presenÃ§a fÃ­sica da marca.
-
-## Pastas sugeridas
-
-Criar assets da LP em:
+Portanto, não é mais necessário criar imagens específicas para:
 
 ```txt
-public/assets/materiais-graficos/
+cartões de visita
+pastas e envelopes
+panfletos e folders
+blocos de anotações
 ```
 
-SugestÃ£o de estrutura:
+A prioridade agora é usar uma imagem forte e premium na Hero.
+
+## Imagem principal da Hero
+
+Usar a imagem de referência aprovada pelo Gustavo para a Hero.
+
+A imagem apresenta materiais gráficos premium com aparência sofisticada e deve orientar a composição visual da seção principal.
+
+## Pasta sugerida para assets
+
+Usar ou criar uma pasta coerente com a estrutura atual do projeto:
 
 ```txt
-public/assets/materiais-graficos/
-  brand/
-  references/
-  sections/
-    hero/
-    cartoes/
-    pastas-envelopes/
-    panfletos-folders/
-    blocos/
-    prova-social/
+public/assets/materiais-impressos/
 ```
 
-Se o projeto jÃ¡ usa `materiais-impressos` como nome de pasta, manter o padrÃ£o existente e nÃ£o duplicar.
-
-## Nomes de arquivos
-
-Usar nomes simples, sem acentos e com hÃ­fen:
+Sugestão:
 
 ```txt
-hero-materiais-graficos.webp
-cartoes-visita-premium.webp
-pastas-envelopes-premium.webp
-panfletos-folders-profissionais.webp
-blocos-anotacoes-personalizados.webp
+public/assets/materiais-impressos/hero/
 ```
 
-## Formato recomendado
+Nome sugerido:
 
-Preferir WebP otimizado para imagens finais da pÃ¡gina.
+```txt
+hero-materiais-impressos-premium.webp
+```
 
-Qualidade sugerida:
+ou, se for PNG:
 
-- imagens gerais: 78 a 82;
-- imagem hero: 82 a 86;
-- se houver transparÃªncia e o resultado em WebP ficar ruim, avaliar PNG.
+```txt
+hero-materiais-impressos-premium.png
+```
 
-## Alt text
+Não renomear arquivo já existente sem atualizar o código.
 
-Cada imagem deve ter alt text descritivo e natural.
+## Regras para o Hermes
 
-Exemplos:
+1. Não buscar imagem na internet.
+2. Não inventar caminho de imagem.
+3. Não usar imagens antigas repetidas se a nova Hero já estiver disponível.
+4. Não criar mockups genéricos de produto.
+5. Não manter imagens das seções removidas.
+6. Não quebrar imagens da Home, Blog ou Assessoria.
+7. Não mover assets globais sem necessidade.
+8. Não converter formato sem autorização, salvo se o projeto já tiver rotina segura.
 
-- `CartÃµes de visita premium personalizados com acabamento sofisticado`
-- `Pastas e envelopes personalizados para apresentaÃ§Ã£o profissional`
-- `Folders e panfletos personalizados com acabamento grÃ¡fico profissional`
-- `Blocos de anotaÃ§Ãµes personalizados para empresas e profissionais`
-
-## Imagens por seÃ§Ã£o
+## Imagens por seção
 
 ### Hero
 
-Imagem opcional ou composiÃ§Ã£o visual com materiais premium.
+Usar imagem aprovada.
 
-NÃ£o usar logo dentro da Hero.
+### Confiança comprovada
 
-### CartÃµes de visita
+Não precisa de imagem. Usar cards de depoimentos com 5 estrelas.
 
-Foto de cartÃµes premium, com textura, acabamento e apresentaÃ§Ã£o sofisticada.
+### Feito sob encomenda
 
-### Pastas e envelopes
+Pode usar cards, ícones ou blocos visuais. Não precisa de imagem nova.
 
-Foto de pastas, envelopes e papelaria institucional com acabamento elegante.
+### FAQ
 
-### Panfletos e folders
+Não precisa de imagem.
 
-Foto de folders e panfletos bem diagramados, com visual profissional.
+### CTA final
 
-### Blocos
+Não precisa de imagem, salvo se o layout atual já usar elemento visual sutil.
 
-Foto de blocos de anotaÃ§Ãµes personalizados, em ambiente corporativo ou composiÃ§Ã£o premium.
+### Rodapé
 
-### Prova social
+Manter rodapé atual.
 
-NÃ£o precisa de imagem real. Pode ser componente com cards de depoimentos e estrelas.
+## Alt text
 
-## Regras importantes
+Se a Hero usar imagem, usar alt text descritivo:
 
-- NÃ£o mover assets existentes sem atualizar o cÃ³digo.
-- NÃ£o renomear imagens existentes sem necessidade.
-- NÃ£o usar imagens de baixa qualidade.
-- NÃ£o usar imagens com texto ilegÃ­vel.
-- NÃ£o usar material visual que pareÃ§a popular ou barato.
-- NÃ£o usar imagem genÃ©rica sem relaÃ§Ã£o com material grÃ¡fico.
-- NÃ£o usar fotos com pessoas como foco principal, salvo se o usuÃ¡rio aprovar.
+```txt
+Materiais gráficos premium personalizados com cartões, pastas, folders e papelaria corporativa
+```
 
+## Performance
+
+Preferir imagem otimizada.
+
+Se usar WebP, manter boa qualidade visual.
+
+Se usar PNG por enquanto, não forçar conversão se isso atrasar ou quebrar a implementação.

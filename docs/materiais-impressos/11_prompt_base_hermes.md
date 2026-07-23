@@ -1,225 +1,318 @@
-﻿# Prompt base para Hermes, LP Materiais GrÃ¡ficos Personalizados
+# Prompt base atualizado para Hermes, LP Materiais Impressos
 
-Copiar este prompt quando for implementar a landing page.
+Use este prompt para reestruturar a página `/materiais-impressos`.
 
 ```txt
-Hermes, precisamos implementar a landing page de Materiais GrÃ¡ficos Personalizados do Grupo Vittore.
+Hermes, precisamos reestruturar a landing page de Materiais Impressos do Grupo Vittore.
 
-ROTA ALVO:
-Definir conforme padrÃ£o atual do projeto.
-
-PreferÃªncia:
-materiais-impressos
-
-ou, se jÃ¡ existir rota criada:
-materiais-graficos
-
-Antes de implementar, confirme qual rota jÃ¡ existe no projeto e preserve o padrÃ£o existente. NÃ£o crie duas rotas para a mesma pÃ¡gina.
+A página já existe, mas a estrutura atual está longa demais e com seções individuais de produtos. Vamos simplificar totalmente.
 
 ==================================================
-OBJETIVO
+ROTA OFICIAL
 ==================================================
 
-Criar uma landing page de Materiais GrÃ¡ficos Personalizados com a mesma identidade visual da landing page de Assessoria Comercial.
+Trabalhar somente na rota:
 
-A pÃ¡gina deve vender impressos premium, personalizados e sob encomenda, para profissionais e empresas que querem transmitir mais autoridade, sofisticaÃ§Ã£o, confianÃ§a e presenÃ§a fÃ­sica.
+/materiais-impressos
+
+Não criar nova rota.
 
 ==================================================
-DOCUMENTOS DE REFERÃŠNCIA
+ANTES DE IMPLEMENTAR
 ==================================================
 
-Leia todos os documentos desta pasta antes de implementar:
+Leia todos os arquivos da pasta:
 
 docs/materiais-impressos/
 
-ou o caminho equivalente em que estes arquivos forem salvos.
+Trate esses documentos como regras obrigatórias.
 
-Leia especialmente:
+Atenção especial para:
 
 README.md
 01_briefing_estrategico.md
-03_posicionamento_e_mensagem.md
 04_estrutura_da_landing_page.md
 05_copy_final_landing_page.md
 06_direcao_visual_e_identidade.md
 07_regras_de_imagens_e_assets.md
 08_regras_de_componentes_e_interacoes.md
-09_faq_e_objecoes.md
-10_whatsapp_conversao.md
+11_prompt_base_hermes.md
 12_checklist_validacao.md
 
-Trate esses documentos como regras obrigatÃ³rias.
-
 ==================================================
-REGRAS ABSOLUTAS
+OBJETIVO
 ==================================================
 
-NÃƒO alterar /assessoria-comercial.
-NÃƒO alterar formulÃ¡rio da Assessoria Comercial.
-NÃƒO alterar /api/leads.
-NÃƒO alterar Supabase.
-NÃƒO alterar ClickUp.
-NÃƒO alterar envio de e-mail.
-NÃƒO alterar Netlify Functions.
-NÃƒO alterar /obrigado.
-NÃƒO alterar /obrigado-qualificado.
-NÃƒO alterar /politicas-de-privacidade.
-NÃƒO alterar /termos-de-uso.
-NÃƒO alterar Blog.
-NÃƒO alterar artigos.
-NÃƒO alterar pÃ¡gina Sobre.
-NÃƒO alterar Home institucional, exceto links que apontem para esta LP, se necessÃ¡rio.
-NÃƒO alterar logotipo.
-NÃƒO alterar paleta.
-NÃƒO instalar biblioteca nova sem necessidade.
-NÃƒO fazer commit automaticamente.
+Reestruturar a página /materiais-impressos para ter somente 6 seções:
+
+1. Hero, fundo azul marinho
+2. Confiança comprovada, depoimentos Google, fundo off-white
+3. Feito sob encomenda, fundo azul marinho
+4. FAQ, fundo off-white
+5. CTA final, fundo azul marinho
+6. Rodapé, manter exatamente como está
 
 ==================================================
-IDENTIDADE VISUAL
+REMOVER SEÇÕES ANTIGAS
 ==================================================
 
-Usar a mesma identidade visual da LP de Assessoria Comercial:
+Remover totalmente da página:
 
-- mesma tipografia;
-- mesmo padrÃ£o de seÃ§Ãµes;
-- mesmo botÃ£o verde;
-- mesmo uso de azul marinho e off-white;
-- mesmo padrÃ£o de hierarquia;
-- mesmo rodapÃ© exatamente igual.
+- seção de cartões de visita
+- seção de pastas e envelopes
+- seção de panfletos e folders
+- seção de blocos de anotações
+- qualquer seção individual de produto
+- mockups repetidos dessas seções
+- CTAs individuais de produto
 
-O rodapÃ© deve ser copiado/reutilizado da LP de Assessoria Comercial sem alteraÃ§Ã£o visual.
+A página pode citar cartões, pastas, envelopes, folders, panfletos e blocos na copy, mas não deve ter uma seção para cada um.
 
 ==================================================
-ESTRUTURA DA PÃGINA
+REGRAS ABSOLUTAS DE PROTEÇÃO
 ==================================================
 
-SeÃ§Ã£o 1:
-Hero principal
+NÃO alterar /assessoria-comercial.
+NÃO alterar formulário da Assessoria Comercial.
+NÃO alterar /api/leads.
+NÃO alterar Supabase.
+NÃO alterar ClickUp.
+NÃO alterar envio de e-mail.
+NÃO alterar Netlify Functions.
+NÃO alterar /obrigado.
+NÃO alterar /obrigado-qualificado.
+NÃO alterar /politicas-de-privacidade.
+NÃO alterar /termos-de-uso.
+NÃO alterar a Home Institucional.
+NÃO alterar /blog.
+NÃO alterar artigos.
+NÃO alterar páginas individuais dos artigos.
+NÃO alterar página Sobre.
+NÃO alterar header global.
+NÃO alterar menu mobile.
+NÃO alterar logotipo.
+NÃO alterar rodapé atual da página, pois ele está aprovado.
+NÃO instalar biblioteca nova sem necessidade.
+NÃO fazer commit automaticamente.
+
+==================================================
+SEÇÃO 1, HERO
+==================================================
+
 Fundo azul marinho.
-Sem logotipo dentro da Hero.
-Textos em off-white com palavras em dourado.
-BotÃ£o verde para WhatsApp.
 
-SeÃ§Ã£o 2:
-CartÃµes de visita
-Fundo off-white.
-Texto Ã  esquerda.
-Imagem Ã  direita.
+Usar a nova imagem premium aprovada pelo Gustavo como referência visual principal da Hero.
 
-SeÃ§Ã£o 3:
-Pastas e envelopes
-Fundo off-white.
-Imagem Ã  esquerda.
-Texto Ã  direita.
+A Hero deve seguir a nova referência enviada pelo Gustavo.
 
-SeÃ§Ã£o 4:
-Panfletos e folders
-Fundo off-white.
-Texto Ã  esquerda.
-Imagem Ã  direita.
+Conteúdo:
 
-SeÃ§Ã£o 5:
-ConfianÃ§a e diferenciais
-Fundo azul marinho.
-BenefÃ­cios Ã  esquerda.
-TÃ­tulo e descriÃ§Ã£o Ã  direita.
-Falar de entrega para todo o Brasil, pedidos por encomenda via WhatsApp e personalizaÃ§Ã£o.
+Eyebrow:
+Materiais Gráficos Personalizados
 
-SeÃ§Ã£o 6:
-Blocos de anotaÃ§Ãµes
-Fundo off-white.
-Imagem Ã  esquerda.
-Texto Ã  direita.
+Título:
+Autoridade que se toca: impressos premium que materializam sua marca.
 
-SeÃ§Ã£o 7:
-Prova social
-Fundo off-white.
-Depoimentos com 5 estrelas.
-Duas linhas em movimento:
-linha superior da direita para a esquerda;
-linha inferior da esquerda para a direita.
-Dar destaque para mais de 200 avaliaÃ§Ãµes no Google, todas 5 estrelas.
+Descrição:
+Cartões de visita, pastas, envelopes, folders, panfletos e blocos personalizados para profissionais e empresas que querem transmitir mais confiança, sofisticação e valor em cada detalhe.
 
-SeÃ§Ã£o 8:
-FAQ
-Fundo off-white.
-Centralizado.
-Perguntas frequentes.
+Frase de apoio:
+Do conceito ao papel, presença que lidera.
 
-SeÃ§Ã£o 9:
-CTA final
-Fundo azul marinho.
-Copy persuasiva final.
-BotÃ£o verde para WhatsApp.
+CTA principal:
+Quero mais informações
 
-SeÃ§Ã£o 10:
-RodapÃ©
-Mesmo rodapÃ© da LP de Assessoria Comercial.
+CTA secundário, se mantido:
+Conhecer materiais
+
+Microcopy:
+Pedidos sob encomenda pelo WhatsApp. Entregamos para todo o Brasil.
+
+Benefícios:
+Acabamento premium
+Atendimento personalizado
+Entrega para todo Brasil
+Qualidade que transmite confiança
+Design estratégico para fortalecer sua marca
+Materiais que geram impacto
+Detalhes que fazem a diferença
+
+Não colocar logotipo dentro da Hero.
 
 ==================================================
-COPY
+SEÇÃO 2, CONFIANÇA COMPROVADA
 ==================================================
 
-Usar a copy definida em:
+Mover a seção de depoimentos do Google para logo depois da Hero.
 
-05_copy_final_landing_page.md
+Fundo off-white.
 
-Pode ajustar pequenos trechos para caber no layout, mas nÃ£o mudar o posicionamento.
+Manter o estilo visual que já foi criado, se estiver funcionando.
 
-NÃ£o transformar a pÃ¡gina em texto de grÃ¡fica popular.
-NÃ£o usar linguagem de promoÃ§Ã£o.
-NÃ£o usar â€œbaratinhoâ€.
-NÃ£o usar â€œarte grÃ¡tisâ€.
-NÃ£o usar linguagem genÃ©rica.
+Conteúdo:
+
+Eyebrow:
+Confiança comprovada
+
+Título:
+Mais de 200 avaliações no Google. Todas com 5 estrelas.
+
+Descrição:
+A confiança construída com nossos clientes aparece nos detalhes: no atendimento, na orientação, na produção e no cuidado com cada entrega.
+
+Estrutura:
+- cards de depoimentos
+- 5 estrelas em cada card
+- duas linhas em movimento
+- linha superior da direita para esquerda
+- linha inferior da esquerda para direita
+- mobile legível
+- sem overflow horizontal
+
+Não inventar nomes de clientes.
+
+==================================================
+SEÇÃO 3, FEITO SOB ENCOMENDA
+==================================================
+
+Fundo azul marinho.
+
+Conteúdo:
+
+Eyebrow:
+Feito sob encomenda
+
+Título:
+Cada material é pensado para representar o nível da sua marca.
+
+Descrição:
+No Grupo Vittore, materiais gráficos não são tratados como produtos de prateleira. Cada pedido é feito sob encomenda, considerando o tipo de profissional, o público que ele atende, a imagem que deseja transmitir e o uso real do material.
+
+Blocos:
+
+Personalizado para cada cliente
+Nada de material genérico. Cada projeto é orientado para comunicar a presença, o posicionamento e o padrão visual da sua marca.
+
+Pedidos pelo WhatsApp
+Todo atendimento acontece de forma prática pelo WhatsApp, com orientação para entender o que você precisa e qual material faz mais sentido para sua marca.
+
+Entrega para todo o Brasil
+Produzimos materiais personalizados e enviamos para clientes em todo o Brasil, mantendo cuidado na produção, acabamento e entrega.
+
+Acabamento com intenção
+Papel, textura, formato e acabamento não são detalhes aleatórios. Eles ajudam a construir a percepção que o cliente terá da sua marca.
+
+CTA:
+Falar com o Grupo Vittore
+
+==================================================
+SEÇÃO 4, FAQ
+==================================================
+
+Fundo off-white.
+
+Conteúdo:
+
+Eyebrow:
+Dúvidas frequentes
+
+Título:
+Antes de pedir seus materiais personalizados
+
+Perguntas:
+- Os pedidos são feitos somente por encomenda?
+- Vocês entregam para todo o Brasil?
+- O pedido é feito pelo WhatsApp?
+- Vocês trabalham para todos os públicos?
+- Quais materiais vocês produzem?
+- Vocês criam a arte ou preciso enviar pronta?
+- Existe pedido mínimo?
+- Quanto tempo demora para produzir?
+- Posso pedir algo mais premium ou sofisticado?
+
+Usar as respostas do arquivo 05_copy_final_landing_page.md.
+
+==================================================
+SEÇÃO 5, CTA FINAL
+==================================================
+
+Fundo azul marinho.
+
+Conteúdo:
+
+Eyebrow:
+Sua marca no mundo físico
+
+Título:
+Se a sua apresentação precisa transmitir mais valor, comece pelo material que o cliente vê, toca e guarda.
+
+Descrição:
+Materiais gráficos personalizados ajudam sua marca a sair do comum e a ocupar uma presença mais profissional na mente do cliente. Do cartão à pasta, do folder ao bloco de anotações, cada detalhe pode reforçar autoridade, confiança e sofisticação.
+
+Botão:
+Quero mais informações
+
+Microcopy:
+Fale pelo WhatsApp e solicite seu material sob encomenda.
+
+==================================================
+SEÇÃO 6, RODAPÉ
+==================================================
+
+Manter exatamente como está.
+
+O rodapé atual está perfeito e aprovado.
+
+Não alterar:
+- estrutura
+- logo
+- textos
+- links
+- cores
+- espaçamentos
+- tipografia
+- responsividade
 
 ==================================================
 WHATSAPP
 ==================================================
 
-Todos os botÃµes principais devem direcionar para WhatsApp.
+Todos os botões principais devem abrir WhatsApp.
 
-CTA principal:
-Quero mais informaÃ§Ãµes
+Mensagem padrão:
 
-Mensagem padrÃ£o:
-OlÃ¡, vim pelo site do Grupo Vittore e quero mais informaÃ§Ãµes sobre materiais grÃ¡ficos personalizados.
+Olá, vim pelo site do Grupo Vittore e quero mais informações sobre materiais gráficos personalizados.
 
-NÃ£o inventar nÃºmero.
-Usar nÃºmero oficial do projeto, se existir.
-Se nÃ£o existir, criar constante placeholder com comentÃ¡rio claro.
+Não inventar número.
 
-==================================================
-PROVA SOCIAL
-==================================================
-
-Se existirem depoimentos reais do Google disponÃ­veis no projeto, usar os reais.
-
-Se nÃ£o existirem, criar a estrutura visual com depoimentos placeholder claramente controlados, sem afirmar nomes reais falsos.
-
-Manter destaque:
-Mais de 200 avaliaÃ§Ãµes no Google, todas 5 estrelas.
+Usar número oficial do projeto, se existir.
+Se não existir, usar placeholder claro.
 
 ==================================================
 RESPONSIVIDADE
 ==================================================
 
 Testar em:
+
+360px
 375px
 390px
 430px
 desktop
 
 Garantir:
-- sem overflow horizontal;
-- nenhuma palavra cortada;
-- tÃ­tulos com linhas controladas quando necessÃ¡rio;
-- botÃµes com boa Ã¡rea de toque;
-- imagens bem ajustadas;
-- depoimentos funcionando no mobile;
-- FAQ legÃ­vel.
+
+- sem overflow horizontal
+- sem palavra cortada
+- Hero legível
+- prova social funcionando
+- FAQ funcionando
+- CTA final legível
+- rodapé preservado
+- página curta e premium
 
 ==================================================
-TESTES
+TESTES TÉCNICOS
 ==================================================
 
 Rodar:
@@ -227,32 +320,34 @@ Rodar:
 npm run build
 
 Verificar:
-- rota da LP carrega;
-- /assessoria-comercial nÃ£o foi alterada;
-- /api/leads nÃ£o foi alterada;
-- WhatsApp abre corretamente;
-- rodapÃ© estÃ¡ igual ao da LP de Assessoria Comercial;
-- sem erro TypeScript;
-- sem erro de import;
-- sem imagem quebrada.
+- sem erro de TypeScript
+- /materiais-impressos carrega
+- /assessoria-comercial preservada
+- /blog preservado
+- Home preservada
+- /api/leads preservada
 
 ==================================================
-RELATÃ“RIO FINAL
+RELATÓRIO FINAL
 ==================================================
 
 Ao finalizar, informe:
 
-1. arquivos criados;
-2. arquivos alterados;
-3. rota final da pÃ¡gina;
-4. se reutilizou rodapÃ© da Assessoria Comercial;
-5. se preservou /assessoria-comercial;
-6. se preservou /api/leads;
-7. se os botÃµes apontam para WhatsApp;
-8. se implementou prova social;
-9. se implementou FAQ;
-10. se npm run build passou;
-11. pendÃªncias;
-12. nÃ£o fazer commit automaticamente.
+1. arquivos alterados
+2. se removeu as seções individuais de produto
+3. se a página ficou com 6 seções
+4. se a Hero usa a nova imagem aprovada
+5. se a prova social foi movida para a seção 2
+6. se a seção Feito sob encomenda ficou como seção 3
+7. se FAQ ficou como seção 4
+8. se CTA final ficou como seção 5
+9. se o rodapé foi mantido exatamente como estava
+10. se botões apontam para WhatsApp
+11. se preservou /assessoria-comercial
+12. se preservou /blog
+13. se preservou Home
+14. se preservou /api/leads
+15. se npm run build passou
+16. pendências
+17. não fazer commit automaticamente
 ```
-

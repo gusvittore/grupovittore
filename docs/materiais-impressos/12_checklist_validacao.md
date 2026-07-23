@@ -1,89 +1,128 @@
-﻿# Checklist de validaÃ§Ã£o, LP Materiais GrÃ¡ficos Personalizados
+# Checklist atualizado, LP Materiais Impressos
 
-## ConteÃºdo
+## Estrutura
 
-- [ ] Hero comunica impressos premium e autoridade tangÃ­vel.
-- [ ] A pÃ¡gina nÃ£o parece uma grÃ¡fica popular.
-- [ ] A copy fala com corretores, advogados, contadores, empresÃ¡rios e profissionais liberais.
-- [ ] O texto comunica profissionalismo, sofisticaÃ§Ã£o, confianÃ§a e status com sobriedade.
-- [ ] A pÃ¡gina explica pedidos sob encomenda.
-- [ ] A pÃ¡gina explica entrega para todo o Brasil.
-- [ ] A pÃ¡gina informa atendimento pelo WhatsApp.
-- [ ] A pÃ¡gina apresenta cartÃµes de visita.
-- [ ] A pÃ¡gina apresenta pastas e envelopes.
-- [ ] A pÃ¡gina apresenta panfletos e folders.
-- [ ] A pÃ¡gina apresenta blocos de anotaÃ§Ãµes.
-- [ ] A pÃ¡gina contÃ©m FAQ.
-- [ ] A pÃ¡gina contÃ©m prova social.
-- [ ] A pÃ¡gina contÃ©m CTA final.
+- [ ] A página tem somente 6 seções.
+- [ ] Seção 1 é a Hero com fundo azul marinho.
+- [ ] Seção 2 é Confiança comprovada com fundo off-white.
+- [ ] Seção 3 é Feito sob encomenda com fundo azul marinho.
+- [ ] Seção 4 é FAQ com fundo off-white.
+- [ ] Seção 5 é CTA final com fundo azul marinho.
+- [ ] Seção 6 é o rodapé.
+- [ ] O rodapé foi mantido exatamente como estava.
 
-## Design
+## Seções removidas
 
-- [ ] Usa identidade visual da LP de Assessoria Comercial.
-- [ ] Usa azul marinho nos blocos institucionais.
-- [ ] Usa off-white nas seÃ§Ãµes de leitura.
-- [ ] Usa dourado com moderaÃ§Ã£o.
-- [ ] Usa botÃ£o verde no mesmo padrÃ£o da Assessoria Comercial.
-- [ ] NÃ£o coloca logotipo dentro da Hero.
-- [ ] MantÃ©m rodapÃ© exatamente igual ao da LP de Assessoria Comercial.
-- [ ] MantÃ©m tipografia aprovada.
-- [ ] MantÃ©m diagramaÃ§Ã£o premium.
-- [ ] NÃ£o cria visual paralelo.
+- [ ] Seção de cartões de visita foi removida.
+- [ ] Seção de pastas e envelopes foi removida.
+- [ ] Seção de panfletos e folders foi removida.
+- [ ] Seção de blocos de anotações foi removida.
+- [ ] Não existe mais seção individual de produto.
+- [ ] Não existem CTAs individuais de produto.
+- [ ] Não existem mockups repetidos das seções antigas.
+
+## Hero
+
+- [ ] Hero usa fundo azul marinho.
+- [ ] Hero usa a nova imagem premium aprovada.
+- [ ] Hero não tem logotipo interno.
+- [ ] Hero tem título “Autoridade que se toca: impressos premium que materializam sua marca.”
+- [ ] Hero tem botão “Quero mais informações”.
+- [ ] Hero informa pedidos sob encomenda pelo WhatsApp.
+- [ ] Hero informa entrega para todo o Brasil.
+- [ ] Hero mantém visual premium.
+
+## Confiança comprovada
+
+- [ ] Seção aparece logo após a Hero.
+- [ ] Fundo é off-white.
+- [ ] Título fala das mais de 200 avaliações no Google.
+- [ ] Texto informa que todas são 5 estrelas.
+- [ ] Depoimentos têm 5 estrelas.
+- [ ] Duas linhas de depoimentos funcionam.
+- [ ] Não há nomes falsos de clientes.
+- [ ] Não há overflow horizontal.
+
+## Feito sob encomenda
+
+- [ ] Fundo é azul marinho.
+- [ ] Título é “Cada material é pensado para representar o nível da sua marca.”
+- [ ] Explica personalização.
+- [ ] Explica pedidos pelo WhatsApp.
+- [ ] Explica entrega para todo o Brasil.
+- [ ] Explica acabamento com intenção.
+- [ ] CTA aponta para WhatsApp.
+
+## FAQ
+
+- [ ] FAQ aparece depois de Feito sob encomenda.
+- [ ] Fundo é off-white.
+- [ ] Perguntas estão legíveis.
+- [ ] Respostas estão claras.
+- [ ] Funciona bem no mobile.
+- [ ] Não está poluída.
+
+## CTA final
+
+- [ ] Fundo é azul marinho.
+- [ ] Título fala de material que o cliente vê, toca e guarda.
+- [ ] Botão aponta para WhatsApp.
+- [ ] Microcopy fala em pedido sob encomenda.
+- [ ] Visual está premium.
+
+## Rodapé
+
+- [ ] Rodapé está exatamente como estava.
+- [ ] Logo não foi alterado.
+- [ ] Links não foram alterados.
+- [ ] Cores não foram alteradas.
+- [ ] Espaçamentos não foram alterados.
+- [ ] Responsividade não foi alterada.
+
+## Proteção de outras páginas
+
+- [ ] /assessoria-comercial preservada.
+- [ ] /blog preservado.
+- [ ] Home preservada.
+- [ ] Página Sobre preservada.
+- [ ] Artigos preservados.
+- [ ] /api/leads preservada.
+- [ ] Formulários preservados.
+- [ ] Supabase preservado.
+- [ ] ClickUp preservado.
 
 ## Mobile
 
+- [ ] Testado em 360px.
 - [ ] Testado em 375px.
 - [ ] Testado em 390px.
 - [ ] Testado em 430px.
-- [ ] Nenhuma palavra corta.
-- [ ] NÃ£o existe overflow horizontal.
-- [ ] TÃ­tulos ficam bem diagramados.
-- [ ] BotÃµes sÃ£o fÃ¡ceis de clicar.
-- [ ] Imagens nÃ£o quebram.
-- [ ] Depoimentos funcionam sem poluir.
-- [ ] FAQ Ã© legÃ­vel.
+- [ ] Sem overflow horizontal.
+- [ ] Sem palavra cortada.
+- [ ] Botões têm boa área de toque.
+- [ ] Hero fica legível.
+- [ ] Prova social funciona.
+- [ ] FAQ funciona.
+- [ ] CTA final funciona.
+- [ ] Rodapé continua correto.
 
-## ConversÃ£o
-
-- [ ] BotÃ£o da Hero leva ao WhatsApp.
-- [ ] BotÃµes secundÃ¡rios levam ao WhatsApp.
-- [ ] CTA final leva ao WhatsApp.
-- [ ] Mensagem do WhatsApp estÃ¡ correta.
-- [ ] NÃºmero de WhatsApp nÃ£o foi inventado.
-- [ ] Se nÃ£o houver nÃºmero, existe placeholder claro.
-
-## Prova social
-
-- [ ] Destaque para mais de 200 avaliaÃ§Ãµes no Google.
-- [ ] Texto informa 5 estrelas.
-- [ ] Cards tÃªm 5 estrelas.
-- [ ] Linha superior move da direita para esquerda.
-- [ ] Linha inferior move da esquerda para direita.
-- [ ] AnimaÃ§Ã£o nÃ£o atrapalha leitura.
-- [ ] Respeita reduÃ§Ã£o de movimento, se possÃ­vel.
-
-## TÃ©cnica
+## Técnica
 
 - [ ] `npm run build` passou.
 - [ ] Sem erro TypeScript.
-- [ ] Sem erro de importaÃ§Ã£o.
-- [ ] Sem imagem quebrada.
+- [ ] Sem erro de importação.
+- [ ] Sem erro de imagem.
 - [ ] Sem rota duplicada.
-- [ ] `/assessoria-comercial` preservada.
-- [ ] `/api/leads` preservada.
-- [ ] FormulÃ¡rios da Assessoria preservados.
-- [ ] Blog preservado.
-- [ ] Artigos preservados.
+- [ ] Sem alteração sistêmica indevida.
 
-## RelatÃ³rio final esperado do Hermes
+## Relatório final esperado
 
-- [ ] arquivos criados;
-- [ ] arquivos alterados;
-- [ ] rota final;
-- [ ] confirmaÃ§Ã£o do rodapÃ© reutilizado;
-- [ ] confirmaÃ§Ã£o dos botÃµes de WhatsApp;
-- [ ] confirmaÃ§Ã£o da prova social;
-- [ ] confirmaÃ§Ã£o do FAQ;
-- [ ] resultado do build;
-- [ ] pendÃªncias.
-
+- [ ] arquivos alterados.
+- [ ] confirmação da nova estrutura com 6 seções.
+- [ ] confirmação das seções removidas.
+- [ ] confirmação da Hero atualizada.
+- [ ] confirmação da prova social como seção 2.
+- [ ] confirmação do rodapé preservado.
+- [ ] confirmação dos botões de WhatsApp.
+- [ ] confirmação de build aprovado.
+- [ ] pendências.

@@ -1,92 +1,151 @@
-﻿# Briefing estratÃ©gico, LP Materiais GrÃ¡ficos Personalizados
+# Briefing estratégico atualizado, LP Materiais Impressos
 
 ## Contexto
 
-O Grupo Vittore possui uma frente de Materiais GrÃ¡ficos Personalizados com foco em impressos premium, feitos sob encomenda, para profissionais e empresas que desejam transmitir mais autoridade, sofisticaÃ§Ã£o, confianÃ§a e presenÃ§a fÃ­sica.
+A página de Materiais Impressos do Grupo Vittore será simplificada.
 
-A landing page deve seguir a mesma identidade visual da landing page de Assessoria Comercial, mas com copy prÃ³pria, voltada para materiais grÃ¡ficos.
+A versão anterior tinha várias seções individuais apresentando cartões de visita, pastas, envelopes, panfletos, folders e blocos de anotações. Essa estrutura deve ser removida.
 
-## Posicionamento da frente
+A nova página será mais direta, premium e institucional, com foco em autoridade, confiança, encomenda personalizada e conversão pelo WhatsApp.
 
-A frente de Materiais GrÃ¡ficos Personalizados nÃ£o deve ser posicionada como grÃ¡fica popular, grÃ¡fica rÃ¡pida ou fornecedora de preÃ§o baixo.
+## Rota oficial
 
-O posicionamento correto Ã©:
+```txt
+/materiais-impressos
+```
 
-> Materiais grÃ¡ficos premium para profissionais e empresas que querem transformar sua marca em presenÃ§a fÃ­sica, tangÃ­vel e memorÃ¡vel.
+## Nome comercial da frente
 
-## Frase guia
-
-> Autoridade que se toca: impressos premium que materializam sua marca.
+```txt
+Materiais Gráficos Personalizados
+```
 
 ## Promessa central
 
-Criar materiais grÃ¡ficos personalizados que elevam a percepÃ§Ã£o de valor da marca e ajudam o profissional ou empresa a se apresentar com mais confianÃ§a, sofisticaÃ§Ã£o e profissionalismo.
+Impressos premium sob encomenda para profissionais e empresas que querem transmitir mais autoridade, sofisticação, confiança e presença física de marca.
 
-## PÃºblico-alvo prioritÃ¡rio
+## Frase guia
 
-- corretores de imÃ³veis;
-- advogados;
-- contadores;
-- empresÃ¡rios;
-- profissionais liberais;
-- empresas locais;
-- negÃ³cios que vendem serviÃ§o de confianÃ§a, relacionamento ou ticket maior.
+```txt
+Autoridade que se toca: impressos premium que materializam sua marca.
+```
 
-## Desejo principal do pÃºblico
+## Público principal
 
-O pÃºblico quer ser percebido como mais profissional, confiÃ¡vel, estruturado e sofisticado antes mesmo da primeira conversa.
+A página deve falar com:
 
-## Dor principal
+```txt
+corretores de imóveis
+advogados
+contadores
+empresários
+profissionais liberais
+empresas que querem parecer mais profissionais
+marcas que precisam fortalecer presença física
+negócios que vendem confiança, reputação e percepção de valor
+```
 
-Muitos profissionais tÃªm boa entrega, mas a apresentaÃ§Ã£o visual ainda nÃ£o acompanha o nÃ­vel do serviÃ§o. O material impresso atual nÃ£o comunica o valor que eles querem transmitir.
+## O que o público busca
+
+Esse público não compra apenas papel.
+
+Ele busca:
+
+```txt
+profissionalismo
+status
+sofisticação
+confiança
+autoridade
+presença de marca
+percepção de valor
+cuidado com detalhes
+um material que represente o nível do serviço
+```
+
+## Nova estratégia da landing page
+
+A página não será mais uma vitrine longa por produto.
+
+Ela será construída em 6 blocos:
+
+```txt
+1. Hero forte com imagem premium aprovada
+2. Prova social com avaliações do Google
+3. Explicação de que tudo é feito sob encomenda
+4. FAQ para reduzir objeções
+5. CTA final para WhatsApp
+6. Rodapé exatamente igual ao atual
+```
+
+## Seções que não devem existir mais
+
+Remover totalmente da estrutura da página:
+
+```txt
+seção específica de cartões de visita
+seção específica de pastas e envelopes
+seção específica de panfletos e folders
+seção específica de blocos de anotações
+seções alternadas de produto com imagem e texto
+```
+
+Esses materiais podem ser mencionados no Hero, na descrição, na FAQ ou no texto geral, mas não devem ter seções próprias.
 
 ## Diferenciais que precisam aparecer
 
-- produÃ§Ã£o sob encomenda;
-- materiais personalizados;
-- orientaÃ§Ã£o visual e tÃ©cnica;
-- foco em acabamento e presenÃ§a;
-- entrega para todo o Brasil;
-- pedidos via WhatsApp;
-- atendimento para profissionais e empresas que valorizam apresentaÃ§Ã£o;
-- impressos alinhados Ã  identidade e ao posicionamento de cada cliente.
+```txt
+pedidos sob encomenda
+atendimento pelo WhatsApp
+entrega para todo o Brasil
+materiais personalizados
+acabamento premium
+design estratégico
+qualidade que transmite confiança
+mais de 200 avaliações no Google
+todas as avaliações com 5 estrelas
+```
 
-## O que nÃ£o comunicar
+## Tom de comunicação
 
-Evitar linguagem de grÃ¡fica popular:
+```txt
+premium
+direto
+elegante
+persuasivo
+humano
+confiante
+sem exagero
+sem cara de gráfica popular
+```
 
-- cartÃ£o baratinho;
-- promoÃ§Ã£o;
-- arte grÃ¡tis;
-- fazemos qualquer coisa;
-- preÃ§o baixo;
-- impressÃ£o rÃ¡pida sem critÃ©rio;
-- panfleto barato;
-- grÃ¡fica online genÃ©rica.
+## O que evitar
 
-## Tom da pÃ¡gina
+Não usar linguagem de gráfica barata:
 
-- premium;
-- sofisticado;
-- direto;
-- seguro;
-- persuasivo;
-- elegante;
-- sem exagero;
-- sem linguagem robÃ³tica;
-- sem excesso tÃ©cnico.
+```txt
+baratinho
+promoção
+arte grátis
+panfleto barato
+gráfica rápida
+fazemos tudo
+qualquer quantidade
+preço baixo
+```
 
-## Objetivo de conversÃ£o
+## Objetivo de conversão
 
-Levar o visitante para o WhatsApp com intenÃ§Ã£o de pedir orÃ§amento, tirar dÃºvidas ou iniciar um pedido sob encomenda.
+Levar o visitante para o WhatsApp.
 
-CTA principal sugerido:
+CTA principal:
 
-> Quero mais informaÃ§Ãµes
+```txt
+Quero mais informações
+```
 
-VariaÃ§Ãµes possÃ­veis:
+Mensagem padrão:
 
-> Solicitar orÃ§amento pelo WhatsApp  
-> Quero criar meus impressos premium  
-> Falar sobre meu projeto
-
+```txt
+Olá, vim pelo site do Grupo Vittore e quero mais informações sobre materiais gráficos personalizados.
+```

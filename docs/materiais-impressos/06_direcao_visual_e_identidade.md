@@ -1,149 +1,170 @@
-﻿# DireÃ§Ã£o visual e identidade
+# Direção visual e identidade atualizada
 
-## ReferÃªncia principal
+## Referência principal
 
-A landing page de Materiais GrÃ¡ficos Personalizados deve seguir a mesma identidade visual da landing page de Assessoria Comercial.
+A landing page de Materiais Impressos deve seguir a identidade visual da landing page de Assessoria Comercial.
 
-Manter o mesmo padrÃ£o de:
+A página atual deve ser simplificada e ficar mais premium, com menos seções e mais impacto.
 
-- tipografia;
-- espaÃ§amento;
-- botÃµes;
-- ritmo visual;
-- hierarquia;
-- acabamento visual;
-- premium institucional;
-- rodapÃ©.
+## Estrutura visual
 
-## Paleta
+A página passa a ter apenas:
 
-Usar a paleta oficial do Grupo Vittore:
+```txt
+Hero azul
+Prova social off-white
+Feito sob encomenda azul
+FAQ off-white
+CTA final azul
+Rodapé
+```
 
-- azul marinho: `#000617` ou tom jÃ¡ usado na LP de Assessoria Comercial;
-- off-white: `#FBF8F4`;
-- dourado: `#B29157`;
-- vermelho imperial: `#930101`, somente se jÃ¡ estiver previsto na identidade;
-- verde CTA: `#008723`.
+## Remover visualmente
 
-## Uso das cores
+Remover as seções de produto individual:
 
-### Azul marinho
+```txt
+cartões de visita
+pastas e envelopes
+panfletos e folders
+blocos de anotações
+```
 
-Usar em:
-
-- Hero;
-- seÃ§Ã£o de diferenciais;
-- CTA final;
-- fundos institucionais;
-- Ã¡reas de maior autoridade.
-
-### Off-white
-
-Usar em:
-
-- seÃ§Ãµes de produtos;
-- FAQ;
-- prova social;
-- Ã¡reas de leitura.
-
-### Dourado
-
-Usar em:
-
-- palavras estratÃ©gicas dentro dos tÃ­tulos;
-- detalhes pequenos;
-- elementos de destaque;
-- linhas sutis, se jÃ¡ fizer parte da LP de Assessoria Comercial.
-
-NÃ£o exagerar no dourado.
-
-### Verde
-
-Usar apenas nos botÃµes principais de conversÃ£o, seguindo o padrÃ£o da LP de Assessoria Comercial.
-
-## Tipografia
-
-A tipografia deve seguir exatamente o padrÃ£o da LP de Assessoria Comercial.
-
-NÃ£o trocar fonte.
-NÃ£o criar fonte nova.
-NÃ£o usar peso aleatÃ³rio.
+Também remover os mockups repetidos de produto que estavam nas seções intermediárias.
 
 ## Hero
 
-Regras:
+A Hero deve usar a imagem premium aprovada pelo Gustavo como referência principal.
 
-- fundo azul marinho;
-- sem logotipo dentro da Hero;
-- tÃ­tulo forte;
-- palavras pontuais em dourado;
-- botÃ£o verde;
-- microcopy abaixo do botÃ£o;
-- imagem ou composiÃ§Ã£o visual relacionada a impressos premium, se for usada.
+Ela deve comunicar:
 
-## Imagens
+```txt
+autoridade
+sofisticação
+materiais premium
+presença física
+status profissional
+confiança
+```
 
-As imagens devem parecer reais, premium e profissionais.
+A Hero deve ter:
 
-Evitar:
+```txt
+fundo azul marinho
+texto em off-white
+palavra estratégica em dourado
+botão verde
+composição visual premium
+benefícios curtos
+```
 
-- mockup barato;
-- excesso de elementos;
-- visual popular;
-- imagens com aparÃªncia de IA evidente;
-- papÃ©is genÃ©ricos sem acabamento;
-- composiÃ§Ã£o poluÃ­da;
-- pessoas em excesso;
-- fotos que pareÃ§am banco de imagem comum.
+Não colocar logotipo dentro da Hero.
 
-Preferir:
+## Seção de prova social
 
-- close em cartÃµes sofisticados;
-- textura de papel;
-- pastas premium;
-- envelopes bem acabados;
-- folders com boa diagramaÃ§Ã£o;
-- blocos personalizados;
-- composiÃ§Ã£o elegante;
-- iluminaÃ§Ã£o profissional;
-- fundo neutro;
-- alto contraste com sobriedade.
+A seção de prova social deve subir para logo depois da Hero.
 
-## RodapÃ©
+Manter fundo off-white.
 
-Usar exatamente o mesmo rodapÃ© da LP de Assessoria Comercial.
+Manter o estilo já criado pelo Hermes, se estiver funcionando:
 
-NÃ£o alterar:
+```txt
+cards de depoimentos
+5 estrelas
+movimento em duas linhas
+visual leve
+bom respiro
+```
 
-- logo;
-- links;
-- textos;
-- cores;
-- espaÃ§amentos;
-- estrutura;
-- responsividade.
+## Seção Feito sob encomenda
+
+Fundo azul marinho.
+
+Essa seção deve trazer confiança e explicar que cada pedido é personalizado.
+
+Usar visual premium, com cards ou blocos informativos.
+
+## FAQ
+
+Fundo off-white.
+
+FAQ precisa ser limpo, centralizado e fácil de ler.
+
+## CTA final
+
+Fundo azul marinho.
+
+A CTA final deve ser forte, direta e alinhada com a Hero.
+
+## Rodapé
+
+Manter exatamente como está.
+
+O rodapé atual está aprovado.
+
+Não alterar:
+
+```txt
+logo
+estrutura
+links
+cores
+tipografia
+espaçamento
+responsividade
+```
+
+## Paleta
+
+Usar a paleta oficial:
+
+```txt
+azul marinho
+off-white
+dourado
+verde no CTA
+```
+
+## Tipografia
+
+Usar a mesma tipografia do projeto e da LP de Assessoria Comercial.
+
+Não trocar fonte.
 
 ## Mobile
 
-A versÃ£o mobile deve seguir o padrÃ£o jÃ¡ aprendido no projeto:
+A versão mobile precisa respeitar as regras já aprendidas no projeto:
 
-- tÃ­tulos com linhas controladas quando necessÃ¡rio;
-- nada de palavra cortada;
-- nada de overflow horizontal;
-- tÃ­tulos principais com hierarquia clara;
-- subtÃ­tulos menores que tÃ­tulos principais;
-- cards legÃ­veis;
-- botÃµes com boa Ã¡rea de toque;
-- imagens sem cortes ruins.
+```txt
+sem palavra cortada
+sem overflow horizontal
+títulos com linhas bem diagramadas
+botões com área de toque confortável
+cards legíveis
+depoimentos sem quebrar layout
+FAQ fácil de usar
+rodapé preservado
+```
 
 ## Desktop
 
-No desktop:
+No desktop, a página deve parecer institucional e premium.
 
-- seÃ§Ãµes alternadas com texto e imagem;
-- boa largura de leitura;
-- imagens grandes e premium;
-- muito respiro;
-- layout sofisticado;
-- alinhamentos alternados conforme o esboÃ§o.
+Evitar excesso de seções.
 
+Evitar que pareça catálogo de gráfica.
+
+## Linguagem visual proibida
+
+Não usar:
+
+```txt
+visual popular
+promoção
+cores muito chamativas
+ícones genéricos demais
+mockups repetidos de produto
+layout de catálogo
+gráfica barata
+imagem aleatória
+```

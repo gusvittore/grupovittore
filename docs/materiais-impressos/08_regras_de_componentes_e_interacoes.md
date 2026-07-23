@@ -1,110 +1,140 @@
-﻿# Regras de componentes e interaÃ§Ãµes
+# Regras atualizadas de componentes e interações
 
-## BotÃµes
+## Botões principais
 
-Usar o mesmo padrÃ£o de botÃ£o verde da LP de Assessoria Comercial.
+A página deve usar poucos botões e todos devem direcionar para o WhatsApp.
 
 CTA principal:
 
-> Quero mais informaÃ§Ãµes
-
-Destino:
-WhatsApp oficial da frente de Materiais GrÃ¡ficos Personalizados.
-
-Se ainda nÃ£o existir nÃºmero definitivo no cÃ³digo, usar variÃ¡vel ou placeholder controlado, nunca inventar nÃºmero.
-
-## Links de WhatsApp
-
-O link deve abrir em nova aba ou no app, conforme padrÃ£o do projeto.
-
-Mensagem sugerida no WhatsApp:
-
 ```txt
-OlÃ¡, vim pelo site do Grupo Vittore e quero mais informaÃ§Ãµes sobre materiais grÃ¡ficos personalizados.
+Quero mais informações
 ```
 
-Mensagem alternativa por seÃ§Ã£o:
+CTA secundário possível na Hero:
 
-CartÃµes:
 ```txt
-OlÃ¡, vim pelo site do Grupo Vittore e quero mais informaÃ§Ãµes sobre cartÃµes de visita personalizados.
+Conhecer materiais
 ```
 
-Pastas e envelopes:
+Se o botão secundário for usado, ele pode rolar para a seção de prova social ou para a seção Feito sob encomenda.
+
+Não criar CTAs individuais por produto.
+
+## CTAs removidos
+
+Remover CTAs antigos como:
+
 ```txt
-OlÃ¡, vim pelo site do Grupo Vittore e quero mais informaÃ§Ãµes sobre pastas e envelopes personalizados.
+Quero criar meu cartão premium
+Quero uma apresentação mais profissional
+Quero criar meu folder personalizado
+Quero blocos personalizados
 ```
 
-Panfletos e folders:
+A página não terá mais seções individuais de produto.
+
+## WhatsApp
+
+Mensagem padrão:
+
 ```txt
-OlÃ¡, vim pelo site do Grupo Vittore e quero mais informaÃ§Ãµes sobre panfletos e folders personalizados.
+Olá, vim pelo site do Grupo Vittore e quero mais informações sobre materiais gráficos personalizados.
 ```
-
-Blocos:
-```txt
-OlÃ¡, vim pelo site do Grupo Vittore e quero mais informaÃ§Ãµes sobre blocos de anotaÃ§Ãµes personalizados.
-```
-
-## SeÃ§Ã£o de prova social em movimento
-
-Desejo visual:
-
-- 2 linhas de depoimentos;
-- 4 colunas visÃ­veis no desktop;
-- linha superior movendo da direita para a esquerda;
-- linha inferior movendo da esquerda para a direita;
-- cada card com 5 estrelas;
-- destacar mais de 200 avaliaÃ§Ãµes no Google, todas 5 estrelas.
-
-Regras tÃ©cnicas:
-
-- animaÃ§Ã£o suave;
-- nÃ£o exagerar na velocidade;
-- pausar no hover, se possÃ­vel;
-- respeitar reduÃ§Ã£o de movimento para acessibilidade;
-- no mobile, usar carrossel horizontal ou rolagem suave;
-- nÃ£o quebrar layout.
-
-Se o projeto jÃ¡ usa motion/animaÃ§Ãµes, reutilizar padrÃ£o existente.
-
-## FAQ
-
-Pode ser acordeon ou cards empilhados.
 
 Regras:
 
-- pergunta clara;
-- resposta curta e Ãºtil;
-- boa Ã¡rea de clique no mobile;
-- sem animaÃ§Ã£o exagerada;
-- texto legÃ­vel;
-- fundo off-white;
-- tipografia consistente.
+```txt
+não inventar número
+usar número oficial do projeto, se existir
+se não houver número, usar placeholder claro
+centralizar a URL em constante/helper, se possível
+usar encodeURIComponent
+não alterar integrações da Assessoria Comercial
+```
 
-## Cards de benefÃ­cios
+## Prova social em movimento
 
-Na seÃ§Ã£o azul marinho, os benefÃ­cios podem ser exibidos em cards, lista ou blocos com Ã­cones discretos.
+A seção de depoimentos deve aparecer como Seção 2.
 
-Evitar Ã­cones genÃ©ricos demais.
+Manter ou ajustar a estrutura atual:
 
-Priorizar texto, clareza e composiÃ§Ã£o premium.
+```txt
+duas linhas de depoimentos
+linha superior da direita para esquerda
+linha inferior da esquerda para direita
+5 estrelas em cada card
+mais de 200 avaliações no Google
+todas 5 estrelas
+```
+
+Regras:
+
+```txt
+animação suave
+não exagerar velocidade
+pausar no hover se possível
+respeitar prefers-reduced-motion se possível
+mobile legível
+sem overflow horizontal
+sem nomes falsos
+```
+
+## FAQ
+
+A FAQ deve ficar em acordeon ou cards interativos, seguindo o padrão atual.
+
+Regras:
+
+```txt
+fundo off-white
+texto azul marinho
+perguntas centralizadas ou em bloco central
+boa área de clique no mobile
+sem excesso de animação
+```
+
+## Rodapé
+
+Manter o rodapé atual exatamente como está.
+
+Não alterar componente de rodapé se ele já estiver correto.
+
+## Interações que não devem ser criadas
+
+Não criar:
+
+```txt
+formulário
+popup
+modal
+chat próprio
+integração com Supabase
+integração com ClickUp
+rastreamento novo
+carrossel de produtos
+cards individuais de produtos
+```
 
 ## Responsividade
 
-Testar em:
+Testar:
 
-- 375px;
-- 390px;
-- 430px;
-- desktop comum;
-- notebook.
+```txt
+360px
+375px
+390px
+430px
+desktop
+```
 
-NÃ£o permitir:
+Garantir:
 
-- palavra cortada;
-- overflow horizontal;
-- botÃ£o pequeno demais;
-- carrossel quebrando;
-- cards de depoimento sobrepostos;
-- imagem estourando o container.
-
+```txt
+sem overflow horizontal
+sem palavra cortada
+Hero legível
+depoimentos funcionando
+FAQ funcionando
+CTA final legível
+rodapé preservado
+```

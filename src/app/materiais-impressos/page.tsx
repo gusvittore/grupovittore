@@ -2,178 +2,241 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-const MATERIALS_WHATSAPP_NUMBER = "5511947035134";
+const MATERIALS_WHATSAPP_NUMBER = "5511966026686";
 const DEFAULT_WHATSAPP_MESSAGE =
-  "Olá, vim pelo site do Grupo Vittore e quero mais informações sobre materiais gráficos personalizados.";
-const HERO_TITLE = "Autoridade que se toca: impressos premium que materializam sua marca.";
+  "Olá, vim pelo site da empresa e gostaria de mais informações sobre os materiais gráficos.";
 
-const productSections = [
-  {
-    id: "cartoes-de-visita",
-    eyebrow: "Primeira impressão",
-    title: "Cartões de visita para quem não quer parecer comum.",
-    description:
-      "O cartão de visita ainda é uma das formas mais diretas de materializar sua presença profissional. Quando o papel, o acabamento e o design estão alinhados, ele deixa de ser apenas um contato e passa a comunicar cuidado, autoridade e percepção de valor.",
-    support:
-      "Para corretores, advogados, contadores, empresários e profissionais liberais, um cartão bem feito ajuda a reforçar confiança antes mesmo da próxima conversa.",
-    bullets: [
-      "acabamentos premium",
-      "formatos personalizados",
-      "papel de alta qualidade",
-      "design alinhado à sua marca",
-      "produção sob encomenda",
-    ],
-    cta: "Quero criar meu cartão premium",
-    visualTitle: "Cartões premium",
-    visualAlt: "Cartões de visita premium personalizados com acabamento sofisticado",
-    order: "text-first",
-  },
-  {
-    id: "pastas-e-envelopes",
-    eyebrow: "Apresentação profissional",
-    title: "Pastas e envelopes que elevam a forma como sua empresa se apresenta.",
-    description:
-      "Uma proposta, um contrato, um documento ou uma apresentação comercial não precisam chegar ao cliente de qualquer forma. Pastas e envelopes personalizados criam uma experiência mais organizada, elegante e confiável.",
-    support:
-      "Eles ajudam sua marca a parecer mais estruturada, reforçam o cuidado com o detalhe e tornam cada entrega física mais profissional.",
-    bullets: [
-      "ideais para propostas e contratos",
-      "acabamento sofisticado",
-      "apresentação mais organizada",
-      "reforço de marca em reuniões",
-      "materiais feitos sob encomenda",
-    ],
-    cta: "Quero uma apresentação mais profissional",
-    visualTitle: "Papelaria institucional",
-    visualAlt: "Pastas e envelopes personalizados para apresentação profissional",
-    order: "visual-first",
-  },
-  {
-    id: "panfletos-e-folders",
-    eyebrow: "Comunicação impressa",
-    title: "Panfletos e folders com presença, clareza e acabamento profissional.",
-    description:
-      "Materiais informativos também podem ser sofisticados. Quando bem estruturados, panfletos e folders ajudam a apresentar serviços, imóveis, empresas, eventos e ofertas com mais clareza, sem perder a percepção de valor da marca.",
-    support:
-      "O objetivo não é apenas entregar informação. É entregar uma mensagem visualmente organizada, bem acabada e coerente com o público que você deseja atrair.",
-    bullets: [
-      "comunicação clara",
-      "design alinhado à identidade da marca",
-      "ideal para apresentação de serviços",
-      "materiais comerciais e institucionais",
-      "produção personalizada",
-    ],
-    cta: "Quero criar meu folder personalizado",
-    visualTitle: "Folders profissionais",
-    visualAlt: "Folders e panfletos personalizados com acabamento gráfico profissional",
-    order: "text-first",
-  },
-  {
-    id: "blocos-personalizados",
-    eyebrow: "Relacionamento e presença",
-    title: "Blocos personalizados que mantêm sua marca presente na rotina do cliente.",
-    description:
-      "Blocos de anotações personalizados são materiais simples na função, mas fortes na presença. Eles acompanham reuniões, atendimentos, mesas de trabalho, recepções e momentos em que sua marca continua visível depois do primeiro contato.",
-    support:
-      "São ideais para empresas, escritórios, consultores e profissionais que querem reforçar organização, cuidado e lembrança de marca no dia a dia.",
-    bullets: [
-      "úteis em reuniões e atendimentos",
-      "reforçam presença de marca",
-      "personalizados com identidade visual",
-      "opção profissional para relacionamento",
-      "produção sob encomenda",
-    ],
-    cta: "Quero blocos personalizados",
-    visualTitle: "Blocos personalizados",
-    visualAlt: "Blocos de anotações personalizados para empresas e profissionais",
-    order: "visual-first",
-  },
+const heroBenefits = [
+  { label: "Acabamento premium", icon: "diamond" },
+  { label: "Atendimento personalizado", icon: "atendimento" },
+  { label: "Entrega para todo Brasil", icon: "truck" },
+  { label: "Qualidade que transmite confiança", icon: "shield" },
+  { label: "Design estratégico para fortalecer sua marca", icon: "design" },
+  { label: "Materiais que geram impacto", icon: "star" },
 ] as const;
 
-const benefits = [
+const heroPrimaryBenefits = heroBenefits.slice(0, 3);
+const heroSecondaryBenefits = heroBenefits.slice(3);
+
+const customMadeItems = [
   {
     title: "Personalizado para cada cliente",
     description:
       "Nada de material genérico. Cada projeto é orientado para comunicar a presença, o posicionamento e o padrão visual da sua marca.",
+    icon: "personalizado",
   },
   {
     title: "Pedidos pelo WhatsApp",
     description:
       "Todo atendimento acontece de forma prática pelo WhatsApp, com orientação para entender o que você precisa e qual material faz mais sentido para sua marca.",
+    icon: "pedido-whatsapp",
   },
   {
     title: "Entrega para todo o Brasil",
     description:
       "Produzimos materiais personalizados e enviamos para clientes em todo o Brasil, mantendo cuidado na produção, acabamento e entrega.",
+    icon: "entrega",
   },
   {
-    title: "Acabamento com intenção",
+    title: "Design que transmite valor",
     description:
-      "Papel, textura, formato e acabamento não são detalhes aleatórios. Eles ajudam a construir a percepção que o cliente terá da sua marca.",
+      "Cada material é pensado para comunicar profissionalismo antes mesmo da primeira conversa. A arte, a organização das informações e o cuidado visual ajudam sua marca a parecer mais confiável, sofisticada e preparada.",
+    icon: "design-valor",
   },
 ] as const;
 
 const testimonials = [
-  "Atendimento excelente, material de ótima qualidade e resultado muito profissional. Superou minhas expectativas.",
-  "Ficou exatamente como eu queria. O acabamento transmite muito mais profissionalismo para a minha marca.",
-  "Equipe muito atenciosa, me orientou em todo o processo e entregou um material impecável.",
-  "A qualidade do material fez muita diferença na apresentação da minha empresa. Recomendo muito.",
-  "O cartão ficou sofisticado, bem acabado e com uma presença muito superior ao comum.",
-  "Pedido feito com segurança pelo WhatsApp, entrega no prazo e resultado excelente.",
-  "A apresentação dos meus materiais mudou completamente a percepção dos meus clientes.",
-  "Trabalho cuidadoso, bonito e muito profissional. Dá para perceber a diferença nos detalhes.",
+  {
+    name: "Francielle Vieira",
+    quote:
+      "Superou minhas expectativas. O Gustavo desde o primeiro atendimento foi super solícito e os cartões chegaram antes do previsto, fora que são de ótima qualidade!",
+  },
+  {
+    name: "Karoliny Machado",
+    quote:
+      "Fiquei encantada com cada detalhe. Desde o atendimento, sempre atencioso e prestativo, até a qualidade impecável dos produtos. As pastas ficaram maravilhosas, os blocos de anotações são lindíssimos e a agenda superou todas as minhas expectativas. Dá até pena de usar de tão perfeita que ficou!",
+  },
+  {
+    name: "Thaís Ellen Aguiar",
+    quote:
+      "Se eu pudesse avaliar com mais do que 5 estrelas, daria 1000x, com toda a certeza! O pessoal da Vittore Impressão é excelente no que faz. Além de comunicarem cada etapa do serviço, mantêm a gente sempre atualizado sobre o andamento do trabalho.",
+  },
+  {
+    name: "Carol Almeida",
+    quote:
+      "Excelente trabalho da equipe! Em menos de 7 dias, entre enviar material, aprovação de arte, etc., todos os materiais solicitados foram entregues! Além de agilidade, transparência, segurança e um trabalho primoroso! Obrigada!",
+  },
+  {
+    name: "Ana Paula Goncalves Coelho",
+    quote:
+      "Excelente atendimento e serviços de qualidade impecável! Muito satisfeita, só tenho a agradecer!",
+  },
+  {
+    name: "Elenilton P. Pinto",
+    quote:
+      "Excelente o atendimento e o melhor tudo a distância e uma qualidade do material excelente e chegou no tempo certo até antes, muito satisfeito. Já é a 2 vez que peço e recomendo para os colegas corretores.",
+  },
+  {
+    name: "Brenda Servilher",
+    quote:
+      "Excelente experiência! Atendimento ágil, entrega rápida e qualidade impecável na impressão. O acabamento ficou de alto padrão, exatamente como esperávamos. Recomendo muito!!",
+  },
+  {
+    name: "André Dieter Kempkens",
+    quote: "Estão de parabéns, muito obrigado. Deus abençoe muito essa empresa. Aloha.",
+  },
+  {
+    name: "Luana Divino",
+    quote: "Atendimento excelente e serviço de qualidade, ficaram perfeitos. Super recomendo!",
+  },
+  {
+    name: "Matheus Raismann",
+    quote: "Atendimento impecável, entregaram conforme o combinado! Baita empresa.",
+  },
+  {
+    name: "Ana Ferraz",
+    quote:
+      "Bom dia! Fui atendida pelo Gustavo e equipe e obtive um excelente atendimento! Educado e profissional. Cada detalhe do meu pedido que eu havia pensado, o Gustavo e sua equipe deu o seu melhor trabalho, superou as minhas expectativas, as cores e o designer ficaram bem com as características do meu perfil profissional.",
+  },
+  {
+    name: "Flavio Moura Moura",
+    quote: "Super recomendo! Trabalho top de vocês, fiz todo material digital e impresso para minha empresa.",
+  },
+  {
+    name: "Stephanie Cristina Lopes",
+    quote: "Os cartões são realmente muito bonitos, entrega rápida e estou muito satisfeita com a minha compra.",
+  },
+  {
+    name: "Miguel Cardoso",
+    quote: "Recomendo a todos. Ficou muito top o cartão de visita. Parabéns Gustavo, vocês são muito profissionais.",
+  },
+  {
+    name: "Francico Amisterdam",
+    quote: "Empresa de confiança, ótimo atendimento e excelente qualidade no produto.",
+  },
+  {
+    name: "Amanda Oliveira Silva",
+    quote: "Atendimento ágil e cordial, tempo de entrega antes do esperado, ótimo valor e ótima qualidade. Atendida pelo Gustavo, ótimo profissional.",
+  },
+  {
+    name: "Rafaela Roder",
+    quote: "O atendimento é rápido, as informações bem claras e chegou tudo certinho, indico muito.",
+  },
+  {
+    name: "Rosana Pinto Pessoa",
+    quote:
+      "Excelente atendimento! Meu agradecimento ao Gustavo e a toda a equipe pela atenção, carinho e dedicação na criação do meu cartão de visita. O resultado ficou simplesmente lindo! Super recomendo. Chegou antes do prazo!!!",
+  },
+  {
+    name: "Claudia Carrenho",
+    quote:
+      "Excelente experiência com a empresa, já compramos anteriormente e recomendo, ótimos produtos, cuidado na qualidade. Desta vez inovamos com as pastas, ficaram lindas, qualidade de impressão excelente! Atendimento diferenciado e entrega rápida, super recomendo.",
+  },
+  {
+    name: "Helen Zadeh",
+    quote: "Atendimento muito rápido, tudo muito bem explicadinho. Os flyers chegaram rápido e são de muito boa qualidade.",
+  },
+  {
+    name: "Danilo Pagamisse Michelan",
+    quote: "Ótimo atendimento, material de qualidade e muita rapidez na produção e entrega.",
+  },
+  {
+    name: "Ranielly Sousa",
+    quote: "Atendimento impecável, desde a conversa no WhatsApp até o serviço pronto. Amei meus cartões, ficaram lindos e o preço é justo!",
+  },
+  {
+    name: "Henrique Matos",
+    quote:
+      "Pesquisei a empresa aqui no Google, falei com Gustavo que me atendeu super bem, nos ajudou com a arte do cartão e o produto ficou muito bom. Qualidade no atendimento, auxílio e entrega do produto antes do prazo.",
+  },
+  {
+    name: "Mileidy Trovelli",
+    quote: "Qualidade maravilhosa dos cartões e atendimento perfeito! Sem comentários. Amei a experiência.",
+  },
+  {
+    name: "Gabriel Nogueira da Rosa",
+    quote:
+      "Fiz os pedidos dos cartões, top demais, chegou antes do prazo. Vendedor Gustavo super persuasivo, ético e um especialista que entende as necessidades do cliente, oferecendo soluções que agregam valor, em vez de apenas vender um produto. Muito obrigado.",
+  },
+  {
+    name: "Selma Oliveira",
+    quote:
+      "Atendimento perfeito, digno de nota 10. Amei tudo, desde o atendimento até a entrega. A confecção dos cartões foi super rápida, prática e a qualidade ótima. Super indico. Um agradecimento especial ao Gustavo que foi muito simpático, educado e profissional.",
+  },
+  {
+    name: "Cazzuni Advocacia",
+    quote:
+      "Qualidade impecável, o trabalho entregue consegue ser ainda melhor do que o esperado. Sempre dão dicas para o material ficar ainda mais bonito! Indico demais, nunca decepcionam, fora que a entrega é super ágil!",
+  },
+  {
+    name: "Evelyn Lopes",
+    quote:
+      "Simplesmente impecável, desde o atendimento até a entrega. Chegou super rápido, bem antes do previsto, o atendente é muito prestativo e atencioso. Super recomendo!",
+  },
+  {
+    name: "Carolina Schroder",
+    quote: "Fiz meus cartões de visita e ficaram do jeito que pedi, ótimo atendimento e entrega rápida.",
+  },
+  {
+    name: "Marcio Tokashiki",
+    quote: "Empresa muito atenciosa, são extremamente profissionais. Meus cartões que pedi chegaram dentro do prazo e do jeito que tinha pedido.",
+  },
+  {
+    name: "Vilmar Brasil (Junior)",
+    quote: "Trabalho magnífico dessa empresa, desde o primeiro contato até a chegada aqui em casa.",
+  },
 ] as const;
 
 const testimonialRows = [
-  testimonials.slice(0, 4),
-  testimonials.slice(4),
+  testimonials.slice(0, 16),
+  testimonials.slice(16),
 ] as const;
 
 const faqItems = [
   {
     question: "Os pedidos são feitos somente por encomenda?",
     answer:
-      "Sim. Cada material é produzido sob encomenda, considerando o tipo de peça, quantidade, acabamento, identidade visual e objetivo do cliente.",
+      "Sim. Todos os materiais são produzidos sob encomenda, porque cada cliente possui uma necessidade diferente. Primeiro, entendemos o que a empresa busca e ajudamos na escolha da opção mais adequada entre os modelos, materiais e acabamentos disponíveis. Depois, nossa equipe de design personaliza a arte de acordo com a identidade visual e as informações do cliente. A produção é iniciada somente após a aprovação final da arte.",
   },
   {
     question: "Vocês entregam para todo o Brasil?",
     answer:
-      "Sim. O Grupo Vittore atende clientes de diferentes regiões e envia materiais personalizados para todo o Brasil.",
+      "Sim. Atendemos clientes de todas as regiões do país e enviamos os materiais personalizados para todo o Brasil. Após a produção, o pedido é preparado com cuidado para o transporte e encaminhado ao endereço informado pelo cliente.",
   },
   {
     question: "O pedido é feito pelo WhatsApp?",
     answer:
-      "Sim. O atendimento inicial acontece pelo WhatsApp para entendermos o que você precisa, orientar as possibilidades e seguir com o orçamento.",
+      "Sim. Todo o atendimento e a realização do pedido acontecem pelo WhatsApp. Por lá, entendemos o que você precisa, apresentamos as opções disponíveis, esclarecemos suas dúvidas e preparamos o orçamento. Após a confirmação do pedido, seguimos com a personalização da arte, enviamos para sua aprovação e, somente depois, encaminhamos o material para produção.",
   },
   {
     question: "Vocês trabalham para todos os públicos?",
     answer:
-      "Atendemos principalmente profissionais e empresas que querem uma apresentação mais profissional, sofisticada e personalizada. O foco não é material genérico, mas impressos com mais presença e acabamento.",
+      "Sim. Trabalhamos para todos os públicos, desde profissionais autônomos até empresas de diferentes segmentos. Atendemos corretores de imóveis, imobiliárias, advogados, contadores, empresários, prestadores de serviços e empreendedores que desejam se apresentar de forma mais profissional e se destacar no mercado. Nossos materiais são pensados para quem busca impressos personalizados, com mais presença visual, qualidade e uma apresentação que valorize a marca.",
   },
   {
     question: "Quais materiais vocês produzem?",
     answer:
-      "Cartões de visita, pastas, envelopes, panfletos, folders, blocos de anotações e outros materiais gráficos personalizados sob encomenda.",
+      "Produzimos cartões de visita, pastas, envelopes, panfletos, folders, blocos de anotações e outros materiais gráficos personalizados. Cada produto conta com opções específicas de modelos, materiais e acabamentos, e a arte é desenvolvida de acordo com a identidade visual, as informações e o objetivo de cada cliente.",
   },
   {
     question: "Vocês criam a arte ou preciso enviar pronta?",
     answer:
-      "O ideal é avaliar cada caso pelo WhatsApp. Podemos orientar sobre o melhor caminho conforme o material, a identidade visual existente e o nível de personalização desejado.",
+      "Caso você ainda não tenha a arte pronta, nossa equipe de design realiza a personalização do material com base nas informações, cores, referências e orientações que você nos enviar. Esse serviço não possui custo adicional. O único ponto a considerar é o prazo de desenvolvimento, que normalmente varia entre 24 e 48 horas, conforme a complexidade da criação ou a necessidade de ajustes em um layout já existente. Após a finalização, a arte é enviada para sua aprovação antes de seguir para produção.",
   },
   {
     question: "Existe pedido mínimo?",
     answer:
-      "Pode existir pedido mínimo dependendo do tipo de material, acabamento e fornecedor envolvido na produção. A confirmação acontece durante o atendimento pelo WhatsApp.",
+      "Sim. Cada produto possui uma quantidade mínima de produção, que pode variar conforme o tipo de material escolhido. Durante o atendimento, informamos a quantidade mínima correspondente ao produto de interesse e apresentamos as opções disponíveis para que você escolha a mais adequada à sua necessidade.",
   },
   {
     question: "Quanto tempo demora para produzir?",
     answer:
-      "O prazo varia conforme o material, acabamento, quantidade e envio. Durante o atendimento, informamos o prazo estimado de produção e entrega.",
+      "O prazo de produção varia de acordo com o produto solicitado, mas, na maioria dos casos, o material fica pronto em até 48 horas, considerando dois dias úteis de produção. Após a finalização, o prazo de entrega dependerá da região e da modalidade de envio escolhida.",
   },
   {
-    question: "Posso pedir algo mais premium ou sofisticado?",
+    question: "Vocês oferecem garantia de satisfação?",
     answer:
-      "Sim. Essa é justamente uma das propostas da frente de materiais gráficos do Grupo Vittore: criar impressos com mais presença, acabamento e percepção profissional.",
+      "Sim. Somos uma das poucas empresas com produção gráfica que oferecem garantia incondicional de satisfação. Nosso compromisso não termina na entrega: queremos que você fique realmente satisfeito com o material recebido e com toda a experiência de compra. Esse cuidado é refletido nas mais de 200 avaliações que temos no Google, todas com cinco estrelas.",
   },
 ] as const;
 
@@ -194,6 +257,19 @@ function buildWhatsAppUrl(message = DEFAULT_WHATSAPP_MESSAGE) {
   return `https://wa.me/${MATERIALS_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
+function WhatsAppIcon() {
+  return (
+    <Image
+      aria-hidden="true"
+      src="/assets/materiais-impressos/icons/whatsapp-icon.png.png"
+      alt=""
+      width={56}
+      height={56}
+      className="h-7 w-7 flex-none object-contain"
+    />
+  );
+}
+
 function WhatsAppButton({
   children,
   className = "",
@@ -209,21 +285,19 @@ function WhatsAppButton({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Abrir WhatsApp do Grupo Vittore para ${children}`}
-      className={`hero-primary-button ${className}`}
+      className={`hero-primary-button gap-3 border border-[#4ED06B]/55 shadow-[0_18px_42px_rgba(0,165,61,0.24)] ${className}`}
     >
-      {children}
+      <WhatsAppIcon />
+      <span>{children}</span>
     </a>
   );
 }
 
-function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
+function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p
-      className={`flex items-center gap-4 text-xs font-extrabold uppercase leading-5 tracking-[0.28em] sm:text-sm ${
-        dark ? "text-[#B29157]" : "text-[#9A671E]"
-      }`}
+      className="materials-hero-eyebrow text-sm font-medium leading-5 tracking-[0.02em] text-[#B29157] sm:text-base"
     >
-      <span className="h-px w-10 bg-current opacity-70" aria-hidden="true" />
       <span>{children}</span>
     </p>
   );
@@ -252,80 +326,210 @@ function SectionShell({
   );
 }
 
-function ProductVisual({ title, alt }: { title: string; alt: string }) {
+function HeroBenefitIcon({ icon }: { icon: (typeof heroBenefits)[number]["icon"] }) {
+  const commonProps = {
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.45,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+
+  if (icon === "diamond") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <path d="M5 17 13 7h22l8 10-19 24L5 17Z" />
+        <path d="m13 7 6 10L24 7l5 10 6-10M5 17h38M19 17l5 24 5-24" />
+      </svg>
+    );
+  }
+
+  if (icon === "atendimento") {
+    return (
+      <Image
+        aria-hidden="true"
+        src="/assets/materiais-impressos/icons/atendimento-personalizado.png.png"
+        alt=""
+        width={56}
+        height={56}
+        className="h-10 w-10 object-contain"
+      />
+    );
+  }
+
+  if (icon === "truck") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <path d="M4 12h25v24H4zM29 21h8l7 8v7H29zM10 36a4 4 0 1 0 8 0M34 36a4 4 0 1 0 8 0M9 18h14M9 24h9" />
+      </svg>
+    );
+  }
+
+  if (icon === "shield") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <path d="M24 4c5 4 11 6 17 7v12c0 10-6 17-17 21C13 40 7 33 7 23V11c6-1 12-3 17-7Z" />
+        <path d="m16 24 5 5 11-12" />
+      </svg>
+    );
+  }
+
+  if (icon === "design") {
+    return (
+      <Image
+        aria-hidden="true"
+        src="/assets/materiais-impressos/icons/design-estrategico.png.png"
+        alt=""
+        width={56}
+        height={56}
+        className="h-10 w-10 object-contain"
+      />
+    );
+  }
+
   return (
-    <div
-      role="img"
-      aria-label={alt}
-      className="placeholder visual relative min-h-[360px] overflow-hidden rounded-[28px] border border-[#B29157]/45 bg-[#090E1F] p-5 shadow-[0_24px_70px_rgba(9,14,31,0.16)] sm:min-h-[440px] sm:p-7"
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 48 48"
+      className="h-11 w-11"
+      {...commonProps}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_12%,rgba(178,145,87,0.26),transparent_32%),linear-gradient(145deg,rgba(255,255,255,0.10),transparent_46%)]" />
-      <div className="absolute right-[-16%] top-[-14%] h-64 w-64 rounded-full border border-[#B29157]/25" />
-      <div className="relative flex h-full min-h-[320px] flex-col justify-end rounded-[20px] border border-[#FBF8F4]/12 bg-[#FBF8F4]/6 p-5 sm:min-h-[386px] sm:p-7">
-        <div className="absolute left-5 top-5 flex gap-2" aria-hidden="true">
-          <span className="h-2 w-2 rounded-full bg-[#B29157]" />
-          <span className="h-2 w-2 rounded-full bg-[#FBF8F4]/45" />
-          <span className="h-2 w-2 rounded-full bg-[#FBF8F4]/25" />
+      <path d="m24 4 5.8 11.8L43 17.7l-9.5 9.2 2.2 13L24 33.7 12.3 40l2.2-13L5 17.7l13.2-1.9L24 4Z" />
+    </svg>
+  );
+}
+
+function HeroBenefit({
+  benefit,
+  className = "",
+}: {
+  benefit: (typeof heroBenefits)[number];
+  className?: string;
+}) {
+  return (
+    <li className={`flex min-w-0 items-center gap-4 text-sm font-medium uppercase leading-5 tracking-[0.04em] text-[#FBF8F4]/90 ${className}`}>
+      <span className="flex h-11 w-11 flex-none items-center justify-center text-[#B29157]">
+        <HeroBenefitIcon icon={benefit.icon} />
+      </span>
+      <span>{benefit.label}</span>
+    </li>
+  );
+}
+
+function HeroSection() {
+  return (
+    <section
+      id="topo"
+      className="materials-hero relative overflow-hidden bg-[#000617] text-[#FBF8F4]"
+    >
+      <div className="materials-hero-artwork-frame absolute left-0 top-0 aspect-[1672/941] w-full xl:inset-y-0 xl:left-auto xl:right-0 xl:h-auto xl:w-[67%] xl:aspect-auto">
+        <Image
+          src="/assets/materiais-impressos/brand/background-hero.png.png"
+          alt="Materiais gráficos premium personalizados com cartões, pastas, folders e papelaria corporativa"
+          fill
+          preload
+          sizes="(max-width: 1279px) 100vw, 67vw"
+          className="materials-hero-image object-cover xl:object-fill object-center"
+        />
+      </div>
+      <div className="absolute inset-0 hidden xl:block">
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,6,23,0.99)_0%,rgba(0,6,23,0.98)_36%,rgba(0,6,23,0.9)_47%,rgba(0,6,23,0.32)_64%,rgba(0,6,23,0.08)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,6,23,0.02)_55%,rgba(0,6,23,0.9)_100%)]" />
+      </div>
+
+      <div className="materials-hero-mobile xl:hidden">
+        <div className="relative aspect-[1672/941] w-full overflow-hidden">
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,6,23,0.04)_42%,#000617_100%)]" />
         </div>
-        <div className="grid gap-4" aria-hidden="true">
-          <div className="ml-auto h-24 w-[74%] rotate-[-6deg] rounded-[16px] border border-[#B29157]/55 bg-[#FBF8F4] shadow-[0_18px_45px_rgba(0,0,0,0.24)]" />
-          <div className="h-24 w-[84%] rotate-[4deg] rounded-[16px] border border-[#B29157]/45 bg-[#F1E9DA] shadow-[0_18px_45px_rgba(0,0,0,0.2)]" />
-          <div className="ml-8 h-20 w-[68%] rounded-[14px] border border-[#B29157]/45 bg-[#CDBA92] shadow-[0_18px_45px_rgba(0,0,0,0.18)]" />
+
+        <div className="px-5 pb-16 pt-10 sm:px-8 sm:pb-20 sm:pt-12">
+          <Eyebrow>Materiais Gráficos Personalizados</Eyebrow>
+          <h1 className="mt-6 max-w-[680px] text-balance font-serif text-[clamp(2.65rem,11.2vw,4.35rem)] font-medium leading-[0.96] tracking-[-0.035em]">
+            Autoridade que se toca: impressos <span className="text-[#B29157]">premium</span> que materializam sua marca.
+          </h1>
+          <p className="mt-7 max-w-[690px] text-xl leading-9 text-[#FBF8F4]/88 sm:text-2xl sm:leading-10">
+            Cartões de visita, pastas, envelopes, folders, panfletos e blocos personalizados para profissionais e empresas que querem transmitir mais confiança, sofisticação e valor em cada detalhe.
+          </p>
+          <p className="mt-5 text-[1.35rem] font-medium leading-8 text-[#B29157] sm:text-[1.6rem] sm:leading-9">
+            Do conceito ao papel, presença que lidera.
+          </p>
+          <div className="mt-8 flex flex-col items-stretch gap-3 sm:max-w-[620px] sm:flex-row sm:items-center sm:gap-4">
+            <WhatsAppButton className="materials-hero-primary w-full sm:w-auto">Quero mais informações</WhatsAppButton>
+          </div>
+          <p className="mt-5 max-w-[660px] text-sm font-medium uppercase leading-6 tracking-[0.1em] text-[#FBF8F4]/78 sm:text-base">
+            Pedidos sob encomenda pelo WhatsApp. Entregamos para <span className="text-[#B29157]">todo o Brasil.</span>
+          </p>
+
+          <ul aria-label="Benefícios dos materiais personalizados" className="mt-8 grid border-t border-[#B29157]/35 pt-4">
+            {heroBenefits.map((benefit) => (
+              <HeroBenefit key={benefit.label} benefit={benefit} />
+            ))}
+          </ul>
         </div>
-        <p className="relative mt-8 text-xs font-bold uppercase tracking-[0.28em] text-[#B29157]">
-          Visual preparado para imagem final
+      </div>
+
+      <div className="materials-hero-desktop relative z-10 mx-auto hidden w-full max-w-[1560px] flex-col px-[clamp(3rem,3.8vw,4rem)] pb-8 pt-[clamp(4.4rem,5.7vw,6rem)] xl:flex">
+        <div className="w-[min(46vw,700px)]">
+          <Eyebrow>Materiais Gráficos Personalizados</Eyebrow>
+          <h1 className="materials-hero-title-desktop mt-6 font-serif text-[clamp(3.5rem,4.35vw,4.5rem)] font-medium leading-[0.98] tracking-[-0.015em]">
+            <span className="block whitespace-nowrap">Autoridade que se toca:</span>
+            <span className="block whitespace-nowrap">impressos <span className="text-[#B29157]">premium</span> que</span>
+            <span className="block whitespace-nowrap">materializam sua marca.</span>
+          </h1>
+          <p className="mt-6 max-w-[680px] text-[clamp(1.12rem,1.26vw,1.36rem)] leading-[1.56] text-[#FBF8F4]/90">
+            Cartões de visita, pastas, envelopes, folders, panfletos e blocos personalizados para profissionais e empresas que querem transmitir mais confiança, sofisticação e valor em cada detalhe.
+          </p>
+          <p className="mt-4 text-[clamp(1.22rem,1.4vw,1.46rem)] font-normal leading-9 text-[#B29157]">
+            Do conceito ao papel, presença que lidera.
+          </p>
+          <div className="mt-6 flex items-center gap-4">
+            <WhatsAppButton className="materials-hero-primary">Quero mais informações</WhatsAppButton>
+          </div>
+          <p className="mt-4 max-w-[680px] text-[0.88rem] font-medium uppercase leading-6 tracking-[0.09em] text-[#FBF8F4]/78">
+            Pedidos sob encomenda pelo WhatsApp. Entregamos para <span className="text-[#B29157]">todo o Brasil.</span>
+          </p>
+        </div>
+
+        <div className="mt-5">
+          <ul aria-label="Principais benefícios dos materiais personalizados" className="materials-hero-primary-benefits grid w-[min(53vw,780px)] grid-cols-[1fr_1.08fr_1.14fr] border-t border-[#B29157]/40 pt-4">
+            {heroPrimaryBenefits.map((benefit, index) => (
+              <HeroBenefit
+                key={benefit.label}
+                benefit={benefit}
+                className={index === 1 ? "border-l border-[#B29157]/35 pl-8" : index === 2 ? "border-l border-[#B29157]/35 pl-10" : ""}
+              />
+            ))}
+          </ul>
+          <ul aria-label="Outros benefícios dos materiais personalizados" className="materials-hero-secondary-benefits mt-4 grid w-[min(66vw,1020px)] grid-cols-3 gap-x-12 border-t border-[#B29157]/40 pt-4">
+            {heroSecondaryBenefits.map((benefit) => (
+              <HeroBenefit key={benefit.label} benefit={benefit} />
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SocialProofCard({ testimonial }: { testimonial: (typeof testimonials)[number] }) {
+  return (
+    <article className="min-h-[232px] w-[300px] flex-none rounded-[18px] border border-[#B29157]/35 bg-white/80 p-6 shadow-[0_16px_40px_rgba(9,14,31,0.07)] sm:w-[370px] sm:p-7">
+      <div className="flex items-start justify-between gap-5">
+        <p className="text-lg leading-none text-[#B29157]" aria-label="5 estrelas">
+          ★★★★★
         </p>
-        <h3 className="relative mt-3 font-serif text-2xl font-semibold leading-tight text-[#FBF8F4] sm:text-3xl">
-          {title}
-        </h3>
+        <Image
+          src="/assets/materiais-impressos/icons/google-search-logo-icon-free-png.webp"
+          alt="Google"
+          width={72}
+          height={72}
+          className="h-6 w-6 flex-none object-contain opacity-80"
+        />
       </div>
-    </div>
-  );
-}
-
-function ProductSection({ item }: { item: (typeof productSections)[number] }) {
-  const visual = <ProductVisual title={item.visualTitle} alt={item.visualAlt} />;
-  const copy = (
-    <div>
-      <Eyebrow>{item.eyebrow}</Eyebrow>
-      <h2 className="mt-6 max-w-[720px] font-serif text-[clamp(2rem,6vw,4.45rem)] font-medium leading-[0.96] tracking-[-0.045em] text-[#090E1F]">
-        {item.title}
-      </h2>
-      <div className="mt-7 grid gap-5 text-lg leading-8 text-[#26344D] sm:text-xl sm:leading-9">
-        <p>{item.description}</p>
-        <p>{item.support}</p>
-      </div>
-      <ul className="mt-8 grid gap-3 text-base font-semibold uppercase tracking-[0.1em] text-[#101D36] sm:grid-cols-2 sm:text-sm">
-        {item.bullets.map((bullet) => (
-          <li key={bullet} className="flex items-start gap-3">
-            <span className="mt-2 h-1.5 w-1.5 flex-none rotate-45 bg-[#B29157]" aria-hidden="true" />
-            <span>{bullet}</span>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-9">
-        <WhatsAppButton>{item.cta}</WhatsAppButton>
-      </div>
-    </div>
-  );
-
-  return (
-    <SectionShell id={item.id}>
-      <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-        <div className={item.order === "visual-first" ? "lg:order-2" : ""}>{copy}</div>
-        <div className={item.order === "visual-first" ? "lg:order-1" : ""}>{visual}</div>
-      </div>
-    </SectionShell>
-  );
-}
-
-function SocialProofCard({ quote }: { quote: string }) {
-  return (
-    <article className="min-h-[180px] w-[280px] flex-none rounded-[18px] border border-[#B29157]/35 bg-white/80 p-6 shadow-[0_16px_40px_rgba(9,14,31,0.07)] sm:w-[330px]">
-      <p className="text-lg leading-none text-[#B29157]" aria-label="5 estrelas">
-        ★★★★★
-      </p>
-      <p className="mt-5 text-base leading-7 text-[#26344D] sm:text-lg">{quote}</p>
+      <h3 className="mt-4 text-lg font-extrabold leading-6 text-[#090E1F] sm:text-xl">
+        {testimonial.name}
+      </h3>
+      <p className="mt-3 text-[1.05rem] leading-7 text-[#26344D] sm:text-[1.12rem]">{testimonial.quote}</p>
     </article>
   );
 }
@@ -334,13 +538,13 @@ function SocialProofSection() {
   return (
     <SectionShell id="prova-social" className="overflow-hidden">
       <div className="mx-auto max-w-[900px] text-center">
-        <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#9A671E] sm:text-sm">
+        <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#B29157] sm:text-sm">
           Confiança comprovada
         </p>
-        <h2 className="mt-5 font-serif text-[clamp(2.2rem,7vw,4.8rem)] font-medium leading-[0.96] tracking-[-0.05em] text-[#090E1F]">
+        <h2 className="mt-5 font-serif text-[clamp(2.05rem,5.8vw,4.05rem)] font-medium leading-[1.02] tracking-[-0.035em] text-[#090E1F]">
           Mais de 200 avaliações no Google. Todas com 5 estrelas.
         </h2>
-        <p className="mx-auto mt-6 max-w-[760px] text-lg leading-8 text-[#26344D] sm:text-xl sm:leading-9">
+        <p className="mx-auto mt-6 max-w-[790px] text-xl leading-9 text-[#26344D] sm:text-[1.32rem] sm:leading-10">
           A confiança construída com nossos clientes aparece nos detalhes: no atendimento, na orientação, na produção e no cuidado com cada entrega.
         </p>
       </div>
@@ -356,8 +560,8 @@ function SocialProofSection() {
                     : "materials-testimonial-row materials-testimonial-row--right"
                 }`}
               >
-                {duplicated.map((quote, quoteIndex) => (
-                  <SocialProofCard key={`${quote}-${quoteIndex}`} quote={quote} />
+                {duplicated.map((testimonial, quoteIndex) => (
+                  <SocialProofCard key={`${testimonial.name}-${quoteIndex}`} testimonial={testimonial} />
                 ))}
               </div>
             </div>
@@ -368,14 +572,90 @@ function SocialProofSection() {
   );
 }
 
+function CustomMadeIcon({ icon }: { icon: (typeof customMadeItems)[number]["icon"] }) {
+  const iconSources = {
+    personalizado: "/assets/materiais-impressos/icons/personalizado-cada-cliente.png.png",
+    "pedido-whatsapp": "/assets/materiais-impressos/icons/pedidos-whatsapp.png.png",
+    entrega: "/assets/materiais-impressos/icons/entrega-brasil.png.png",
+    "design-valor": "/assets/materiais-impressos/icons/design-valor.png.png",
+  } as const;
+
+  return (
+    <Image
+      aria-hidden="true"
+      src={iconSources[icon]}
+      alt=""
+      width={72}
+      height={72}
+      className="h-12 w-12 object-contain"
+    />
+  );
+}
+
+function CustomMadeSection() {
+  return (
+    <section
+      id="feito-sob-encomenda"
+      className="materials-custom-made-section relative overflow-hidden bg-[#000617] text-[#FBF8F4]"
+    >
+      <div className="materials-custom-made-shell relative mx-auto w-full max-w-[1200px] px-5 py-20 sm:px-8 sm:py-24 xl:px-0 xl:pb-28 xl:pt-14">
+        <div className="mx-auto max-w-[1100px] text-center">
+          <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#B29157] sm:text-sm">
+            Feito sob encomenda
+          </p>
+          <h2 className="mx-auto mt-7 max-w-[720px] text-balance font-serif text-[clamp(2.25rem,9.2vw,3.95rem)] font-medium leading-[1.02] tracking-[-0.03em] xl:hidden">
+            Cada material é pensado para representar o nível da sua marca.
+          </h2>
+          <h2 className="materials-custom-title-desktop mx-auto mt-7 hidden max-w-[1040px] font-serif text-[4.05rem] font-medium leading-[1.06] tracking-[-0.018em] xl:block">
+            <span className="block whitespace-nowrap">Cada material é pensado</span>
+            <span className="block whitespace-nowrap">para representar o nível da sua marca.</span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-[820px] text-xl leading-[1.65] text-[#FBF8F4]/80 sm:text-[1.28rem] xl:text-[1.22rem]">
+            No Grupo Vittore, materiais gráficos não são tratados como produtos de prateleira. Cada pedido é feito sob encomenda, considerando o tipo de profissional, o público que ele atende, a imagem que deseja transmitir e o uso real do material.
+          </p>
+        </div>
+
+        <div className="mx-auto mt-10 grid max-w-[1000px] gap-6 lg:grid-cols-2 xl:mt-9">
+          {customMadeItems.map((item, index) => (
+            <article
+              key={item.title}
+              className="group relative grid min-w-0 gap-5 rounded-[12px] border border-[#B29157]/55 bg-[#081323]/72 p-6 shadow-[0_18px_50px_rgba(0,0,0,0.18)] transition-colors hover:border-[#B29157]/80 sm:grid-cols-[96px_minmax(0,1fr)] xl:h-[285px]"
+            >
+              <div className="flex h-[90px] w-[90px] self-center items-center justify-center rounded-full border border-[#B29157]/55 text-[#B29157] shadow-[inset_0_0_30px_rgba(178,145,87,0.04)]">
+                <CustomMadeIcon icon={item.icon} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold tracking-[0.16em] text-[#B29157]">
+                  {String(index + 1).padStart(2, "0")}
+                  <span className="mt-2 block h-px w-8 bg-[#B29157]" aria-hidden="true" />
+                </p>
+                <h3 className="mt-3 text-balance font-serif text-[1.55rem] font-medium leading-[1.08] text-[#FBF8F4]">
+                  {item.title}
+                </h3>
+                <p className="mt-4 text-[1.05rem] leading-[1.58] text-[#FBF8F4]/76">
+                  {item.description}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-10 flex justify-center xl:mt-9">
+          <WhatsAppButton className="materials-custom-cta w-full sm:w-auto">Solicitar orçamento pelo WhatsApp</WhatsAppButton>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FaqSection() {
   return (
     <SectionShell id="faq">
       <div className="mx-auto max-w-[900px] text-center">
-        <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#9A671E] sm:text-sm">
+        <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#B29157] sm:text-sm">
           Dúvidas frequentes
         </p>
-        <h2 className="mt-5 font-serif text-[clamp(2.2rem,7vw,4.8rem)] font-medium leading-[0.96] tracking-[-0.05em] text-[#090E1F]">
+        <h2 className="mt-5 font-serif text-[clamp(2.05rem,5.8vw,4.05rem)] font-medium leading-[1.02] tracking-[-0.035em] text-[#090E1F]">
           Antes de pedir seus materiais personalizados
         </h2>
       </div>
@@ -387,12 +667,70 @@ function FaqSection() {
               <span aria-hidden="true">+</span>
             </summary>
             <div>
-              <p>{item.answer}</p>
+              <p className="text-[1.05rem] leading-8 sm:text-[1.12rem]">{item.answer}</p>
             </div>
           </details>
         ))}
       </div>
     </SectionShell>
+  );
+}
+
+function FinalCtaSection() {
+  return (
+    <section
+      id="cta-final"
+      className="materials-final-cta-section relative overflow-hidden bg-[#000617] text-[#FBF8F4]"
+    >
+      <Image
+        src="/assets/materiais-impressos/brand/background-sua-marca-no-mundo-referencia3.png.png"
+        alt="Materiais gráficos personalizados em mesa premium com agenda, cartões e folder corporativo"
+        fill
+        sizes="100vw"
+        className="materials-final-cta-background object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-[#000617]/44" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(9,14,31,0.08),rgba(0,6,23,0.5)_74%)]" aria-hidden="true" />
+
+      <div className="materials-final-cta-shell relative mx-auto flex w-full max-w-[1180px] flex-col items-center px-5 py-20 text-center sm:px-8 sm:py-24 xl:px-0 xl:py-0">
+        <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#B29157] sm:text-sm">
+          Sua marca no mundo físico
+        </p>
+        <h2 className="materials-final-title-mobile mx-auto mt-7 max-w-[920px] text-balance font-serif text-[clamp(2.15rem,8.6vw,4rem)] font-medium leading-[1.04] tracking-[-0.028em] xl:hidden">
+          Se a sua apresentação precisa transmitir mais valor, comece pelo material que o cliente vê, toca e guarda.
+        </h2>
+        <h2 className="materials-final-title-desktop mx-auto mt-7 hidden max-w-[980px] font-serif text-[4.05rem] font-medium leading-[1.06] tracking-[-0.018em] xl:block">
+          <span className="block whitespace-nowrap">Se a sua apresentação</span>
+          <span className="block whitespace-nowrap">precisa transmitir mais valor,</span>
+          <span className="block whitespace-nowrap">comece pelo material que o</span>
+          <span className="block whitespace-nowrap">cliente vê, toca e guarda.</span>
+        </h2>
+        <p className="mx-auto mt-7 max-w-[900px] text-xl leading-9 text-[#FBF8F4]/90 sm:text-[1.3rem] sm:leading-10 xl:text-[1.25rem] xl:leading-[1.62]">
+          Materiais gráficos personalizados ajudam sua marca a sair do comum e a ocupar uma presença mais profissional na mente do cliente. Do cartão à pasta, do folder ao bloco de anotações, cada detalhe pode reforçar autoridade, confiança e sofisticação.
+        </p>
+        <div className="mt-9 flex w-full justify-center sm:w-auto">
+          <WhatsAppButton className="materials-final-cta-button w-full sm:w-auto">Quero mais informações</WhatsAppButton>
+        </div>
+        <p className="mt-6 text-base font-medium leading-7 tracking-[0.02em] text-[#B29157] sm:text-lg">
+          Fale pelo WhatsApp e solicite seu material sob encomenda.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function FloatingWhatsAppButton() {
+  return (
+    <a
+      href={buildWhatsAppUrl()}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Abrir WhatsApp para solicitar informações sobre materiais gráficos"
+      className="materials-floating-whatsapp fixed right-5 z-40 flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-[#25D366] text-white shadow-[0_18px_44px_rgba(0,0,0,0.28)] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B29157] sm:right-8 sm:h-[70px] sm:w-[70px]"
+    >
+      <WhatsAppIcon />
+      <span className="sr-only">WhatsApp</span>
+    </a>
   );
 }
 
@@ -435,6 +773,132 @@ function MaterialsLandingFooter() {
 function MaterialsPageStyles() {
   return (
     <style>{`
+      .materials-hero-primary {
+        min-width: 340px;
+      }
+
+      .materials-hero-secondary {
+        min-width: 278px;
+      }
+
+      .materials-custom-cta {
+        width: 510px;
+        min-height: 80px;
+        font-size: 0.98rem;
+      }
+
+      .materials-custom-cta svg {
+        width: 34px;
+        height: 34px;
+      }
+
+      .materials-final-cta-button {
+        width: 520px;
+        min-height: 78px;
+        font-size: 1.05rem;
+        letter-spacing: 0.12em;
+      }
+
+      .materials-final-cta-button svg {
+        width: 36px;
+        height: 36px;
+      }
+
+      .materials-hero-mobile ul > li {
+        min-height: 64px;
+        border-bottom: 1px solid rgba(178, 145, 87, 0.2);
+        padding: 10px 0;
+      }
+
+      .materials-floating-whatsapp {
+        bottom: max(5.5rem, env(safe-area-inset-bottom));
+        opacity: 0;
+        pointer-events: none;
+        transform: translate3d(0, 18px, 0) scale(0.96);
+        animation: materials-floating-whatsapp-in 0.5s ease 5s forwards;
+      }
+
+      .materials-floating-whatsapp img {
+        width: 34px;
+        height: 34px;
+      }
+
+      @media (min-width: 1280px) {
+        .materials-hero {
+          min-height: max(790px, 56.28vw);
+        }
+
+        .materials-custom-made-section {
+          aspect-ratio: 9 / 7;
+          min-height: 1120px;
+        }
+
+        .materials-custom-made-shell {
+          position: absolute;
+          inset: 0;
+        }
+
+        .materials-final-cta-section {
+          aspect-ratio: 1672 / 941;
+          min-height: 810px;
+        }
+
+        .materials-final-cta-shell {
+          position: absolute;
+          inset: 0;
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .materials-hero-primary,
+        .materials-hero-secondary {
+          width: 100%;
+          min-width: 0;
+        }
+
+        .materials-custom-cta,
+        .materials-final-cta-button {
+          width: 100%;
+          min-width: 0;
+          min-height: 58px;
+          font-size: 0.78rem;
+          letter-spacing: 0.08em;
+        }
+
+        .materials-custom-cta svg,
+        .materials-final-cta-button svg {
+          width: 28px;
+          height: 28px;
+        }
+
+        .materials-final-cta-section {
+          min-height: 760px;
+        }
+
+        .materials-final-cta-background {
+          object-position: 50% 50%;
+        }
+
+        .materials-floating-whatsapp {
+          right: 1rem;
+          bottom: max(5rem, env(safe-area-inset-bottom));
+        }
+
+        .materials-floating-whatsapp img {
+          width: 30px;
+          height: 30px;
+        }
+      }
+
+      @keyframes materials-floating-whatsapp-in {
+        to {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+      }
+
       @keyframes materials-marquee-left {
         from { transform: translate3d(0, 0, 0); }
         to { transform: translate3d(-50%, 0, 0); }
@@ -483,103 +947,13 @@ export default function MateriaisImpressosPage() {
   return (
     <main className="min-h-screen overflow-x-clip bg-[#FBF8F4] text-[#090E1F]">
       <MaterialsPageStyles />
-      <section id="topo" className="relative isolate overflow-x-clip bg-[#000617] text-[#FBF8F4]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_20%,rgba(178,145,87,0.22),transparent_34%),linear-gradient(130deg,rgba(251,248,244,0.08),transparent_42%)]" />
-        <div className="mx-auto grid min-h-[760px] w-full max-w-[1240px] items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[minmax(0,1.03fr)_minmax(360px,0.74fr)] lg:px-10 lg:py-28">
-          <div className="relative z-10">
-            <Eyebrow dark>Materiais Gráficos Personalizados</Eyebrow>
-            <h1 aria-label={HERO_TITLE} className="mt-7 max-w-[900px] font-serif text-[clamp(2.7rem,10vw,6.75rem)] font-medium leading-[0.9] tracking-[-0.065em]">
-              <span className="text-[#B29157]">Autoridade que se toca:</span>{" "}
-              impressos premium que materializam sua marca.
-            </h1>
-            <p className="mt-8 max-w-[760px] text-lg leading-8 text-[#FBF8F4]/84 sm:text-[1.35rem] sm:leading-10">
-              Cartões de visita, pastas, envelopes, folders, panfletos e blocos personalizados para profissionais e empresas que querem transmitir mais confiança, sofisticação e valor em cada detalhe.
-            </p>
-            <p className="mt-5 font-serif text-2xl leading-tight text-[#B29157] sm:text-3xl">
-              Do conceito ao papel, presença que lidera.
-            </p>
-            <div className="mt-9 flex flex-col items-start gap-4">
-              <WhatsAppButton>Quero mais informações</WhatsAppButton>
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#FBF8F4]/65">
-                Pedidos sob encomenda pelo WhatsApp. Entregamos para todo o Brasil.
-              </p>
-            </div>
-          </div>
-          <div className="relative z-10 hidden lg:block" aria-hidden="true">
-            <div className="rounded-[36px] border border-[#B29157]/35 bg-[#FBF8F4]/8 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.32)]">
-              <div className="aspect-[0.82] rounded-[28px] border border-[#FBF8F4]/12 bg-[#000617] p-7">
-                <div className="h-full rounded-[22px] border border-[#B29157]/35 bg-[linear-gradient(155deg,#FBF8F4_0%,#E4D8C1_48%,#B29157_100%)] p-6">
-                  <div className="flex h-full flex-col justify-between rounded-[18px] border border-[#090E1F]/12 bg-[#FBF8F4]/78 p-6 text-[#090E1F]">
-                    <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#9A671E]">sob encomenda</p>
-                    <div className="space-y-4">
-                      <span className="block h-3 w-28 bg-[#090E1F]" />
-                      <span className="block h-px w-full bg-[#B29157]" />
-                      <span className="block h-3 w-44 bg-[#090E1F]/45" />
-                    </div>
-                    <p className="font-serif text-4xl leading-none">Presença física de marca</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {productSections.slice(0, 3).map((item) => (
-        <ProductSection key={item.id} item={item} />
-      ))}
-
-      <SectionShell id="diferenciais" dark>
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center lg:gap-16">
-          <div className="grid gap-4 sm:grid-cols-2">
-            {benefits.map((benefit, index) => (
-              <article key={benefit.title} className="rounded-[20px] border border-[#B29157]/34 bg-[#FBF8F4]/7 p-6 shadow-[0_18px_48px_rgba(0,0,0,0.18)]">
-                <p className="text-sm font-extrabold text-[#B29157]">0{index + 1}</p>
-                <h3 className="mt-4 font-serif text-2xl leading-tight text-[#FBF8F4]">{benefit.title}</h3>
-                <p className="mt-4 text-base leading-7 text-[#FBF8F4]/76">{benefit.description}</p>
-              </article>
-            ))}
-          </div>
-          <div>
-            <Eyebrow dark>Feito sob encomenda</Eyebrow>
-            <h2 className="mt-6 max-w-[700px] font-serif text-[clamp(2.35rem,7vw,5.25rem)] font-medium leading-[0.92] tracking-[-0.06em]">
-              Cada material é pensado para representar o nível da sua marca.
-            </h2>
-            <p className="mt-7 max-w-[680px] text-lg leading-8 text-[#FBF8F4]/78 sm:text-xl sm:leading-9">
-              No Grupo Vittore, materiais gráficos não são tratados como produtos de prateleira. Cada pedido é feito sob encomenda, considerando o tipo de profissional, o público que ele atende, a imagem que deseja transmitir e o uso real do material.
-            </p>
-            <div className="mt-9">
-              <WhatsAppButton>Falar com o Grupo Vittore</WhatsAppButton>
-            </div>
-          </div>
-        </div>
-      </SectionShell>
-
-      <ProductSection item={productSections[3]} />
+      <HeroSection />
       <SocialProofSection />
+      <CustomMadeSection />
       <FaqSection />
-
-      <SectionShell id="cta-final" dark>
-        <div className="mx-auto max-w-[1000px] text-center">
-          <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#B29157] sm:text-sm">
-            Sua marca no mundo físico
-          </p>
-          <h2 className="mt-6 font-serif text-[clamp(2.35rem,8vw,5.8rem)] font-medium leading-[0.92] tracking-[-0.06em]">
-            Se a sua apresentação precisa transmitir mais valor, comece pelo material que o cliente vê, toca e guarda.
-          </h2>
-          <p className="mx-auto mt-7 max-w-[820px] text-lg leading-8 text-[#FBF8F4]/78 sm:text-xl sm:leading-9">
-            Materiais gráficos personalizados ajudam sua marca a sair do comum e a ocupar uma presença mais profissional na mente do cliente. Do cartão à pasta, do folder ao bloco de anotações, cada detalhe pode reforçar autoridade, confiança e sofisticação.
-          </p>
-          <div className="mt-10 flex flex-col items-center gap-4">
-            <WhatsAppButton>Quero mais informações</WhatsAppButton>
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#FBF8F4]/65">
-              Fale pelo WhatsApp e solicite seu material sob encomenda.
-            </p>
-          </div>
-        </div>
-      </SectionShell>
-
+      <FinalCtaSection />
       <MaterialsLandingFooter />
+      <FloatingWhatsAppButton />
     </main>
   );
 }

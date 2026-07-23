@@ -1,60 +1,93 @@
-﻿# Landing Page Materiais GrÃ¡ficos Personalizados
+# Materiais Impressos, documentação atualizada da landing page
 
-Este pacote reÃºne os documentos de orientaÃ§Ã£o para criaÃ§Ã£o e implementaÃ§Ã£o da landing page de Materiais GrÃ¡ficos Personalizados do Grupo Vittore.
+Esta pasta contém as regras atualizadas da landing page de Materiais Impressos / Materiais Gráficos Personalizados do Grupo Vittore.
 
-A pÃ¡gina deve seguir a mesma identidade visual da landing page de Assessoria Comercial, preservando:
-- tipografia;
-- diagramaÃ§Ã£o premium;
-- uso de azul marinho, off-white, dourado e botÃ£o verde;
-- rodapÃ© exatamente igual ao da LP de Assessoria Comercial;
-- tom institucional, sofisticado e persuasivo;
-- experiÃªncia mobile e desktop consistente.
-
-## Objetivo da landing page
-
-Vender materiais grÃ¡ficos personalizados como extensÃ£o fÃ­sica da autoridade da marca, nÃ£o como simples produto de grÃ¡fica.
-
-A pÃ¡gina deve comunicar:
-
-> Autoridade que se toca: impressos premium que materializam sua marca.
-
-## PÃºblico principal
-
-- corretores de imÃ³veis autÃ´nomos;
-- advogados;
-- contadores;
-- empresÃ¡rios;
-- profissionais liberais;
-- empresas que querem elevar a percepÃ§Ã£o de profissionalismo, sofisticaÃ§Ã£o e confianÃ§a.
-
-## Estrutura dos documentos
-
-1. `01_briefing_estrategico.md`
-2. `02_mapa_empatia_publico.md`
-3. `03_posicionamento_e_mensagem.md`
-4. `04_estrutura_da_landing_page.md`
-5. `05_copy_final_landing_page.md`
-6. `06_direcao_visual_e_identidade.md`
-7. `07_regras_de_imagens_e_assets.md`
-8. `08_regras_de_componentes_e_interacoes.md`
-9. `09_faq_e_objecoes.md`
-10. `10_whatsapp_conversao.md`
-11. `11_prompt_base_hermes.md`
-12. `12_checklist_validacao.md`
-
-## Caminho sugerido no projeto
-
-Salvar estes arquivos em:
+## Caminho oficial no projeto
 
 ```txt
 docs/materiais-impressos/
 ```
 
-ou, se o projeto jÃ¡ tiver uma pasta oficial da frente de materiais grÃ¡ficos:
+## Rota oficial da página
 
 ```txt
-docs/materiais-impressos/landing-page/
+/materiais-impressos
 ```
 
-NÃ£o salvar estes documentos dentro de `public`, pois sÃ£o regras internas do projeto, nÃ£o assets pÃºblicos.
+## Nova estrutura oficial da página
 
+A página deve conter somente estas seções:
+
+```txt
+Seção 1: Hero, fundo azul marinho
+Seção 2: Confiança comprovada, fundo off-white, depoimentos Google
+Seção 3: Feito sob encomenda, fundo azul marinho
+Seção 4: FAQ, fundo off-white
+Seção 5: CTA final, fundo azul marinho
+Seção 6: Rodapé, manter exatamente como está
+```
+
+## Seções removidas da versão anterior
+
+A landing page não deve mais ter seções individuais para:
+
+```txt
+cartões de visita
+pastas e envelopes
+panfletos e folders
+blocos de anotações
+```
+
+Esses materiais podem ser citados na copy, mas não devem aparecer como seções separadas.
+
+## Regra de identidade visual
+
+A página deve seguir a landing page de Assessoria Comercial:
+
+```txt
+mesma sofisticação
+mesma tipografia
+mesma paleta
+mesmo padrão de botão verde
+mesmo rodapé
+mesmo cuidado de responsividade
+```
+
+## Regra de proteção
+
+O Hermes deve trabalhar apenas na página:
+
+```txt
+/materiais-impressos
+```
+
+Não deve alterar:
+
+```txt
+/assessoria-comercial
+/
+/blog
+/sobre
+artigos
+API
+formulários
+Supabase
+ClickUp
+Netlify Functions
+```
+
+## Arquivos atualizados neste pacote
+
+```txt
+README.md
+01_briefing_estrategico.md
+04_estrutura_da_landing_page.md
+05_copy_final_landing_page.md
+06_direcao_visual_e_identidade.md
+07_regras_de_imagens_e_assets.md
+08_regras_de_componentes_e_interacoes.md
+11_prompt_base_hermes.md
+12_checklist_validacao.md
+```
+
+Os arquivos `02_mapa_empatia_publico.md` e `03_posicionamento_e_mensagem.md` continuam válidos e não precisam ser substituídos nesta atualização.
