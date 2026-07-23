@@ -910,7 +910,12 @@ function MaterialsPageStyles() {
 
         .materials-custom-made-shell {
           position: absolute;
-          inset: 0;
+          inset-block: 0;
+          left: 0;
+          right: auto;
+          width: 100vw;
+          max-width: none;
+          margin-inline: 0;
         }
 
         .materials-final-cta-section {
