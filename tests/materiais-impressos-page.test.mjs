@@ -72,7 +72,8 @@ test("Hero uses the approved local background, complete copy, benefits, and no i
   assert.match(hero, /Autoridade que<\/span>/);
   assert.match(hero, /se toca: impressos<\/span>/);
   assert.match(hero, /premium<\/span> que/);
-  assert.match(hero, /materializam sua marca\.<\/span>/);
+  assert.match(hero, /materializam sua<\/span>/);
+  assert.match(hero, /marca\.<\/span>/);
   assert.match(hero, /Do conceito ao papel, presença que lidera\./);
   assert.doesNotMatch(hero, /Conhecer materiais/);
   assert.doesNotMatch(hero, /href="#feito-sob-encomenda"/);
@@ -109,6 +110,7 @@ test("Hero mirrors the approved 16:9 composition with controlled lines and a 3 p
   assert.match(hero, /materials-hero-mobile-image-shade/);
   assert.match(page, /\.materials-hero-artwork-frame\s*\{[^}]*aspect-ratio:\s*941\s*\/\s*760/s);
   assert.match(page, /\.materials-hero-mobile-image-shade\s*\{[^}]*rgba\(0, 6, 23, 0\.28\)/s);
+  assert.match(page, /\.materials-hero-image\s*\{[^}]*object-position:\s*56% 50%/s);
   const desktopTitle = extract(hero, "materials-hero-title-desktop", "</h1>");
   assertInOrder(desktopTitle, [
     "Autoridade que se toca:",
@@ -145,8 +147,8 @@ test("all WhatsApp entry points use the requested encoded WhatsApp helper", () =
 
   assert.match(page, /Quero mais informações/);
   assert.doesNotMatch(page, /Solicitar orçamento pelo WhatsApp/);
-  assert.match(page, /bottom: max\(4\.5rem, calc\(env\(safe-area-inset-bottom\) \+ 1\.25rem\)\)/);
-  assert.match(page, /bottom: max\(4rem, calc\(env\(safe-area-inset-bottom\) \+ 1rem\)\)/);
+  assert.match(page, /bottom: max\(2rem, calc\(env\(safe-area-inset-bottom\) \+ 1\.25rem\)\)/);
+  assert.match(page, /bottom: max\(1\.5rem, calc\(env\(safe-area-inset-bottom\) \+ 1rem\)\)/);
 });
 
 test("social proof and FAQ preserve the approved visual and interaction contracts", () => {
@@ -160,6 +162,11 @@ test("social proof and FAQ preserve the approved visual and interaction contract
   assert.match(page, /<h3 className="[^"]*font-extrabold[^"]*">/);
   assert.match(page, /google-search-logo-icon-free-png\.webp/);
   assert.match(page, /Mais de 200 avaliações no Google\. Todas com 5 estrelas\./);
+  assert.match(page, /className="materials-mobile-section-title block sm:hidden"/);
+  assert.match(page, /Antes de pedir<\/span>/);
+  assert.match(page, /seus materiais<\/span>/);
+  assert.match(page, /personalizados<\/span>/);
+  assert.doesNotMatch(page, /\.materials-mobile-controlled-title\s*\{[^}]*display:\s*block/s);
   assert.equal((page.match(/question: "/g) ?? []).length, 9);
   assert.match(page, /<details key=\{item\.question\} className="faq-item bg-white\/65">/);
   assert.doesNotMatch(page, /Posso pedir algo mais premium ou sofisticado/);
@@ -187,6 +194,11 @@ test("Feito sob encomenda has four numbered cards and the approved CTA copy", ()
   }
 
   assert.match(page, /Cada material é pensado para representar o nível da sua marca\./);
+  assert.match(page, /className="materials-custom-title-mobile[^\"]*xl:hidden"/);
+  assert.match(page, /Cada material<\/span>/);
+  assert.match(page, /é pensado para<\/span>/);
+  assert.match(page, /representar o nível<\/span>/);
+  assert.match(page, /da sua marca\.<\/span>/);
   assert.match(page, /String\(index \+ 1\)\.padStart\(2, "0"\)/);
   assert.match(page, /<WhatsAppButton className="materials-custom-cta w-full sm:w-auto">Quero mais informações<\/WhatsAppButton>/);
 });
@@ -201,7 +213,7 @@ test("dark sections mirror the approved 4:3 canvases and reference-scale control
   assert.match(customMade, /materials-custom-cta/);
   assert.doesNotMatch(customMade, /materials-dark-texture|materials-outline-ornament/);
   assert.match(page, /\.materials-custom-made-section\s*\{[^}]*aspect-ratio:\s*9\s*\/\s*7/s);
-  assert.match(page, /\.materials-custom-made-section\s*\{[^}]*min-height:\s*1120px/s);
+  assert.match(page, /\.materials-custom-made-section\s*\{[^}]*min-height:\s*1200px/s);
 
   assert.match(finalCta, /materials-final-cta-section/);
   assert.match(finalCta, /background-sua-marca-no-mundo-referencia3\.png\.png/);
@@ -209,10 +221,10 @@ test("dark sections mirror the approved 4:3 canvases and reference-scale control
   assert.match(finalCta, /materials-final-title-mobile/);
   assert.match(finalCta, /materials-final-title-desktop/);
   assert.match(finalCta, /Se a sua apresentação<\/span>/);
-  assert.match(finalCta, /precisa transmitir mais valor,<\/span>/);
-  assert.match(finalCta, /comece pelo material<\/span>/);
-  assert.match(finalCta, /que o cliente vê, toca<\/span>/);
-  assert.match(finalCta, /e guarda\.<\/span>/);
+  assert.match(finalCta, /precisa transmitir mais<\/span>/);
+  assert.match(finalCta, /valor, comece pelo<\/span>/);
+  assert.match(finalCta, /material que o cliente<\/span>/);
+  assert.match(finalCta, /vê, toca e guarda\.<\/span>/);
   assert.match(finalCta, /materials-final-cta-button/);
   assert.match(finalCta, /bg-\[#000617\]\/44/);
   assert.match(page, /\.materials-final-cta-section\s*\{[^}]*aspect-ratio:\s*1672\s*\/\s*941/s);
@@ -223,9 +235,11 @@ test("metadata and final CTA use the approved SEO and final copy", () => {
   assert.match(page, /Impressos premium sob encomenda para profissionais e empresas/);
   assert.match(page, /Sua marca no mundo físico/);
   assert.match(page, /Se a sua apresentação precisa transmitir mais valor, comece pelo material que o cliente vê, toca e guarda\./);
-  assert.match(page, /Antes de pedir seus<\/span>/);
-  assert.match(page, /materiais personalizados<\/span>/);
+  assert.match(page, /Antes de pedir<\/span>/);
+  assert.match(page, /seus materiais<\/span>/);
+  assert.match(page, /personalizados<\/span>/);
   assert.match(page, /materials-mobile-section-title/);
+  assert.match(page, /\.materials-mobile-section-title\s*\{[^}]*font-size:\s*clamp\(2\.05rem, 5\.8vw, 4\.05rem\)/s);
   assert.match(page, /Fale pelo WhatsApp e solicite seu material sob encomenda\./);
 });
 

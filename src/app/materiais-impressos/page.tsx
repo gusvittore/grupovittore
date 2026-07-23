@@ -460,12 +460,13 @@ function HeroSection() {
 
         <div className="px-5 pb-16 pt-10 sm:px-8 sm:pb-20 sm:pt-12">
           <Eyebrow>Materiais Gráficos Personalizados</Eyebrow>
-          <h1 className="mt-6 max-w-[24rem] font-serif text-[clamp(2rem,8.2vw,2.4rem)] font-medium leading-[0.98] tracking-[-0.035em] sm:max-w-[34rem] sm:text-[clamp(3.1rem,9vw,4rem)]">
+          <h1 className="mt-6 max-w-[24rem] font-serif text-[clamp(2.3rem,9.4vw,2.7rem)] font-medium leading-[0.98] tracking-[-0.035em] sm:max-w-[34rem] sm:text-[clamp(3rem,7vw,4rem)]">
             <ControlledMobileTitle ariaLabel="Autoridade que se toca: impressos premium que materializam sua marca.">
               <span className="block">Autoridade que</span>
               <span className="block">se toca: impressos</span>
               <span className="block"><span className="text-[#B29157]">premium</span> que</span>
-              <span className="block">materializam sua marca.</span>
+              <span className="block">materializam sua</span>
+              <span className="block">marca.</span>
             </ControlledMobileTitle>
           </h1>
           <p className="mt-7 max-w-[690px] text-xl leading-9 text-[#FBF8F4]/88 sm:text-2xl sm:leading-10">
@@ -624,8 +625,13 @@ function CustomMadeSection() {
           <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#B29157] sm:text-sm">
             Feito sob encomenda
           </p>
-          <h2 className="mx-auto mt-7 max-w-[720px] text-balance font-serif text-[clamp(2.25rem,9.2vw,3.95rem)] font-medium leading-[1.02] tracking-[-0.03em] xl:hidden">
-            Cada material é pensado para representar o nível da sua marca.
+          <h2 className="materials-custom-title-mobile mx-auto mt-7 max-w-[720px] font-serif font-medium leading-[1.02] tracking-[-0.03em] xl:hidden">
+            <ControlledMobileTitle className="materials-mobile-section-title" ariaLabel="Cada material é pensado para representar o nível da sua marca.">
+              <span className="block">Cada material</span>
+              <span className="block">é pensado para</span>
+              <span className="block">representar o nível</span>
+              <span className="block">da sua marca.</span>
+            </ControlledMobileTitle>
           </h2>
           <h2 className="materials-custom-title-desktop mx-auto mt-7 hidden max-w-[1040px] font-serif text-[4.05rem] font-medium leading-[1.06] tracking-[-0.018em] xl:block">
             <span className="block whitespace-nowrap">Cada material é pensado</span>
@@ -677,9 +683,10 @@ function FaqSection() {
           Dúvidas frequentes
         </p>
         <h2 className="mt-5 font-serif font-medium leading-[1.02] tracking-[-0.035em] text-[#090E1F]">
-          <ControlledMobileTitle className="materials-mobile-section-title sm:hidden" ariaLabel="Antes de pedir seus materiais personalizados">
-            <span className="block">Antes de pedir seus</span>
-            <span className="block">materiais personalizados</span>
+          <ControlledMobileTitle className="materials-mobile-section-title block sm:hidden" ariaLabel="Antes de pedir seus materiais personalizados">
+            <span className="block">Antes de pedir</span>
+            <span className="block">seus materiais</span>
+            <span className="block">personalizados</span>
           </ControlledMobileTitle>
           <span className="hidden text-[clamp(2.05rem,5.8vw,4.05rem)] sm:block">
             Antes de pedir seus materiais personalizados
@@ -723,13 +730,13 @@ function FinalCtaSection() {
         <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[#B29157] sm:text-sm">
           Sua marca no mundo físico
         </p>
-        <h2 className="materials-final-title-mobile mx-auto mt-7 max-w-[920px] font-serif text-[clamp(2.15rem,8.6vw,4rem)] font-medium leading-[1.04] tracking-[-0.028em] xl:hidden">
+        <h2 className="materials-final-title-mobile mx-auto mt-7 max-w-[920px] font-serif font-medium leading-[1.04] tracking-[-0.028em] xl:hidden">
           <ControlledMobileTitle className="materials-mobile-section-title" ariaLabel="Se a sua apresentação precisa transmitir mais valor, comece pelo material que o cliente vê, toca e guarda.">
             <span className="block">Se a sua apresentação</span>
-            <span className="block">precisa transmitir mais valor,</span>
-            <span className="block">comece pelo material</span>
-            <span className="block">que o cliente vê, toca</span>
-            <span className="block">e guarda.</span>
+            <span className="block">precisa transmitir mais</span>
+            <span className="block">valor, comece pelo</span>
+            <span className="block">material que o cliente</span>
+            <span className="block">vê, toca e guarda.</span>
           </ControlledMobileTitle>
         </h2>
         <h2 className="materials-final-title-desktop mx-auto mt-7 hidden max-w-[980px] font-serif text-[4.05rem] font-medium leading-[1.06] tracking-[-0.018em] xl:block">
@@ -838,7 +845,6 @@ function MaterialsPageStyles() {
       }
 
       .materials-mobile-controlled-title {
-        display: block;
         max-width: 100%;
         text-wrap: normal;
         word-break: normal;
@@ -846,8 +852,8 @@ function MaterialsPageStyles() {
       }
 
       .materials-mobile-section-title {
-        font-size: clamp(1.72rem, 7.2vw, 2.15rem);
-        line-height: 1.04;
+        font-size: clamp(2.05rem, 5.8vw, 4.05rem);
+        line-height: 1.02;
         letter-spacing: -0.03em;
       }
 
@@ -857,6 +863,12 @@ function MaterialsPageStyles() {
 
       .materials-hero-mobile-image-spacer {
         aspect-ratio: 941 / 760;
+      }
+
+      @media (max-width: 1279px) {
+        .materials-hero-image {
+          object-position: 56% 50%;
+        }
       }
 
       .materials-hero-mobile-image-shade {
@@ -870,7 +882,7 @@ function MaterialsPageStyles() {
       }
 
       .materials-floating-whatsapp {
-        bottom: max(4.5rem, calc(env(safe-area-inset-bottom) + 1.25rem));
+        bottom: max(2rem, calc(env(safe-area-inset-bottom) + 1.25rem));
         opacity: 0;
         pointer-events: none;
         transform: translate3d(0, 18px, 0) scale(0.96);
@@ -893,7 +905,7 @@ function MaterialsPageStyles() {
 
         .materials-custom-made-section {
           aspect-ratio: 9 / 7;
-          min-height: 1120px;
+          min-height: 1200px;
         }
 
         .materials-custom-made-shell {
@@ -945,7 +957,7 @@ function MaterialsPageStyles() {
 
         .materials-floating-whatsapp {
           right: 1rem;
-          bottom: max(4rem, calc(env(safe-area-inset-bottom) + 1rem));
+          bottom: max(1.5rem, calc(env(safe-area-inset-bottom) + 1rem));
         }
 
         .materials-floating-whatsapp img {
