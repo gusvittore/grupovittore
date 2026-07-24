@@ -14,7 +14,6 @@ import {
 } from "./lead-core";
 import {
   buildLeadTrackingDescription,
-  getLeadTrackingClickUpCandidates,
   resolveLeadTrackingClickUpCustomFields,
   type ClickUpCustomFieldPayload,
 } from "./lead-tracking-clickup";
@@ -593,61 +592,12 @@ function resolveClickUpFieldValue(
   return option.id;
 }
 
-function findLeadTrackingClickUpFields(
-  fields: ClickUpField[],
-  names: string[],
-  configuredFieldId: string,
-) {
-  const configuredField = configuredFieldId
-    ? fields.find((field) => field.id === configuredFieldId)
-    : undefined;
-
-  if (configuredField) return [configuredField];
-
-  if (configuredFieldId) {
-    console.warn(
-      `Campo ClickUp configurado por ID nao encontrado (${configuredFieldId}); tentando por nome.`,
-    );
-  }
-
-  return findClickUpFieldsByName(fields, names);
-}
-
-function resolveLeadTrackingClickUpFieldValue(
-  field: ClickUpField,
-  value: string | number,
-) {
-  const options = field.type_config?.options;
-  const stringValue = String(value);
-
-  if (options?.length) {
-    const normalizedValue = normalizeComparison(stringValue);
-    const option = options.find(
-      (item) => normalizeComparison(item.name) === normalizedValue,
-    );
-
-    if (!option) {
-      const message = `Campo "${field.name}" pulado: opcao "${stringValue}" nao encontrada no dropdown.`;
-      console.warn(message);
-      return { error: message };
-    }
-
-    return option.id;
-  }
-
-  if (normalizeFieldType(field.type ?? "").includes("number")) {
-    const numericValue = Number(value);
-    if (Number.isFinite(numericValue)) return numericValue;
-  }
-
-  return stringValue;
-}
-
 async function fillClickUpCustomFields(
   config: ClickUpConfig,
   taskId: string,
   fields: ClickUpField[],
   payload: LeadPayload,
+  trackingCustomFields: ClickUpCustomFieldPayload[],
 ) {
   const { clickUpApiToken } = config;
   const fieldErrors: string[] = [];
@@ -707,49 +657,33 @@ async function fillClickUpCustomFields(
     }
   }
 
-  for (const {
-    names,
-    configuredFieldId,
-    value,
-  } of getLeadTrackingClickUpCandidates(payload.tracking)) {
-    const matchedFields = findLeadTrackingClickUpFields(
-      fields,
-      names,
-      configuredFieldId,
+  const fieldsById = new Map(fields.map((field) => [field.id, field]));
+
+  for (const customField of trackingCustomFields) {
+    const field = fieldsById.get(customField.id);
+    if (!field) continue;
+
+    const response = await fetch(
+      `https://api.clickup.com/api/v2/task/${taskId}/field/${field.id}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: clickUpApiToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ value: customField.value }),
+      },
     );
 
-    if (!matchedFields.length) {
-      const message = `Campo ClickUp de jornada nao encontrado: ${names.join(" / ")}.`;
+    if (!response.ok) {
+      const message = `Falha ao preencher campo de jornada "${field.name}": ${await readResponseText(response)}`;
       console.warn(message);
       fieldErrors.push(message);
-      continue;
-    }
-
-    for (const field of matchedFields) {
-      const resolvedValue = resolveLeadTrackingClickUpFieldValue(field, value);
-
-      if (typeof resolvedValue === "object") {
-        fieldErrors.push(resolvedValue.error);
-        continue;
-      }
-
-      const response = await fetch(
-        `https://api.clickup.com/api/v2/task/${taskId}/field/${field.id}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: clickUpApiToken,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ value: resolvedValue }),
-        },
-      );
-
-      if (!response.ok) {
-        const message = `Falha ao preencher campo de jornada "${field.name}": ${await readResponseText(response)}`;
-        console.warn(message);
-        fieldErrors.push(message);
-      }
+    } else {
+      console.log("Campo de jornada preenchido no ClickUp:", {
+        name: field.name,
+        type: field.type || "desconhecido",
+      });
     }
   }
 
@@ -760,9 +694,16 @@ async function fillClickUpCustomFieldsForTask(
   config: ClickUpConfig,
   taskId: string,
   payload: LeadPayload,
+  trackingCustomFields: ClickUpCustomFieldPayload[],
 ) {
   const fields = await getClickUpFields(config);
-  return fillClickUpCustomFields(config, taskId, fields, payload);
+  return fillClickUpCustomFields(
+    config,
+    taskId,
+    fields,
+    payload,
+    trackingCustomFields,
+  );
 }
 
 async function runPostClickUpTasks(
@@ -771,6 +712,7 @@ async function runPostClickUpTasks(
   taskUrl: string | null | undefined,
   payload: LeadPayload,
   qualification: LeadQualification,
+  trackingCustomFields: ClickUpCustomFieldPayload[],
 ) {
   let emailMs = 0;
   const emailStartedAt = Date.now();
@@ -781,7 +723,12 @@ async function runPostClickUpTasks(
     emailMs = Date.now() - emailStartedAt;
   });
   const postClickupTasks = [
-    fillClickUpCustomFieldsForTask(config, taskId, payload),
+    fillClickUpCustomFieldsForTask(
+      config,
+      taskId,
+      payload,
+      trackingCustomFields,
+    ),
     createClickUpTaskComment(config, taskId),
     emailTask,
   ] as const;
@@ -847,9 +794,13 @@ async function sendLeadToClickUp(
     );
     trackingCustomFields = resolvedTrackingFields.customFields;
     preTaskFieldErrors.push(...resolvedTrackingFields.errors);
-    console.log("Campos de jornada resolvidos para o ClickUp:", {
-      resolved: trackingCustomFields.length,
-      requested: 8,
+    console.log("ClickUp custom fields de tracking:", {
+      totalAvailable: fields.length,
+      found: resolvedTrackingFields.foundFields.map(({ name, type }) => ({
+        name,
+        type: type || "desconhecido",
+      })),
+      missing: resolvedTrackingFields.missingFields,
     });
   } catch (error) {
     const message = `Falha ao resolver campos de jornada do ClickUp: ${getErrorMessage(error)}`;
@@ -870,6 +821,7 @@ async function sendLeadToClickUp(
     task.taskUrl,
     payload,
     qualification,
+    trackingCustomFields,
   );
 
   return {

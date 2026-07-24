@@ -33,9 +33,13 @@ class MemoryStorage {
   }
 }
 
-function installBrowser(consent = "accepted") {
-  const localStorage = new MemoryStorage();
-  const sessionStorage = new MemoryStorage();
+function installBrowser(
+  consent = "accepted",
+  {
+    localStorage = new MemoryStorage(),
+    sessionStorage = new MemoryStorage(),
+  } = {},
+) {
   localStorage.setItem("cookie-consent-choice", consent);
   globalThis.window = {
     localStorage,
@@ -54,9 +58,79 @@ function removeBrowser() {
   delete globalThis.document;
 }
 
-test("browser tracker writes only after consent and keeps first touch immutable", () => {
+test("a new browser session starts a clean complete journey and counts only its unique articles", () => {
+  const firstSession = installBrowser();
+
+  try {
+    tracking.recordLeadPageVisit(
+      {
+        path: "/blog/artigo-antigo",
+        type: "artigo",
+        title: "Artigo antigo",
+        slug: "artigo-antigo",
+        category: "Vendas",
+      },
+      { now: "2026-07-24T09:00:00.000Z" },
+    );
+  } finally {
+    removeBrowser();
+  }
+
+  installBrowser("accepted", {
+    localStorage: firstSession.localStorage,
+    sessionStorage: new MemoryStorage(),
+  });
+
+  try {
+    const visits = [
+      { path: "/", type: "home", title: "Grupo Vittore" },
+      { path: "/blog", type: "blog", title: "Blog" },
+      {
+        path: "/blog/artigo-1",
+        type: "artigo",
+        title: "Artigo 1",
+        slug: "artigo-1",
+        category: "Vendas",
+      },
+      {
+        path: "/blog/artigo-2",
+        type: "artigo",
+        title: "Artigo 2",
+        slug: "artigo-2",
+        category: "Vendas",
+      },
+      {
+        path: "/assessoria-comercial",
+        type: "assessoria-comercial",
+        title: "Assessoria Comercial",
+      },
+    ];
+
+    visits.forEach((visit, index) =>
+      tracking.recordLeadPageVisit(visit, {
+        now: `2026-07-24T10:0${index}:00.000Z`,
+      }),
+    );
+
+    const snapshot = tracking.getLeadTrackingSnapshot(
+      "/assessoria-comercial",
+    );
+    assert.deepEqual(
+      snapshot.jornadaDoLead.map((entry) => entry.path),
+      ["/", "/blog", "/blog/artigo-1", "/blog/artigo-2", "/assessoria-comercial"],
+    );
+    assert.equal(snapshot.quantidadeDeArtigosLidos, 2);
+    assert.equal(snapshot.artigoDeOrigem, "Artigo 1");
+    assert.equal(snapshot.ultimoArtigoLido, "Artigo 2");
+    assert.equal(snapshot.primeiraPaginaVisitada, "/");
+  } finally {
+    removeBrowser();
+  }
+});
+
+test("browser tracker writes only after consent and keeps session first touch immutable", () => {
   assert.equal(typeof tracking.recordLeadPageVisit, "function");
-  const { localStorage } = installBrowser("rejected");
+  const { localStorage, sessionStorage } = installBrowser("rejected");
 
   try {
     tracking.recordLeadPageVisit(
@@ -106,22 +180,23 @@ test("browser tracker writes only after consent and keeps first touch immutable"
     );
 
     const firstTouch = JSON.parse(
-      localStorage.getItem("gv_tracking_first_touch"),
+      sessionStorage.getItem("gv_tracking_first_touch"),
     );
     assert.equal(firstTouch.path, "/blog/artigo-1");
     assert.equal(firstTouch.utmSource, "google");
     assert.equal(firstTouch.gclid, "abc123");
     assert.equal(firstTouch.inferredOrigin, "Google Ads");
 
-    const journey = JSON.parse(localStorage.getItem("gv_tracking_journey"));
+    const journey = JSON.parse(sessionStorage.getItem("gv_tracking_journey"));
     assert.deepEqual(
       journey.map((entry) => entry.path),
       ["/blog/artigo-1", "/blog/artigo-2"],
     );
     assert.equal(
-      JSON.parse(localStorage.getItem("gv_tracking_last_article")).slug,
+      JSON.parse(sessionStorage.getItem("gv_tracking_last_article")).slug,
       "artigo-2",
     );
+    assert.ok(sessionStorage.getItem("gv_tracking_session_id"));
   } finally {
     removeBrowser();
   }
@@ -187,6 +262,71 @@ test("CTA and conversion snapshot use session storage and never store form PII",
   }
 });
 
+test("successful conversion clears active tracking and thank-you does not contaminate the next journey", () => {
+  assert.equal(typeof tracking.completeLeadTrackingConversion, "function");
+  const { localStorage, sessionStorage } = installBrowser();
+
+  try {
+    tracking.recordLeadPageVisit(
+      { path: "/", type: "home", title: "Grupo Vittore" },
+      { now: "2026-07-24T10:00:00.000Z" },
+    );
+    tracking.recordLeadPageVisit(
+      {
+        path: "/blog/artigo-1",
+        type: "artigo",
+        title: "Artigo 1",
+        slug: "artigo-1",
+        category: "Vendas",
+      },
+      { now: "2026-07-24T10:01:00.000Z" },
+    );
+    tracking.getLeadTrackingSnapshot("/assessoria-comercial");
+    const convertedSessionId = sessionStorage.getItem("gv_tracking_session_id");
+
+    tracking.completeLeadTrackingConversion("2026-07-24T10:02:00.000Z");
+
+    for (const key of [
+      "gv_tracking_first_touch",
+      "gv_tracking_journey",
+      "gv_tracking_last_article",
+      "gv_tracking_last_cta",
+      "gv_tracking_conversion_context",
+      "gv_tracking_session_touch",
+      "gv_tracking_session_id",
+    ]) {
+      assert.equal(localStorage.getItem(key), null);
+      assert.equal(sessionStorage.getItem(key), null);
+    }
+    assert.ok(sessionStorage.getItem("gv_tracking_conversion_completed"));
+
+    tracking.recordLeadPageVisit(
+      { path: "/obrigado", type: "obrigado", title: "Obrigado" },
+      { now: "2026-07-24T10:03:00.000Z" },
+    );
+    assert.equal(sessionStorage.getItem("gv_tracking_journey"), null);
+
+    tracking.recordLeadPageVisit(
+      { path: "/", type: "home", title: "Grupo Vittore" },
+      { now: "2026-07-24T10:04:00.000Z" },
+    );
+    const nextJourney = JSON.parse(
+      sessionStorage.getItem("gv_tracking_journey"),
+    );
+    assert.deepEqual(nextJourney.map((entry) => entry.path), ["/"]);
+    assert.notEqual(
+      sessionStorage.getItem("gv_tracking_session_id"),
+      convertedSessionId,
+    );
+    assert.equal(
+      sessionStorage.getItem("gv_tracking_conversion_completed"),
+      null,
+    );
+  } finally {
+    removeBrowser();
+  }
+});
+
 test("invalid storage JSON never breaks navigation and rejection clears tracking keys", () => {
   assert.equal(typeof tracking.clearLeadTrackingStorage, "function");
   const { localStorage, sessionStorage } = installBrowser();
@@ -246,6 +386,11 @@ test("global integration records route/article/CTA metadata and only attaches a 
   assert.match(layout, /<LeadJourneyTracker\s*\/>/);
   assert.match(trackerComponent, /usePathname\(\)/);
   assert.match(trackerComponent, /recordLeadPageVisit/);
+  assert.match(
+    trackerComponent,
+    /useEffect\(\(\) => \{\s*recordCurrentPage\(pathname\);\s*\}, \[pathname\]\);/,
+  );
+  assert.doesNotMatch(trackerComponent, /requestAnimationFrame/);
   assert.match(trackerComponent, /data-gv-cta/);
   assert.match(trackerComponent, /addEventListener\("click"/);
   assert.match(trackerComponent, /LEAD_TRACKING_CONSENT_EVENT/);
@@ -268,9 +413,14 @@ test("global integration records route/article/CTA metadata and only attaches a 
   }
 
   assert.match(leadForm, /getLeadTrackingSnapshot/);
+  assert.match(leadForm, /completeLeadTrackingConversion/);
   assert.match(leadForm, /tracking,/);
   assert.match(leadForm, /params\.get\("utm_source"\) \|\| tracking\.utmSource/);
   assert.match(leadForm, /params\.get\("gclid"\) \|\| tracking\.gclid/);
   assert.equal((leadForm.match(/fetch\(/g) ?? []).length, 1);
   assert.match(leadForm, /submitLockedRef\.current \|\| isSubmitting/);
+  assert.match(
+    leadForm,
+    /if \(!response\.ok \|\| !result\?\.ok\)[\s\S]*?throw new Error[\s\S]*?const redirectTo[\s\S]*?completeLeadTrackingConversion\(\);[\s\S]*?window\.location\.href = redirectTo/,
+  );
 });

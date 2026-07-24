@@ -171,6 +171,8 @@ export function resolveLeadTrackingClickUpCustomFields(
 ) {
   const customFields: ClickUpCustomFieldPayload[] = [];
   const errors: string[] = [];
+  const foundFields: ClickUpCustomFieldDefinition[] = [];
+  const missingFields: string[] = [];
 
   for (const candidate of getLeadTrackingClickUpCandidates(tracking, env)) {
     const configuredField = candidate.configuredFieldId
@@ -186,6 +188,7 @@ export function resolveLeadTrackingClickUpCustomFields(
         );
 
     if (!matchedFields.length) {
+      missingFields.push(candidate.names[0]);
       errors.push(
         `Campo ClickUp de jornada nao encontrado: ${candidate.names.join(" / ")}.`,
       );
@@ -193,6 +196,7 @@ export function resolveLeadTrackingClickUpCustomFields(
     }
 
     for (const field of matchedFields) {
+      foundFields.push(field);
       const resolvedValue = resolveCustomFieldValue(field, candidate.value);
 
       if (typeof resolvedValue === "object" && !Array.isArray(resolvedValue)) {
@@ -204,5 +208,5 @@ export function resolveLeadTrackingClickUpCustomFields(
     }
   }
 
-  return { customFields, errors };
+  return { customFields, errors, foundFields, missingFields };
 }

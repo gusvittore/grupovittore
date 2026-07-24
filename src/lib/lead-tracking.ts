@@ -7,6 +7,8 @@ export const LEAD_TRACKING_STORAGE_KEYS = {
   lastArticle: "gv_tracking_last_article",
   conversionContext: "gv_tracking_conversion_context",
   sessionTouch: "gv_tracking_session_touch",
+  sessionId: "gv_tracking_session_id",
+  conversionCompleted: "gv_tracking_conversion_completed",
 } as const;
 
 export const LEAD_TRACKING_CONSENT_EVENT = "gv-cookie-consent-changed";
@@ -241,6 +243,24 @@ function writeStorageJson(storage: Storage, key: string, value: unknown) {
   }
 }
 
+function ensureLeadTrackingSession() {
+  try {
+    const existing = window.sessionStorage.getItem(
+      LEAD_TRACKING_STORAGE_KEYS.sessionId,
+    );
+
+    if (existing) return existing;
+
+    const sessionId =
+      globalThis.crypto?.randomUUID?.() ??
+      `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+    window.sessionStorage.setItem(LEAD_TRACKING_STORAGE_KEYS.sessionId, sessionId);
+    return sessionId;
+  } catch {
+    return "";
+  }
+}
+
 export function hasLeadTrackingConsent() {
   if (!hasBrowserStorage()) return false;
 
@@ -295,6 +315,22 @@ export function recordLeadPageVisit(
 ) {
   if (!hasLeadTrackingConsent()) return;
 
+  try {
+    const conversionCompleted = window.sessionStorage.getItem(
+      LEAD_TRACKING_STORAGE_KEYS.conversionCompleted,
+    );
+    if (conversionCompleted && visit.type === "obrigado") return;
+    if (conversionCompleted) {
+      window.sessionStorage.removeItem(
+        LEAD_TRACKING_STORAGE_KEYS.conversionCompleted,
+      );
+    }
+  } catch {
+    // Tracking remains best-effort when sessionStorage is unavailable.
+  }
+
+  ensureLeadTrackingSession();
+
   const visitedAt = context.now || new Date().toISOString();
   const search = context.search ?? window.location.search;
   const referrer =
@@ -306,13 +342,13 @@ export function recordLeadPageVisit(
     visitedAt,
   );
   const firstTouch = readStorageJson<LeadTrackingTouch>(
-    window.localStorage,
+    window.sessionStorage,
     LEAD_TRACKING_STORAGE_KEYS.firstTouch,
   );
 
   if (!firstTouch) {
     writeStorageJson(
-      window.localStorage,
+      window.sessionStorage,
       LEAD_TRACKING_STORAGE_KEYS.firstTouch,
       currentTouch,
     );
@@ -332,7 +368,7 @@ export function recordLeadPageVisit(
 
   const journey =
     readStorageJson<LeadJourneyEntry[]>(
-      window.localStorage,
+      window.sessionStorage,
       LEAD_TRACKING_STORAGE_KEYS.journey,
     ) ?? [];
   const entry: LeadJourneyEntry = {
@@ -341,14 +377,14 @@ export function recordLeadPageVisit(
   };
   const nextJourney = appendJourneyEntry(journey, entry);
   writeStorageJson(
-    window.localStorage,
+    window.sessionStorage,
     LEAD_TRACKING_STORAGE_KEYS.journey,
     nextJourney,
   );
 
   if (entry.type === "artigo") {
     writeStorageJson(
-      window.localStorage,
+      window.sessionStorage,
       LEAD_TRACKING_STORAGE_KEYS.lastArticle,
       entry,
     );
@@ -381,7 +417,7 @@ export function getLeadTrackingSnapshot(landingPath: string) {
 
   const snapshot = deriveLeadTrackingPayload({
     firstTouch: readStorageJson<LeadTrackingTouch>(
-      window.localStorage,
+      window.sessionStorage,
       LEAD_TRACKING_STORAGE_KEYS.firstTouch,
     ),
     sessionTouch: readStorageJson<LeadTrackingTouch>(
@@ -390,7 +426,7 @@ export function getLeadTrackingSnapshot(landingPath: string) {
     ),
     journey:
       readStorageJson<LeadJourneyEntry[]>(
-        window.localStorage,
+        window.sessionStorage,
         LEAD_TRACKING_STORAGE_KEYS.journey,
       ) ?? [],
     lastCta: readStorageJson<LeadTrackingCta>(
@@ -422,4 +458,25 @@ export function clearLeadTrackingStorage() {
       // Storage may be unavailable; clearing remains best-effort.
     }
   }
+}
+
+export function completeLeadTrackingConversion(
+  completedAt = new Date().toISOString(),
+) {
+  if (!hasBrowserStorage()) return;
+
+  let sessionId = "";
+  try {
+    sessionId =
+      window.sessionStorage.getItem(LEAD_TRACKING_STORAGE_KEYS.sessionId) || "";
+  } catch {
+    // Completion remains best-effort when storage is unavailable.
+  }
+
+  clearLeadTrackingStorage();
+  writeStorageJson(
+    window.sessionStorage,
+    LEAD_TRACKING_STORAGE_KEYS.conversionCompleted,
+    { sessionId, completedAt },
+  );
 }

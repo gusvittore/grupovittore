@@ -1,7 +1,10 @@
 "use client";
 
 import { useRef, useState, type ChangeEventHandler } from "react";
-import { getLeadTrackingSnapshot } from "@/lib/lead-tracking";
+import {
+  completeLeadTrackingConversion,
+  getLeadTrackingSnapshot,
+} from "@/lib/lead-tracking";
 
 const sectorOptions = [
   "Serviço",
@@ -194,6 +197,7 @@ export function LeadForm() {
           }
 
           const redirectTo = result.redirectTo || getLeadRedirectPath(revenue);
+          completeLeadTrackingConversion();
           window.location.href = redirectTo;
         } catch (error) {
           console.error("Erro ao enviar lead:", error);

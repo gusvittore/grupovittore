@@ -50,8 +50,7 @@ export function LeadJourneyTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => recordCurrentPage(pathname));
-    return () => window.cancelAnimationFrame(frame);
+    recordCurrentPage(pathname);
   }, [pathname]);
 
   useEffect(() => {
