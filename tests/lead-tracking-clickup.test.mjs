@@ -146,6 +146,70 @@ test("ClickUp exposes exactly eight journey fields with optional configured IDs"
   assert.equal(candidates[7].value, 2);
 });
 
+test("ClickUp resolves journey fields by exact name and sends typed custom_fields", () => {
+  const resolveLeadTrackingClickUpCustomFields = requiredFunction(
+    "resolveLeadTrackingClickUpCustomFields",
+  );
+  const fields = [
+    { id: "first", name: "Primeira Página Visitada", type: "short_text" },
+    {
+      id: "category",
+      name: "Categoria de Conteúdo",
+      type: "drop_down",
+      type_config: {
+        options: [
+          { id: "growth", name: "Gestão Comercial" },
+          { id: "sales", name: "Vendas" },
+        ],
+      },
+    },
+    { id: "origin", name: "Artigo de Origem", type: "short_text" },
+    { id: "last", name: "Último Artigo Lido", type: "short_text" },
+    {
+      id: "cta",
+      name: "CTA de Conversão",
+      type: "drop_down",
+      type_config: {
+        options: [
+          {
+            id: "article-cta",
+            name: "CTA final do artigo para Assessoria Comercial",
+          },
+        ],
+      },
+    },
+    { id: "landing", name: "Landing de Conversão", type: "short_text" },
+    { id: "journey", name: "Jornada do Lead", type: "text" },
+    { id: "count", name: "Quantidade de Artigos Lidos", type: "number" },
+  ];
+
+  const result = resolveLeadTrackingClickUpCustomFields(
+    trackingPayload(),
+    fields,
+    {},
+  );
+
+  assert.deepEqual(result.errors, []);
+  assert.deepEqual(result.customFields, [
+    { id: "first", value: "/blog/artigo-1" },
+    { id: "category", value: "growth" },
+    { id: "origin", value: "Artigo 1" },
+    { id: "last", value: "Artigo 2" },
+    { id: "cta", value: "article-cta" },
+    { id: "landing", value: "/assessoria-comercial" },
+    {
+      id: "journey",
+      value: [
+        "1. /blog/artigo-1",
+        "2. /blog/artigo-2",
+        "3. /assessoria-comercial",
+      ].join("\n"),
+    },
+    { id: "count", value: 2 },
+  ]);
+  assert.equal(typeof result.customFields[7].value, "number");
+});
+
 test("processor keeps current mappings and applies journey fields after task creation in background", () => {
   assert.match(processor, /getLeadTrackingClickUpCandidates/);
   assert.match(processor, /buildLeadTrackingDescription/);
@@ -157,6 +221,9 @@ test("processor keeps current mappings and applies journey fields after task cre
   assert.match(processor, /field\.id === configuredFieldId/);
   assert.match(processor, /findClickUpFieldsByName/);
   assert.match(processor, /getClickUpFields\(config\)/);
+  assert.match(processor, /resolveLeadTrackingClickUpCustomFields/);
+  assert.match(processor, /custom_fields:\s*trackingCustomFields/);
+  assert.match(processor, /clickUpFieldCache/);
   assert.match(processor, /Promise\.allSettled\(postClickupTasks\)/);
 
   for (const currentField of [

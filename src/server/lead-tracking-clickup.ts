@@ -9,6 +9,35 @@ export type LeadTrackingClickUpCandidate = {
   value: string | number;
 };
 
+export type ClickUpCustomFieldOption = {
+  id: string;
+  name: string;
+};
+
+export type ClickUpCustomFieldDefinition = {
+  id: string;
+  name: string;
+  type?: string;
+  type_config?: {
+    options?: ClickUpCustomFieldOption[];
+  };
+};
+
+export type ClickUpCustomFieldPayload = {
+  id: string;
+  value: string | number | string[];
+};
+
+function normalizeClickUpValue(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/_/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function formatTrackingValue(value: string | number | null | undefined) {
   if (value === 0) return "0";
   return value ? String(value) : "Não informado";
@@ -100,4 +129,80 @@ export function getLeadTrackingClickUpCandidates(
     ...definition,
     configuredFieldId: env[definition.envVar]?.trim() || "",
   }));
+}
+
+function resolveCustomFieldValue(
+  field: ClickUpCustomFieldDefinition,
+  value: string | number,
+) {
+  const options = field.type_config?.options;
+  const stringValue = String(value);
+
+  if (options?.length) {
+    const option = options.find(
+      (item) =>
+        normalizeClickUpValue(item.name) === normalizeClickUpValue(stringValue),
+    );
+
+    if (!option) {
+      return {
+        error: `Campo "${field.name}" pulado: opcao "${stringValue}" nao encontrada no dropdown.`,
+      };
+    }
+
+    return normalizeClickUpValue(field.type ?? "").includes("labels")
+      ? [option.id]
+      : option.id;
+  }
+
+  if (normalizeClickUpValue(field.type ?? "").includes("number")) {
+    const numericValue = Number(value);
+
+    if (Number.isFinite(numericValue)) return numericValue;
+  }
+
+  return stringValue;
+}
+
+export function resolveLeadTrackingClickUpCustomFields(
+  tracking: LeadTrackingPayload,
+  fields: ClickUpCustomFieldDefinition[],
+  env: TrackingEnvironment = process.env,
+) {
+  const customFields: ClickUpCustomFieldPayload[] = [];
+  const errors: string[] = [];
+
+  for (const candidate of getLeadTrackingClickUpCandidates(tracking, env)) {
+    const configuredField = candidate.configuredFieldId
+      ? fields.find((field) => field.id === candidate.configuredFieldId)
+      : undefined;
+    const matchedFields = configuredField
+      ? [configuredField]
+      : fields.filter((field) =>
+          candidate.names.some(
+            (name) =>
+              normalizeClickUpValue(field.name) === normalizeClickUpValue(name),
+          ),
+        );
+
+    if (!matchedFields.length) {
+      errors.push(
+        `Campo ClickUp de jornada nao encontrado: ${candidate.names.join(" / ")}.`,
+      );
+      continue;
+    }
+
+    for (const field of matchedFields) {
+      const resolvedValue = resolveCustomFieldValue(field, candidate.value);
+
+      if (typeof resolvedValue === "object" && !Array.isArray(resolvedValue)) {
+        errors.push(resolvedValue.error);
+        continue;
+      }
+
+      customFields.push({ id: field.id, value: resolvedValue });
+    }
+  }
+
+  return { customFields, errors };
 }
