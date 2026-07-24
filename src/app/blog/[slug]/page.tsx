@@ -166,7 +166,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     <>
       <SiteHeader />
       <main className="min-h-screen overflow-x-clip bg-[#fbf8f4] text-[#071026]">
-        <article>
+        <article
+          data-gv-page-type="artigo"
+          data-gv-article-title={post.title}
+          data-gv-article-slug={post.slug}
+          data-gv-article-category={post.category}
+        >
           <header className="border-b border-[#b29157]/25 bg-[#031126] text-[#fbf8f4]">
             <div className="mx-auto w-full max-w-[1180px] px-5 py-14 sm:px-8 sm:py-18 lg:px-12 lg:py-24">
               <Link

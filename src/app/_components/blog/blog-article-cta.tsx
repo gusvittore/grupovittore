@@ -20,6 +20,13 @@ export function BlogArticleCta({
   const link = (
     <Link
       href={href}
+      data-gv-cta={
+        isMaterials
+          ? undefined
+          : variant === "sidebar"
+            ? "Banner lateral do artigo para Assessoria Comercial"
+            : "CTA final do artigo para Assessoria Comercial"
+      }
       className="group mx-auto block max-w-[520px] overflow-hidden rounded-[18px] border border-[#b29157]/35 bg-[#031126] shadow-[0_14px_34px_rgba(9,14,31,0.09)] transition hover:-translate-y-0.5 hover:border-[#e3ad51]/70 hover:shadow-[0_18px_42px_rgba(9,14,31,0.16)]"
     >
       <Image

@@ -59,6 +59,7 @@ export function SiteHeader() {
         <div className="flex items-center justify-end gap-3">
           <Link
             href="/assessoria-comercial"
+            data-gv-cta="Botão menu Assessoria Comercial"
             className="hidden min-h-13 items-center justify-center gap-4 rounded-full bg-[#031126] px-6 py-3 text-xs font-extrabold uppercase tracking-[0.11em] text-[#e3ad51] transition hover:-translate-y-0.5 hover:bg-[#0b1d38] sm:inline-flex xl:px-8 xl:text-sm"
           >
             Assessoria Comercial <span aria-hidden="true">›</span>
@@ -73,6 +74,7 @@ export function SiteHeader() {
               <NavigationLinks mobile />
               <Link
                 href="/assessoria-comercial"
+                data-gv-cta="Botão menu Assessoria Comercial"
                 className="mx-5 mb-5 flex min-h-12 items-center justify-center rounded-full bg-[#031126] px-5 text-center text-xs font-extrabold uppercase tracking-[0.1em] text-[#e3ad51] sm:hidden"
               >
                 Assessoria Comercial

@@ -53,6 +53,7 @@ export function HomeAssessoriaComercial() {
             </p>
             <Link
               href="/assessoria-comercial"
+              data-gv-cta="Card Home para Assessoria Comercial"
               className="mt-9 inline-flex min-h-15 items-center justify-center gap-5 rounded-lg bg-[linear-gradient(135deg,#f2d18b,#d3a04b)] px-7 py-4 text-sm font-extrabold uppercase tracking-[0.13em] text-[#061027] shadow-[0_16px_34px_rgba(0,0,0,0.2)] transition hover:-translate-y-0.5"
             >
               Conhecer Assessoria Comercial <span aria-hidden="true">›</span>

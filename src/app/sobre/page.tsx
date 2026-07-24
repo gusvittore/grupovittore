@@ -308,6 +308,7 @@ export default function SobrePage() {
             <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:flex-wrap">
               <Link
                 href="/assessoria-comercial"
+                data-gv-cta="CTA da página Sobre para Assessoria Comercial"
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#B29157]/55 px-5 text-center text-sm font-extrabold uppercase tracking-[0.11em] text-[#000717] transition hover:bg-[#B29157]/12"
               >
                 Conhecer Assessoria Comercial

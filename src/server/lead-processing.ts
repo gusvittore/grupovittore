@@ -12,6 +12,10 @@ import {
   type LeadPayload,
   type LeadQualification,
 } from "./lead-core";
+import {
+  buildLeadTrackingDescription,
+  getLeadTrackingClickUpCandidates,
+} from "./lead-tracking-clickup";
 
 const DEFAULT_CLICKUP_LIST_ID = "901327751514";
 
@@ -65,9 +69,11 @@ type ClickUpTaskResult = {
   emailMs: number;
 };
 
+type ClickUpScalarLeadPayloadKey = Exclude<keyof LeadPayload, "tracking">;
+
 const clickUpFieldMapping: Array<{
   names: string[];
-  payloadKey: keyof LeadPayload;
+  payloadKey: ClickUpScalarLeadPayloadKey;
 }> = [
   { names: ["Nome Completo"], payloadKey: "nome_completo" },
   { names: ["E-mail"], payloadKey: "email" },
@@ -380,7 +386,7 @@ function isTextLikeClickUpField(field: ClickUpField) {
 function findClickUpFields(
   fields: ClickUpField[],
   names: string[],
-  payloadKey: keyof LeadPayload,
+  payloadKey: ClickUpScalarLeadPayloadKey,
 ) {
   if (payloadKey === "whatsapp") {
     return fields.filter(
@@ -388,6 +394,10 @@ function findClickUpFields(
     );
   }
 
+  return findClickUpFieldsByName(fields, names);
+}
+
+function findClickUpFieldsByName(fields: ClickUpField[], names: string[]) {
   const field = fields.find((item) =>
     names.some(
       (clickUpFieldName) =>
@@ -417,6 +427,8 @@ function buildClickUpDescription(
     `UTM Term: ${payload.utm_term}`,
     `UTM Content: ${payload.utm_content}`,
     `GCLID: ${payload.gclid}`,
+    "",
+    buildLeadTrackingDescription(payload.tracking),
   ].join("\n");
 }
 
@@ -515,7 +527,7 @@ async function getClickUpFields(config: ClickUpConfig) {
 function resolveClickUpFieldValue(
   field: ClickUpField,
   value: string,
-  payloadKey: keyof LeadPayload,
+  payloadKey: ClickUpScalarLeadPayloadKey,
 ) {
   if (payloadKey === "whatsapp" && isTextLikeClickUpField(field)) {
     return value;
@@ -540,6 +552,56 @@ function resolveClickUpFieldValue(
   }
 
   return option.id;
+}
+
+function findLeadTrackingClickUpFields(
+  fields: ClickUpField[],
+  names: string[],
+  configuredFieldId: string,
+) {
+  const configuredField = configuredFieldId
+    ? fields.find((field) => field.id === configuredFieldId)
+    : undefined;
+
+  if (configuredField) return [configuredField];
+
+  if (configuredFieldId) {
+    console.warn(
+      `Campo ClickUp configurado por ID nao encontrado (${configuredFieldId}); tentando por nome.`,
+    );
+  }
+
+  return findClickUpFieldsByName(fields, names);
+}
+
+function resolveLeadTrackingClickUpFieldValue(
+  field: ClickUpField,
+  value: string | number,
+) {
+  const options = field.type_config?.options;
+  const stringValue = String(value);
+
+  if (options?.length) {
+    const normalizedValue = normalizeComparison(stringValue);
+    const option = options.find(
+      (item) => normalizeComparison(item.name) === normalizedValue,
+    );
+
+    if (!option) {
+      const message = `Campo "${field.name}" pulado: opcao "${stringValue}" nao encontrada no dropdown.`;
+      console.warn(message);
+      return { error: message };
+    }
+
+    return option.id;
+  }
+
+  if (normalizeFieldType(field.type ?? "").includes("number")) {
+    const numericValue = Number(value);
+    if (Number.isFinite(numericValue)) return numericValue;
+  }
+
+  return stringValue;
 }
 
 async function fillClickUpCustomFields(
@@ -600,6 +662,52 @@ async function fillClickUpCustomFields(
 
       if (!response.ok) {
         const message = `Falha ao preencher campo "${field.name}": ${await readResponseText(response)}`;
+        console.warn(message);
+        fieldErrors.push(message);
+      }
+    }
+  }
+
+  for (const {
+    names,
+    configuredFieldId,
+    value,
+  } of getLeadTrackingClickUpCandidates(payload.tracking)) {
+    const matchedFields = findLeadTrackingClickUpFields(
+      fields,
+      names,
+      configuredFieldId,
+    );
+
+    if (!matchedFields.length) {
+      const message = `Campo ClickUp de jornada nao encontrado: ${names.join(" / ")}.`;
+      console.warn(message);
+      fieldErrors.push(message);
+      continue;
+    }
+
+    for (const field of matchedFields) {
+      const resolvedValue = resolveLeadTrackingClickUpFieldValue(field, value);
+
+      if (typeof resolvedValue === "object") {
+        fieldErrors.push(resolvedValue.error);
+        continue;
+      }
+
+      const response = await fetch(
+        `https://api.clickup.com/api/v2/task/${taskId}/field/${field.id}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: clickUpApiToken,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ value: resolvedValue }),
+        },
+      );
+
+      if (!response.ok) {
+        const message = `Falha ao preencher campo de jornada "${field.name}": ${await readResponseText(response)}`;
         console.warn(message);
         fieldErrors.push(message);
       }

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { CookieConsent } from "./_components/cookie-consent";
+import { LeadJourneyTracker } from "./_components/lead-journey-tracker";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -36,6 +37,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {children}
+        <LeadJourneyTracker />
         <CookieConsent />
       </body>
     </html>

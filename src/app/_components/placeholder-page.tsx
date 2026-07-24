@@ -47,6 +47,7 @@ export function PlaceholderPage({
             </Link>
             <Link
               href="/assessoria-comercial"
+              data-gv-cta="CTA da página Serviços para Assessoria Comercial"
               className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#b29157]/50 px-6 py-3 text-sm font-bold uppercase tracking-[0.14em] text-[#4b5563] transition hover:border-[#8a6a34] hover:text-[#090e1f]"
             >
               {ctaLabel}

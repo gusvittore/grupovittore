@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type ChangeEventHandler } from "react";
+import { getLeadTrackingSnapshot } from "@/lib/lead-tracking";
 
 const sectorOptions = [
   "Serviço",
@@ -160,6 +161,7 @@ export function LeadForm() {
         const formData = new FormData(form);
         const revenue = String(formData.get("revenue") ?? "");
         const params = new URLSearchParams(window.location.search);
+        const tracking = getLeadTrackingSnapshot("/assessoria-comercial");
 
         try {
           const response = await fetch("/api/leads", {
@@ -175,12 +177,14 @@ export function LeadForm() {
               segmento: String(formData.get("sector") ?? ""),
               faturamento_mensal: revenue,
               origem_lead: "Landing Page Assessoria Comercial",
-              utm_source: params.get("utm_source") || "",
-              utm_medium: params.get("utm_medium") || "",
-              utm_campaign: params.get("utm_campaign") || "",
-              utm_term: params.get("utm_term") || "",
-              utm_content: params.get("utm_content") || "",
-              gclid: params.get("gclid") || "",
+              utm_source: params.get("utm_source") || tracking.utmSource,
+              utm_medium: params.get("utm_medium") || tracking.utmMedium,
+              utm_campaign:
+                params.get("utm_campaign") || tracking.utmCampaign,
+              utm_term: params.get("utm_term") || tracking.utmTerm,
+              utm_content: params.get("utm_content") || tracking.utmContent,
+              gclid: params.get("gclid") || tracking.gclid,
+              tracking,
             }),
           });
           const result = (await response.json().catch(() => null)) as LeadApiResponse | null;

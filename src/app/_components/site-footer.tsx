@@ -95,6 +95,9 @@ export function SiteFooter() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  data-gv-cta={
+                    item.href === "/assessoria-comercial" ? "Rodapé" : undefined
+                  }
                   className="w-fit transition hover:text-[#8a5b18]"
                 >
                   {item.label}

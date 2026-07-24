@@ -65,6 +65,7 @@ function HeroActions() {
       </Link>
       <Link
         href="/assessoria-comercial"
+        data-gv-cta="Botão Hero Home para Assessoria Comercial"
         className="inline-flex min-h-15 items-center justify-center gap-5 rounded-lg border border-[#d99d3d] bg-[#001027]/45 px-7 py-4 text-center text-xs font-extrabold uppercase tracking-[0.1em] text-[#e5ad4b] backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-[#b29157]/12 sm:text-sm"
       >
         Ver Assessoria Comercial <span aria-hidden="true">›</span>

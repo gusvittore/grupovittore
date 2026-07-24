@@ -150,10 +150,11 @@ function AuthorCard() {
   );
 }
 
-function SidebarBanner({ href, src, alt }: { href: string; src: string; alt: string }) {
+function SidebarBanner({ href, src, alt, ctaLabel }: { href: string; src: string; alt: string; ctaLabel?: string }) {
   return (
     <Link
       href={href}
+      data-gv-cta={ctaLabel}
       className="group block overflow-hidden rounded-[18px] border border-[#b29157]/35 bg-[#031126] shadow-[0_14px_34px_rgba(9,14,31,0.09)] transition hover:-translate-y-0.5 hover:border-[#e3ad51]/70 hover:shadow-[0_18px_42px_rgba(9,14,31,0.16)]"
     >
       <Image
@@ -199,6 +200,7 @@ function Sidebar({
 
       <SidebarBanner
         href="/assessoria-comercial"
+        ctaLabel="Banner lateral do Blog para Assessoria Comercial"
         src="/assets/blog/brand/banner-sidebar-assessoria.png.png"
         alt="Banner Assessoria Comercial Grupo Vittore"
       />

@@ -48,6 +48,10 @@ export function CookieConsent() {
       // If storage is unavailable, the visible preference is still respected for this render.
     }
 
+    window.dispatchEvent(
+      new CustomEvent("gv-cookie-consent-changed", { detail: nextChoice }),
+    );
+
     setDismissedChoice(nextChoice);
   }
 

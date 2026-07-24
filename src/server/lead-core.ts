@@ -1,6 +1,13 @@
+import type {
+  LeadJourneyEntry,
+  LeadPageType,
+  LeadTrackingPayload,
+} from "../lib/lead-tracking";
+
 export const LEAD_ORIGIN = "Landing Page Assessoria Comercial";
 export const NON_QUALIFIED_REVENUE = "At\u00e9 50 mil";
 export const RECENT_DUPLICATE_WINDOW_MINUTES = 3;
+export const MAX_TRACKING_JOURNEY_ENTRIES = 20;
 
 export type LeadPayload = {
   nome_completo: string;
@@ -16,6 +23,7 @@ export type LeadPayload = {
   utm_term: string;
   utm_content: string;
   gclid: string;
+  tracking: LeadTrackingPayload;
 };
 
 export type LeadQualification = {
@@ -53,6 +61,136 @@ export function cleanString(value: unknown) {
   return String(value).trim();
 }
 
+const TRACKING_PAGE_TYPES = new Set<LeadPageType>([
+  "home",
+  "sobre",
+  "blog",
+  "artigo",
+  "assessoria-comercial",
+  "materiais-impressos",
+  "obrigado",
+  "outro",
+]);
+
+const TRACKING_CATEGORIES = new Set([
+  "Vendas",
+  "Marketing",
+  "Gestão Comercial",
+  "Crescimento Empresarial",
+  "Tecnologia e Automações",
+  "Materiais Gráficos",
+  "Institucional",
+  "Desconhecido",
+]);
+
+function cleanLimitedString(value: unknown, maxLength: number) {
+  return cleanString(value).slice(0, maxLength);
+}
+
+function cleanTrackingPath(value: unknown) {
+  const path = cleanLimitedString(value, 500);
+  return path.startsWith("/") ? path : "";
+}
+
+function sanitizeJourneyEntry(value: unknown): LeadJourneyEntry | null {
+  if (!isRecord(value)) return null;
+
+  const path = cleanTrackingPath(value.path);
+  if (!path) return null;
+
+  const rawType = cleanLimitedString(value.type, 40) as LeadPageType;
+  const rawCategory = cleanLimitedString(value.category, 80);
+  const category = TRACKING_CATEGORIES.has(rawCategory)
+    ? rawCategory
+    : undefined;
+  const slug = cleanLimitedString(value.slug, 200);
+
+  return {
+    path,
+    type: TRACKING_PAGE_TYPES.has(rawType) ? rawType : "outro",
+    title: cleanLimitedString(value.title, 250),
+    visitedAt: cleanLimitedString(value.visitedAt, 64),
+    ...(category ? { category } : {}),
+    ...(slug ? { slug } : {}),
+  };
+}
+
+function emptyLeadTracking(): LeadTrackingPayload {
+  return {
+    origemExterna: "Desconhecido",
+    primeiraPaginaVisitada: "",
+    timestampPrimeiraVisita: "",
+    referrerInicial: "",
+    utmSource: "",
+    utmMedium: "",
+    utmCampaign: "",
+    utmTerm: "",
+    utmContent: "",
+    gclid: "",
+    fbclid: "",
+    categoriaDeConteudo: "Desconhecido",
+    artigoDeOrigem: "",
+    ultimoArtigoLido: "",
+    ctaDeConversao: "Desconhecido",
+    landingDeConversao: "",
+    quantidadeDeArtigosLidos: 0,
+    jornadaDoLead: [],
+  };
+}
+
+export function sanitizeLeadTracking(value: unknown): LeadTrackingPayload {
+  if (!isRecord(value)) return emptyLeadTracking();
+
+  const rawJourney = Array.isArray(value.jornadaDoLead)
+    ? value.jornadaDoLead
+    : [];
+  const deduplicatedJourney = rawJourney.reduce<LeadJourneyEntry[]>(
+    (journey, rawEntry) => {
+      const entry = sanitizeJourneyEntry(rawEntry);
+      if (!entry || journey.at(-1)?.path === entry.path) return journey;
+      return [...journey, entry];
+    },
+    [],
+  );
+  const jornadaDoLead = deduplicatedJourney.slice(
+    -MAX_TRACKING_JOURNEY_ENTRIES,
+  );
+  const uniqueArticleSlugs = new Set(
+    jornadaDoLead
+      .filter((entry) => entry.type === "artigo" && entry.slug)
+      .map((entry) => entry.slug),
+  );
+  const rawCategory = cleanLimitedString(value.categoriaDeConteudo, 80);
+
+  return {
+    origemExterna:
+      cleanLimitedString(value.origemExterna, 100) || "Desconhecido",
+    primeiraPaginaVisitada: cleanTrackingPath(value.primeiraPaginaVisitada),
+    timestampPrimeiraVisita: cleanLimitedString(
+      value.timestampPrimeiraVisita,
+      64,
+    ),
+    referrerInicial: cleanLimitedString(value.referrerInicial, 1000),
+    utmSource: cleanLimitedString(value.utmSource, 250),
+    utmMedium: cleanLimitedString(value.utmMedium, 250),
+    utmCampaign: cleanLimitedString(value.utmCampaign, 250),
+    utmTerm: cleanLimitedString(value.utmTerm, 250),
+    utmContent: cleanLimitedString(value.utmContent, 250),
+    gclid: cleanLimitedString(value.gclid, 500),
+    fbclid: cleanLimitedString(value.fbclid, 500),
+    categoriaDeConteudo: TRACKING_CATEGORIES.has(rawCategory)
+      ? rawCategory
+      : "Desconhecido",
+    artigoDeOrigem: cleanLimitedString(value.artigoDeOrigem, 250),
+    ultimoArtigoLido: cleanLimitedString(value.ultimoArtigoLido, 250),
+    ctaDeConversao:
+      cleanLimitedString(value.ctaDeConversao, 250) || "Desconhecido",
+    landingDeConversao: cleanTrackingPath(value.landingDeConversao),
+    quantidadeDeArtigosLidos: uniqueArticleSlugs.size,
+    jornadaDoLead,
+  };
+}
+
 export function sanitizePayload(rawPayload: unknown): LeadPayload {
   const payload = isRecord(rawPayload) ? rawPayload : {};
 
@@ -70,6 +208,7 @@ export function sanitizePayload(rawPayload: unknown): LeadPayload {
     utm_term: cleanString(payload.utm_term),
     utm_content: cleanString(payload.utm_content),
     gclid: cleanString(payload.gclid),
+    tracking: sanitizeLeadTracking(payload.tracking),
   };
 }
 
@@ -188,6 +327,8 @@ export async function saveLeadToSupabase(
   qualification: LeadQualification,
   rawPayload: unknown,
 ) {
+  const { tracking, ...leadColumns } = payload;
+  const rawPayloadRecord = isRecord(rawPayload) ? rawPayload : {};
   const response = await fetch(`${config.supabaseUrl}/rest/v1/leads_assessoria`, {
     method: "POST",
     headers: {
@@ -195,12 +336,15 @@ export async function saveLeadToSupabase(
       Prefer: "return=representation",
     },
     body: JSON.stringify({
-      ...payload,
+      ...leadColumns,
       status_qualificacao: qualification.statusQualificacao,
       clickup_status_destino: qualification.clickupStatus,
       enviado_clickup: false,
       erro_clickup: "Processamento em segundo plano pendente.",
-      raw_payload: rawPayload,
+      raw_payload: {
+        ...rawPayloadRecord,
+        tracking,
+      },
     }),
   });
 
@@ -237,11 +381,15 @@ export async function getLeadFromSupabase(
   const data = (await response.json()) as unknown[];
   const lead = data[0];
 
-  if (!lead) {
+  if (!isRecord(lead)) {
     throw new Error("Lead nao encontrado no Supabase.");
   }
 
-  return sanitizePayload(lead);
+  const rawPayload = isRecord(lead.raw_payload) ? lead.raw_payload : {};
+  return sanitizePayload({
+    ...lead,
+    tracking: rawPayload.tracking,
+  });
 }
 
 export async function updateLeadClickUpStatus(
