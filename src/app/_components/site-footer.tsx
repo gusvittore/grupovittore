@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { InstagramSocialLink } from "./instagram-social-link";
 
 const mainLinks = [
   { label: "Início", href: "/" },
@@ -70,16 +71,16 @@ export function SiteFooter() {
               Frentes complementares de assessoria comercial, marketing, vendas, tecnologia e materiais gráficos personalizados para empresas que querem crescer com mais presença, clareza e estrutura.
             </p>
             <div className="mt-6 flex items-center gap-3" aria-label="Redes sociais">
-              <a href="#" aria-label="Instagram" className="grid h-10 w-10 place-items-center rounded-full border border-[#071026]/25 text-[#071026] transition hover:border-[#9a671e] hover:text-[#9a671e]">
+              <InstagramSocialLink href="https://www.instagram.com/grupovittore/" username="grupovittore" ariaLabel="Instagram Grupo Vittore" className="grid h-10 w-10 place-items-center rounded-full border border-[#071026]/25 text-[#071026] transition hover:border-[#9a671e] hover:text-[#9a671e]">
                 <SocialIcon name="instagram" />
-              </a>
-              <a href="#" aria-label="Instagram" className="grid h-10 w-10 place-items-center rounded-full border border-[#071026]/25 text-[#071026] transition hover:border-[#9a671e] hover:text-[#9a671e]">
+              </InstagramSocialLink>
+              <InstagramSocialLink href="https://www.instagram.com/vittoreimpressos/" username="vittoreimpressos" ariaLabel="Instagram Vittore Impressos" className="grid h-10 w-10 place-items-center rounded-full border border-[#071026]/25 text-[#071026] transition hover:border-[#9a671e] hover:text-[#9a671e]">
                 <SocialIcon name="instagram" />
-              </a>
-              <a href="#" aria-label="Facebook" className="grid h-10 w-10 place-items-center rounded-full border border-[#071026]/25 text-[#071026] transition hover:border-[#9a671e] hover:text-[#9a671e]">
+              </InstagramSocialLink>
+              <a href="https://www.facebook.com/grupovittore/" aria-label="Facebook" target="_blank" rel="noopener noreferrer" className="grid h-10 w-10 place-items-center rounded-full border border-[#071026]/25 text-[#071026] transition hover:border-[#9a671e] hover:text-[#9a671e]">
                 <SocialIcon name="facebook" />
               </a>
-              <a href="#" aria-label="LinkedIn" className="grid h-10 w-10 place-items-center rounded-full border border-[#071026]/25 text-[#071026] transition hover:border-[#9a671e] hover:text-[#9a671e]">
+              <a href="https://www.linkedin.com/company/grupovittore" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer" className="grid h-10 w-10 place-items-center rounded-full border border-[#071026]/25 text-[#071026] transition hover:border-[#9a671e] hover:text-[#9a671e]">
                 <SocialIcon name="linkedin" />
               </a>
             </div>

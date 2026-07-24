@@ -79,7 +79,6 @@ function ArticleCard({ post }: { post: BlogPostSummary }) {
           src={post.coverImage}
           alt={post.coverAlt}
           fill
-          loading="eager"
           sizes="(max-width: 767px) 92vw, (max-width: 1023px) 45vw, 540px"
           className="object-cover transition duration-500 group-hover:scale-[1.03]"
         />
@@ -162,7 +161,6 @@ function SidebarBanner({ href, src, alt }: { href: string; src: string; alt: str
         alt={alt}
         width={800}
         height={1000}
-        loading="eager"
         sizes="(max-width: 1023px) 100vw, 300px"
         className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.015]"
       />
