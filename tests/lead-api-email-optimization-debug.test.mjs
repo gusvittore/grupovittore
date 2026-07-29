@@ -18,13 +18,21 @@ test("SMTP config removes app password spaces and logs only safe diagnostics", (
   assert.match(processor, /secure: .*=== 465/);
   assert.match(processor, /console\.log\("Email SMTP config:",/);
   assert.match(processor, /hasPass: Boolean\(process\.env\.SMTP_PASS\)/);
-  assert.match(processor, /notificationEmail: process\.env\.LEAD_NOTIFICATION_EMAIL/);
+  assert.match(
+    processor,
+    /hasNotificationEmail: Boolean\(process\.env\.LEAD_NOTIFICATION_EMAIL\)/,
+  );
+  assert.doesNotMatch(
+    processor,
+    /notificationEmail: process\.env\.LEAD_NOTIFICATION_EMAIL/,
+  );
   assert.doesNotMatch(processor, /pass:\s*process\.env\.SMTP_PASS/);
   assert.doesNotMatch(processor, /NEXT_PUBLIC.*SMTP/);
 });
 
 test("lead email logs attempts, success messageId, and safe failure details", () => {
-  assert.match(processor, /Tentando enviar e-mail de lead para:/);
+  assert.match(processor, /console\.log\("Tentando enviar e-mail de lead\."\)/);
+  assert.doesNotMatch(processor, /Tentando enviar e-mail de lead para:/);
   assert.match(processor, /console\.log\("E-mail de lead enviado:", info\.messageId\)/);
   assert.match(processor, /message: error instanceof Error \? error\.message : String\(error\)/);
   assert.match(processor, /code:[\s\S]*errorRecord\.code/);

@@ -49,20 +49,20 @@ const tracking = {
 };
 
 const fields = [
-  { id: "first", name: "Primeira Página Visitada", type: "short_text" },
+  { id: "first", name: "Primeira Página Visitada:", type: "short_text" },
   {
     id: "category",
-    name: "Categoria de Conteúdo",
+    name: "Categoria de Conteúdo:\u200b",
     type: "drop_down",
     type_config: {
       options: [{ id: "growth", name: "Crescimento Empresarial" }],
     },
   },
-  { id: "origin", name: "Artigo de Origem", type: "short_text" },
-  { id: "last", name: "Último Artigo Lido", type: "short_text" },
+  { id: "origin", name: "Artigo de Origem:", type: "short_text" },
+  { id: "last", name: "Último Artigo Lido:", type: "short_text" },
   {
     id: "cta",
-    name: "CTA de Conversão",
+    name: "CTA de Conversão:",
     type: "labels",
     type_config: {
       options: [
@@ -73,9 +73,9 @@ const fields = [
       ],
     },
   },
-  { id: "landing", name: "Landing de Conversão", type: "short_text" },
-  { id: "journey", name: "Jornada do Lead", type: "text" },
-  { id: "count", name: "Quantidade de Artigos Lidos", type: "number" },
+  { id: "landing", name: "Landing de Conversão:", type: "short_text" },
+  { id: "journey", name: "Jornada do Lead:", type: "text" },
+  { id: "count", name: "Quantidade de Artigos Lidos:", type: "number" },
 ];
 
 function json(value, status = 200) {
@@ -107,7 +107,7 @@ test("background worker discovers, caches and writes all eight tracking fields b
   process.env.CLICKUP_LIST_ID = "list-1";
   delete process.env.SMTP_USER;
   delete process.env.SMTP_PASS;
-  delete process.env.LEAD_NOTIFICATION_EMAIL;
+  process.env.LEAD_NOTIFICATION_EMAIL = "alerts@example.test";
 
   console.log = (...args) => logs.push(["log", ...args]);
   console.warn = (...args) => logs.push(["warn", ...args]);
@@ -144,7 +144,14 @@ test("background worker discovers, caches and writes all eight tracking fields b
     if (url.endsWith("/list/list-1/task")) {
       return json({ id: "task-1", url: "https://app.clickup.test/task-1" });
     }
+    if (url.endsWith("/task/task-1/field/category")) {
+      return json({ err: "Dropdown option is not valid" }, 400);
+    }
+    if (url.endsWith("/task/task-1/field/origin")) {
+      throw new Error("simulated network failure");
+    }
     if (url.includes("/task/task-1/field/")) return json({});
+    if (url.endsWith("/task/task-1") && method === "PUT") return json({});
     if (url.endsWith("/task/task-1/comment")) return json({});
     if (url.startsWith("https://supabase.test/") && method === "PATCH") {
       return new Response(null, { status: 204 });
@@ -177,26 +184,8 @@ test("background worker discovers, caches and writes all eight tracking fields b
     );
     assert.ok(createRequest);
     assert.match(createRequest.body.description, /RASTREAMENTO E JORNADA DO LEAD/);
-    assert.deepEqual(createRequest.body.custom_fields, [
-      { id: "first", value: "/" },
-      { id: "category", value: "growth" },
-      { id: "origin", value: "Artigo 1" },
-      { id: "last", value: "Artigo 2" },
-      { id: "cta", value: ["sidebar-banner"] },
-      { id: "landing", value: "/assessoria-comercial" },
-      {
-        id: "journey",
-        value: [
-          "1. /",
-          "2. /blog",
-          "3. /blog/artigo-1",
-          "4. /blog/artigo-2",
-          "5. /assessoria-comercial",
-        ].join("\n"),
-      },
-      { id: "count", value: 2 },
-    ]);
-    assert.equal(typeof createRequest.body.custom_fields[7].value, "number");
+    assert.match(createRequest.body.description, /DIAGNÓSTICO CLICKUP CUSTOM FIELDS/);
+    assert.equal("custom_fields" in createRequest.body, false);
 
     const trackingUpdates = requests.filter((request) =>
       request.url.includes("/task/task-1/field/"),
@@ -215,26 +204,57 @@ test("background worker discovers, caches and writes all eight tracking fields b
       ["sidebar-banner"],
     );
 
+    const descriptionUpdate = requests.find(
+      (request) =>
+        request.url.endsWith("/task/task-1") && request.method === "PUT",
+    );
+    assert.ok(descriptionUpdate);
+    assert.match(
+      descriptionUpdate.body.description,
+      /DIAGNÓSTICO CLICKUP CUSTOM FIELDS/,
+    );
+    assert.match(descriptionUpdate.body.description, /List ID usado: list-1/);
+    assert.match(descriptionUpdate.body.description, /Categoria de Conteúdo/);
+    assert.match(descriptionUpdate.body.description, /HTTP 400/);
+    assert.match(descriptionUpdate.body.description, /Dropdown option is not valid/);
+    assert.match(descriptionUpdate.body.description, /simulated network failure/);
+
     const inventoryLog = logs.find(
       ([level, message]) =>
-        level === "log" && message === "ClickUp custom fields de tracking:",
+        level === "log" && message === "ClickUp custom fields diagnostic:",
     );
     assert.ok(inventoryLog);
     assert.deepEqual(inventoryLog[2], {
+      listIdForTask: "list-1",
+      listIdForFields: "list-1",
       totalAvailable: 8,
-      found: fields.map(({ name, type }) => ({ name, type })),
-      missing: [],
+      availableNames: fields.map((field) => field.name),
     });
 
-    const successLogs = logs.filter(
+    const attemptLogs = logs.filter(
       ([level, message]) =>
-        level === "log" &&
-        message === "Campo de jornada preenchido no ClickUp:",
+        (level === "log" || level === "warn") &&
+        message === "ClickUp custom field attempt:",
     );
+    assert.equal(attemptLogs.length, 8);
     assert.deepEqual(
-      successLogs.map((entry) => entry[2]),
-      fields.map(({ name, type }) => ({ name, type })),
+      attemptLogs.find((entry) => entry[2].fieldId === "category")[2],
+      {
+        expectedName: "Categoria de Conteúdo",
+        actualName: "Categoria de Conteúdo:\u200b",
+        fieldId: "category",
+        fieldType: "drop_down",
+        attemptedValue: "growth",
+        status: "failed",
+        httpStatus: 400,
+        error: '{"err":"Dropdown option is not valid"}',
+      },
     );
+    assert.match(
+      attemptLogs.find((entry) => entry[2].fieldId === "origin")[2].error,
+      /simulated network failure/,
+    );
+    assert.doesNotMatch(JSON.stringify(logs), /alerts@example\.test/);
   } finally {
     await rm(processorTestUrl, { force: true });
     globalThis.fetch = originalFetch;

@@ -210,19 +210,92 @@ test("ClickUp resolves journey fields by exact name and sends typed custom_field
   assert.equal(typeof result.customFields[7].value, "number");
 });
 
+test("ClickUp resolves tracking fields with trailing colons and invisible characters", () => {
+  const resolveLeadTrackingClickUpCustomFields = requiredFunction(
+    "resolveLeadTrackingClickUpCustomFields",
+  );
+  const fields = [
+    { id: "first", name: " Primeira Página Visitada: ", type: "short_text" },
+    { id: "category", name: "Categoria de Conteúdo:\u200b", type: "short_text" },
+    { id: "origin", name: "Artigo de Origem:", type: "short_text" },
+    { id: "last", name: "Último Artigo Lido:", type: "short_text" },
+    { id: "cta", name: "CTA de Conversão:", type: "short_text" },
+    { id: "landing", name: "Landing de Conversão:", type: "short_text" },
+    { id: "journey", name: "Jornada do Lead:", type: "text" },
+    { id: "count", name: "Quantidade de Artigos Lidos:", type: "number" },
+  ];
+
+  const result = resolveLeadTrackingClickUpCustomFields(
+    trackingPayload(),
+    fields,
+    {},
+  );
+
+  assert.deepEqual(result.errors, []);
+  assert.deepEqual(
+    result.customFields.map((field) => field.id),
+    fields.map((field) => field.id),
+  );
+  assert.equal(result.customFields.length, 8);
+  assert.equal(result.missingFields.length, 0);
+});
+
+test("ClickUp diagnoses all eight expected fields even when tracking has no value", () => {
+  const resolveLeadTrackingClickUpCustomFields = requiredFunction(
+    "resolveLeadTrackingClickUpCustomFields",
+  );
+  const expectedFieldNames = [
+    "Primeira Página Visitada",
+    "Categoria de Conteúdo",
+    "Artigo de Origem",
+    "Último Artigo Lido",
+    "CTA de Conversão",
+    "Landing de Conversão",
+    "Jornada do Lead",
+    "Quantidade de Artigos Lidos",
+  ];
+  const definitions = expectedFieldNames.map((name, index) => ({
+    id: `field-${index + 1}`,
+    name,
+    type: name === "Quantidade de Artigos Lidos" ? "number" : "short_text",
+  }));
+
+  const resolved = resolveLeadTrackingClickUpCustomFields(undefined, definitions);
+
+  assert.equal(resolved.resolutions.length, 8);
+  assert.deepEqual(
+    resolved.resolutions.map(({ expectedName }) => expectedName),
+    expectedFieldNames,
+  );
+  assert.ok(
+    resolved.resolutions.every(
+      ({ status, error }) =>
+        status === "invalid_value" && /sem valor de tracking/i.test(error || ""),
+    ),
+  );
+  assert.equal(resolved.customFields.length, 0);
+});
+
 test("processor keeps current mappings and applies journey fields after task creation in background", () => {
-  assert.match(processor, /getLeadTrackingClickUpCandidates/);
   assert.match(processor, /buildLeadTrackingDescription/);
   assert.match(
     processor,
-    /description:\s*buildClickUpDescription\(payload, qualification\)/,
+    /DIAGNÓSTICO CLICKUP CUSTOM FIELDS/,
   );
-  assert.match(processor, /configuredFieldId/);
-  assert.match(processor, /field\.id === configuredFieldId/);
-  assert.match(processor, /findClickUpFieldsByName/);
   assert.match(processor, /getClickUpFields\(config\)/);
   assert.match(processor, /resolveLeadTrackingClickUpCustomFields/);
-  assert.match(processor, /custom_fields:\s*trackingCustomFields/);
+  assert.match(
+    processor,
+    /api\.clickup\.com\/api\/v2\/task\/\$\{taskId\}\/field\/\$\{resolution\.fieldId\}/,
+  );
+  assert.match(
+    processor,
+    /api\.clickup\.com\/api\/v2\/task\/\$\{taskId\}`/,
+  );
+  assert.match(processor, /ClickUp custom field attempt:/);
+  assert.match(processor, /HTTP \$\{response\.status\}/);
+  assert.match(processor, /listIdForTask:\s*config\.clickUpListId/);
+  assert.match(processor, /listIdForFields:\s*config\.clickUpListId/);
   assert.match(processor, /clickUpFieldCache/);
   assert.match(processor, /Promise\.allSettled\(postClickupTasks\)/);
 

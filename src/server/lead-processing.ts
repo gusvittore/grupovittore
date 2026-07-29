@@ -15,7 +15,7 @@ import {
 import {
   buildLeadTrackingDescription,
   resolveLeadTrackingClickUpCustomFields,
-  type ClickUpCustomFieldPayload,
+  type ClickUpCustomFieldResolution,
 } from "./lead-tracking-clickup";
 
 const DEFAULT_CLICKUP_LIST_ID = "901327751514";
@@ -75,6 +75,20 @@ type ClickUpTaskResult = {
   emailMs: number;
 };
 
+type ClickUpCustomFieldAttempt = Omit<ClickUpCustomFieldResolution, "status"> & {
+  status: "success" | "failed" | "not_found" | "invalid_value";
+  httpStatus?: number;
+};
+
+type ClickUpCustomFieldsDiagnostic = {
+  listId: string;
+  totalAvailable: number;
+  availableNames: string[];
+  resolutions: ClickUpCustomFieldResolution[];
+  attempts?: ClickUpCustomFieldAttempt[];
+  lookupError?: string;
+};
+
 type ClickUpScalarLeadPayloadKey = Exclude<keyof LeadPayload, "tracking">;
 
 const clickUpFieldMapping: Array<{
@@ -132,7 +146,6 @@ function getSmtpConfig(): SmtpConfig | null {
     hasUser: Boolean(process.env.SMTP_USER),
     hasPass: Boolean(process.env.SMTP_PASS),
     hasNotificationEmail: Boolean(process.env.LEAD_NOTIFICATION_EMAIL),
-    notificationEmail: process.env.LEAD_NOTIFICATION_EMAIL,
   });
 
   const host = process.env.SMTP_HOST || "smtp.gmail.com";
@@ -288,10 +301,7 @@ async function sendLeadNotificationEmail(
     options,
   );
 
-  console.log(
-    "Tentando enviar e-mail de lead para:",
-    process.env.LEAD_NOTIFICATION_EMAIL,
-  );
+  console.log("Tentando enviar e-mail de lead.");
 
   try {
     const info = await transporter.sendMail({
@@ -414,11 +424,95 @@ function findClickUpFieldsByName(fields: ClickUpField[], names: string[]) {
   return field ? [field] : [];
 }
 
+function formatClickUpDiagnosticValue(
+  value: string | number | string[] | null | undefined,
+) {
+  if (value === undefined || value === null) return "não enviado";
+  const text = Array.isArray(value) ? value.join(", ") : String(value);
+  return text.replace(/\r?\n/g, " → ").slice(0, 1000);
+}
+
+function buildClickUpCustomFieldsDiagnostic(
+  diagnostic: ClickUpCustomFieldsDiagnostic,
+) {
+  const found = diagnostic.resolutions.filter(
+    (resolution) => resolution.fieldId,
+  );
+  const missing = diagnostic.resolutions.filter(
+    (resolution) => resolution.status === "not_found",
+  );
+  const attempts = diagnostic.attempts ?? [];
+  const failures = attempts.filter((attempt) => attempt.status !== "success");
+  const preflightFailures = diagnostic.resolutions.filter(
+    (resolution) => resolution.status !== "ready",
+  );
+  const lines = [
+    "DIAGNÓSTICO CLICKUP CUSTOM FIELDS",
+    "",
+    `List ID usado: ${diagnostic.listId}`,
+    `Campos retornados pelo ClickUp: ${diagnostic.totalAvailable}`,
+    "",
+    "Nomes dos campos retornados:",
+    ...(diagnostic.availableNames.length
+      ? diagnostic.availableNames.map((name) => `- ${name}`)
+      : ["- Nenhum campo retornado"]),
+    "",
+    "Campos esperados encontrados:",
+    ...(found.length
+      ? found.map(
+          (resolution) =>
+            `- ${resolution.expectedName}: encontrado como "${resolution.actualName}", tipo ${resolution.fieldType}, id ${resolution.fieldId}`,
+        )
+      : ["- Nenhum"]),
+    "",
+    "Campos esperados não encontrados:",
+    ...(missing.length
+      ? missing.map((resolution) => `- ${resolution.expectedName}`)
+      : ["- Nenhum"]),
+    "",
+    "Tentativas de preenchimento:",
+    ...(attempts.length
+      ? attempts.map(
+          (attempt) =>
+            `- ${attempt.expectedName}: ${attempt.status}; campo "${attempt.actualName || "não encontrado"}"; id ${attempt.fieldId || "não encontrado"}; tipo ${attempt.fieldType || "desconhecido"}; valor ${formatClickUpDiagnosticValue(attempt.resolvedValue ?? attempt.attemptedValue)}${attempt.httpStatus ? `; HTTP ${attempt.httpStatus}` : ""}${attempt.error ? `; erro ${attempt.error.slice(0, 1000)}` : ""}`,
+        )
+      : ["- Aguardando tentativas após a criação da task"]),
+    "",
+    "Falhas:",
+  ];
+
+  if (diagnostic.lookupError) {
+    lines.push(`- Falha ao buscar custom fields: ${diagnostic.lookupError.slice(0, 1000)}`);
+  }
+
+  for (const failure of attempts.length ? failures : preflightFailures) {
+    lines.push(`- ${failure.expectedName}: ${failure.error || failure.status}`);
+  }
+
+  if (
+    !diagnostic.lookupError &&
+    attempts.length > 0 &&
+    failures.length === 0 &&
+    attempts.length === diagnostic.resolutions.length
+  ) {
+    lines.push("- Todos os campos personalizados foram preenchidos com sucesso.");
+  } else if (!diagnostic.lookupError && failures.length === 0 && preflightFailures.length === 0) {
+    lines.push("- Nenhuma falha de mapeamento detectada antes do preenchimento.");
+  } else if (
+    lines.at(-1) === "Falhas:"
+  ) {
+    lines.push("- Nenhuma falha registrada.");
+  }
+
+  return lines.join("\n");
+}
+
 function buildClickUpDescription(
   payload: LeadPayload,
   qualification: LeadQualification,
+  customFieldsDiagnostic?: string,
 ) {
-  return [
+  const sections = [
     `Nome completo: ${payload.nome_completo}`,
     `E-mail: ${payload.email}`,
     `WhatsApp / Telefone: ${payload.whatsapp}`,
@@ -435,49 +529,46 @@ function buildClickUpDescription(
     `GCLID: ${payload.gclid}`,
     "",
     buildLeadTrackingDescription(payload.tracking),
-  ].join("\n");
+  ];
+
+  if (customFieldsDiagnostic) {
+    sections.push("", customFieldsDiagnostic);
+  }
+
+  return sections.join("\n");
 }
 
 async function createClickUpTask(
   config: ClickUpConfig,
   payload: LeadPayload,
   qualification: LeadQualification,
-  trackingCustomFields: ClickUpCustomFieldPayload[],
+  customFieldsDiagnostic: string,
 ) {
   const { clickUpListId } = config;
   const assigneeId = config.assigneeId;
-  const baseTaskPayload = {
-    name: payload.empresa
-      ? `${payload.empresa} - ${payload.nome_completo}`
-      : payload.nome_completo,
-    description: buildClickUpDescription(payload, qualification),
-    status: qualification.clickupStatus,
-    notify_all: true,
-    ...(assigneeId !== null ? { assignees: [assigneeId] } : {}),
-  };
-  const createTask = (includeTrackingFields: boolean) =>
-    fetch(`https://api.clickup.com/api/v2/list/${clickUpListId}/task`, {
+  const response = await fetch(
+    `https://api.clickup.com/api/v2/list/${clickUpListId}/task`,
+    {
       method: "POST",
       headers: {
         Authorization: config.clickUpApiToken,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        ...baseTaskPayload,
-        ...(includeTrackingFields && trackingCustomFields.length
-          ? { custom_fields: trackingCustomFields }
-          : {}),
+        name: payload.empresa
+          ? `${payload.empresa} - ${payload.nome_completo}`
+          : payload.nome_completo,
+        description: buildClickUpDescription(
+          payload,
+          qualification,
+          customFieldsDiagnostic,
+        ),
+        status: qualification.clickupStatus,
+        notify_all: true,
+        ...(assigneeId !== null ? { assignees: [assigneeId] } : {}),
       }),
-    });
-  let response = await createTask(true);
-  const fieldErrors: string[] = [];
-
-  if (!response.ok && trackingCustomFields.length) {
-    const message = `ClickUp rejeitou custom_fields na criacao; tarefa sera criada com a descricao de fallback: ${await readResponseText(response)}`;
-    console.warn(message);
-    fieldErrors.push(message);
-    response = await createTask(false);
-  }
+    },
+  );
 
   if (!response.ok) {
     throw new Error(await readResponseText(response));
@@ -492,7 +583,7 @@ async function createClickUpTask(
   return {
     taskId: data.id,
     taskUrl: data.url ?? null,
-    fieldErrors,
+    fieldErrors: [],
   };
 }
 
@@ -592,15 +683,35 @@ function resolveClickUpFieldValue(
   return option.id;
 }
 
+function logClickUpCustomFieldAttempt(attempt: ClickUpCustomFieldAttempt) {
+  const logEntry = {
+    expectedName: attempt.expectedName,
+    actualName: attempt.actualName,
+    fieldId: attempt.fieldId,
+    fieldType: attempt.fieldType,
+    attemptedValue: attempt.resolvedValue ?? attempt.attemptedValue,
+    status: attempt.status,
+    ...(attempt.httpStatus ? { httpStatus: attempt.httpStatus } : {}),
+    ...(attempt.error ? { error: attempt.error } : {}),
+  };
+
+  if (attempt.status === "success") {
+    console.log("ClickUp custom field attempt:", logEntry);
+  } else {
+    console.warn("ClickUp custom field attempt:", logEntry);
+  }
+}
+
 async function fillClickUpCustomFields(
   config: ClickUpConfig,
   taskId: string,
   fields: ClickUpField[],
   payload: LeadPayload,
-  trackingCustomFields: ClickUpCustomFieldPayload[],
+  trackingResolutions: ClickUpCustomFieldResolution[],
 ) {
   const { clickUpApiToken } = config;
   const fieldErrors: string[] = [];
+  const trackingAttempts: ClickUpCustomFieldAttempt[] = [];
 
   for (const { names, payloadKey } of clickUpFieldMapping) {
     const value = payload[payloadKey];
@@ -637,73 +748,147 @@ async function fillClickUpCustomFields(
         id: field.id,
         value: resolvedValue,
       };
-      const response = await fetch(
-        `https://api.clickup.com/api/v2/task/${taskId}/field/${field.id}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: clickUpApiToken,
-            "Content-Type": "application/json",
+      try {
+        const response = await fetch(
+          `https://api.clickup.com/api/v2/task/${taskId}/field/${field.id}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: clickUpApiToken,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ value: customFieldPayload.value }),
           },
-          body: JSON.stringify({ value: customFieldPayload.value }),
-        },
-      );
+        );
 
-      if (!response.ok) {
-        const message = `Falha ao preencher campo "${field.name}": ${await readResponseText(response)}`;
+        if (!response.ok) {
+          const message = `Falha ao preencher campo "${field.name}": ${await readResponseText(response)}`;
+          console.warn(message);
+          fieldErrors.push(message);
+        }
+      } catch (error) {
+        const message = `Falha ao preencher campo "${field.name}": ${getErrorMessage(error)}`;
         console.warn(message);
         fieldErrors.push(message);
       }
     }
   }
 
-  const fieldsById = new Map(fields.map((field) => [field.id, field]));
+  for (const resolution of trackingResolutions) {
+    if (
+      resolution.status !== "ready" ||
+      !resolution.fieldId ||
+      resolution.resolvedValue === undefined
+    ) {
+      const attempt: ClickUpCustomFieldAttempt = {
+        ...resolution,
+        status:
+          resolution.status === "not_found" ? "not_found" : "invalid_value",
+      };
+      trackingAttempts.push(attempt);
+      logClickUpCustomFieldAttempt(attempt);
+      continue;
+    }
 
-  for (const customField of trackingCustomFields) {
-    const field = fieldsById.get(customField.id);
-    if (!field) continue;
-
-    const response = await fetch(
-      `https://api.clickup.com/api/v2/task/${taskId}/field/${field.id}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: clickUpApiToken,
-          "Content-Type": "application/json",
+    try {
+      const response = await fetch(
+        `https://api.clickup.com/api/v2/task/${taskId}/field/${resolution.fieldId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: clickUpApiToken,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ value: resolution.resolvedValue }),
         },
-        body: JSON.stringify({ value: customField.value }),
-      },
-    );
+      );
 
-    if (!response.ok) {
-      const message = `Falha ao preencher campo de jornada "${field.name}": ${await readResponseText(response)}`;
+      if (!response.ok) {
+        const error = await readResponseText(response);
+        const message = `Falha ao preencher campo de jornada "${resolution.actualName}" (${resolution.fieldId}), HTTP ${response.status}: ${error}`;
+        const attempt: ClickUpCustomFieldAttempt = {
+          ...resolution,
+          status: "failed",
+          httpStatus: response.status,
+          error,
+        };
+        console.warn(message);
+        fieldErrors.push(message);
+        trackingAttempts.push(attempt);
+        logClickUpCustomFieldAttempt(attempt);
+      } else {
+        const attempt: ClickUpCustomFieldAttempt = {
+          ...resolution,
+          status: "success",
+          httpStatus: response.status,
+        };
+        trackingAttempts.push(attempt);
+        logClickUpCustomFieldAttempt(attempt);
+      }
+    } catch (error) {
+      const errorMessage = getErrorMessage(error);
+      const message = `Falha ao preencher campo de jornada "${resolution.actualName}" (${resolution.fieldId}): ${errorMessage}`;
+      const attempt: ClickUpCustomFieldAttempt = {
+        ...resolution,
+        status: "failed",
+        error: errorMessage,
+      };
       console.warn(message);
       fieldErrors.push(message);
-    } else {
-      console.log("Campo de jornada preenchido no ClickUp:", {
-        name: field.name,
-        type: field.type || "desconhecido",
-      });
+      trackingAttempts.push(attempt);
+      logClickUpCustomFieldAttempt(attempt);
     }
   }
 
-  return fieldErrors;
+  return { fieldErrors, trackingAttempts };
 }
 
 async function fillClickUpCustomFieldsForTask(
   config: ClickUpConfig,
   taskId: string,
   payload: LeadPayload,
-  trackingCustomFields: ClickUpCustomFieldPayload[],
+  qualification: LeadQualification,
+  fields: ClickUpField[],
+  diagnostic: ClickUpCustomFieldsDiagnostic,
 ) {
-  const fields = await getClickUpFields(config);
-  return fillClickUpCustomFields(
+  const result = await fillClickUpCustomFields(
     config,
     taskId,
     fields,
     payload,
-    trackingCustomFields,
+    diagnostic.resolutions,
   );
+  const finalDiagnostic = buildClickUpCustomFieldsDiagnostic({
+    ...diagnostic,
+    attempts: result.trackingAttempts,
+  });
+  const response = await fetch(`https://api.clickup.com/api/v2/task/${taskId}`, {
+    method: "PUT",
+    headers: {
+      Authorization: config.clickUpApiToken,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      description: buildClickUpDescription(
+        payload,
+        qualification,
+        finalDiagnostic,
+      ),
+    }),
+  });
+
+  if (!response.ok) {
+    const message = `Falha ao anexar diagnostico de custom fields na task, HTTP ${response.status}: ${await readResponseText(response)}`;
+    console.warn(message);
+    result.fieldErrors.push(message);
+  } else {
+    console.log("ClickUp custom fields diagnostic appended:", {
+      taskId,
+      listId: config.clickUpListId,
+    });
+  }
+
+  return result.fieldErrors;
 }
 
 async function runPostClickUpTasks(
@@ -712,7 +897,8 @@ async function runPostClickUpTasks(
   taskUrl: string | null | undefined,
   payload: LeadPayload,
   qualification: LeadQualification,
-  trackingCustomFields: ClickUpCustomFieldPayload[],
+  fields: ClickUpField[],
+  diagnostic: ClickUpCustomFieldsDiagnostic,
 ) {
   let emailMs = 0;
   const emailStartedAt = Date.now();
@@ -727,7 +913,9 @@ async function runPostClickUpTasks(
       config,
       taskId,
       payload,
-      trackingCustomFields,
+      qualification,
+      fields,
+      diagnostic,
     ),
     createClickUpTaskComment(config, taskId),
     emailTask,
@@ -784,44 +972,60 @@ async function sendLeadToClickUp(
 ): Promise<ClickUpTaskResult> {
   const config = getClickUpConfig();
   const preTaskFieldErrors: string[] = [];
-  let trackingCustomFields: ClickUpCustomFieldPayload[] = [];
+  let fields: ClickUpField[] = [];
+  let lookupError: string | undefined;
+  let resolvedTrackingFields = resolveLeadTrackingClickUpCustomFields(
+    payload.tracking,
+    fields,
+  );
 
   try {
-    const fields = await getClickUpFields(config);
-    const resolvedTrackingFields = resolveLeadTrackingClickUpCustomFields(
+    fields = await getClickUpFields(config);
+    resolvedTrackingFields = resolveLeadTrackingClickUpCustomFields(
       payload.tracking,
       fields,
     );
-    trackingCustomFields = resolvedTrackingFields.customFields;
     preTaskFieldErrors.push(...resolvedTrackingFields.errors);
-    console.log("ClickUp custom fields de tracking:", {
-      totalAvailable: fields.length,
-      found: resolvedTrackingFields.foundFields.map(({ name, type }) => ({
-        name,
-        type: type || "desconhecido",
-      })),
-      missing: resolvedTrackingFields.missingFields,
-    });
   } catch (error) {
     const message = `Falha ao resolver campos de jornada do ClickUp: ${getErrorMessage(error)}`;
+    lookupError = message;
     console.warn(message);
     preTaskFieldErrors.push(message);
   }
+
+  const diagnostic: ClickUpCustomFieldsDiagnostic = {
+    listId: config.clickUpListId,
+    totalAvailable: fields.length,
+    availableNames: fields.map((field) => field.name),
+    resolutions: resolvedTrackingFields.resolutions,
+    lookupError,
+  };
+  console.log("ClickUp custom fields diagnostic:", {
+    listIdForTask: config.clickUpListId,
+    listIdForFields: config.clickUpListId,
+    totalAvailable: diagnostic.totalAvailable,
+    availableNames: diagnostic.availableNames,
+  });
 
   const task = await createClickUpTask(
     config,
     payload,
     qualification,
-    trackingCustomFields,
+    buildClickUpCustomFieldsDiagnostic(diagnostic),
   );
   const taskId = task.taskId;
+  console.log("ClickUp task created:", {
+    listId: config.clickUpListId,
+    taskId,
+  });
   const postTasksResult = await runPostClickUpTasks(
     config,
     taskId,
     task.taskUrl,
     payload,
     qualification,
-    trackingCustomFields,
+    fields,
+    diagnostic,
   );
 
   return {

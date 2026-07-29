@@ -6,7 +6,7 @@ export type LeadTrackingClickUpCandidate = {
   names: string[];
   envVar: string;
   configuredFieldId: string;
-  value: string | number;
+  value: string | number | null;
 };
 
 export type ClickUpCustomFieldOption = {
@@ -28,13 +28,27 @@ export type ClickUpCustomFieldPayload = {
   value: string | number | string[];
 };
 
+export type ClickUpCustomFieldResolution = {
+  expectedName: string;
+  attemptedValue: string | number | null;
+  actualName?: string;
+  fieldId?: string;
+  fieldType?: string;
+  resolvedValue?: ClickUpCustomFieldPayload["value"];
+  status: "ready" | "not_found" | "invalid_value";
+  error?: string;
+};
+
 function normalizeClickUpValue(value: string) {
   return value
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
     .toLowerCase()
     .replace(/_/g, " ")
     .replace(/\s+/g, " ")
+    .trim()
+    .replace(/:+$/, "")
     .trim();
 }
 
@@ -79,49 +93,55 @@ export function buildLeadTrackingDescription(tracking: LeadTrackingPayload) {
 }
 
 export function getLeadTrackingClickUpCandidates(
-  tracking: LeadTrackingPayload,
+  tracking: LeadTrackingPayload | undefined,
   env: TrackingEnvironment = process.env,
 ): LeadTrackingClickUpCandidate[] {
   const definitions = [
     {
       names: ["Primeira Página Visitada"],
       envVar: "CLICKUP_FIELD_FIRST_PAGE_ID",
-      value: formatTrackingValue(tracking.primeiraPaginaVisitada),
+      value: tracking?.primeiraPaginaVisitada || null,
     },
     {
       names: ["Categoria de Conteúdo"],
       envVar: "CLICKUP_FIELD_CONTENT_CATEGORY_ID",
-      value: formatTrackingValue(tracking.categoriaDeConteudo),
+      value: tracking?.categoriaDeConteudo || null,
     },
     {
       names: ["Artigo de Origem"],
       envVar: "CLICKUP_FIELD_ORIGIN_ARTICLE_ID",
-      value: formatTrackingValue(tracking.artigoDeOrigem),
+      value: tracking?.artigoDeOrigem || null,
     },
     {
       names: ["Último Artigo Lido"],
       envVar: "CLICKUP_FIELD_LAST_ARTICLE_ID",
-      value: formatTrackingValue(tracking.ultimoArtigoLido),
+      value: tracking?.ultimoArtigoLido || null,
     },
     {
       names: ["CTA de Conversão"],
       envVar: "CLICKUP_FIELD_CONVERSION_CTA_ID",
-      value: formatTrackingValue(tracking.ctaDeConversao),
+      value: tracking?.ctaDeConversao || null,
     },
     {
       names: ["Landing de Conversão"],
       envVar: "CLICKUP_FIELD_CONVERSION_LANDING_ID",
-      value: formatTrackingValue(tracking.landingDeConversao),
+      value: tracking?.landingDeConversao || null,
     },
     {
       names: ["Jornada do Lead"],
       envVar: "CLICKUP_FIELD_LEAD_JOURNEY_ID",
-      value: formatLeadJourney(tracking),
+      value:
+        tracking?.jornadaDoLead.length && tracking.jornadaDoLead.length > 0
+          ? formatLeadJourney(tracking)
+          : null,
     },
     {
       names: ["Quantidade de Artigos Lidos"],
       envVar: "CLICKUP_FIELD_ARTICLES_READ_COUNT_ID",
-      value: tracking.quantidadeDeArtigosLidos,
+      value:
+        typeof tracking?.quantidadeDeArtigosLidos === "number"
+          ? tracking.quantidadeDeArtigosLidos
+          : null,
     },
   ];
 
@@ -165,7 +185,7 @@ function resolveCustomFieldValue(
 }
 
 export function resolveLeadTrackingClickUpCustomFields(
-  tracking: LeadTrackingPayload,
+  tracking: LeadTrackingPayload | undefined,
   fields: ClickUpCustomFieldDefinition[],
   env: TrackingEnvironment = process.env,
 ) {
@@ -173,6 +193,7 @@ export function resolveLeadTrackingClickUpCustomFields(
   const errors: string[] = [];
   const foundFields: ClickUpCustomFieldDefinition[] = [];
   const missingFields: string[] = [];
+  const resolutions: ClickUpCustomFieldResolution[] = [];
 
   for (const candidate of getLeadTrackingClickUpCandidates(tracking, env)) {
     const configuredField = candidate.configuredFieldId
@@ -188,25 +209,68 @@ export function resolveLeadTrackingClickUpCustomFields(
         );
 
     if (!matchedFields.length) {
+      const error = `Campo ClickUp de jornada nao encontrado: ${candidate.names.join(" / ")}.`;
       missingFields.push(candidate.names[0]);
-      errors.push(
-        `Campo ClickUp de jornada nao encontrado: ${candidate.names.join(" / ")}.`,
-      );
+      errors.push(error);
+      resolutions.push({
+        expectedName: candidate.names[0],
+        attemptedValue: candidate.value,
+        status: "not_found",
+        error,
+      });
       continue;
     }
 
     for (const field of matchedFields) {
       foundFields.push(field);
+      if (candidate.value === null) {
+        const error = `Campo "${field.name}" encontrado, mas sem valor de tracking para enviar.`;
+        errors.push(error);
+        resolutions.push({
+          expectedName: candidate.names[0],
+          attemptedValue: null,
+          actualName: field.name,
+          fieldId: field.id,
+          fieldType: field.type || "desconhecido",
+          status: "invalid_value",
+          error,
+        });
+        continue;
+      }
       const resolvedValue = resolveCustomFieldValue(field, candidate.value);
 
       if (typeof resolvedValue === "object" && !Array.isArray(resolvedValue)) {
         errors.push(resolvedValue.error);
+        resolutions.push({
+          expectedName: candidate.names[0],
+          attemptedValue: candidate.value,
+          actualName: field.name,
+          fieldId: field.id,
+          fieldType: field.type || "desconhecido",
+          status: "invalid_value",
+          error: resolvedValue.error,
+        });
         continue;
       }
 
       customFields.push({ id: field.id, value: resolvedValue });
+      resolutions.push({
+        expectedName: candidate.names[0],
+        attemptedValue: candidate.value,
+        actualName: field.name,
+        fieldId: field.id,
+        fieldType: field.type || "desconhecido",
+        resolvedValue,
+        status: "ready",
+      });
     }
   }
 
-  return { customFields, errors, foundFields, missingFields };
+  return {
+    customFields,
+    errors,
+    foundFields,
+    missingFields,
+    resolutions,
+  };
 }
