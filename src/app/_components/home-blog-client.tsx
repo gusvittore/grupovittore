@@ -160,6 +160,8 @@ export function HomeBlogClient({ articles }: { articles: BlogPostSummary[] }) {
                 </p>
                 <Link
                   href={`/blog/${article.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-auto inline-flex items-center gap-4 pt-7 text-sm font-extrabold uppercase tracking-[0.15em] text-[#925e16]"
                 >
                   Ler artigo <span aria-hidden="true">→</span>
@@ -186,6 +188,8 @@ export function HomeBlogClient({ articles }: { articles: BlogPostSummary[] }) {
           </div>
           <Link
             href="/blog"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex min-h-13 items-center justify-center gap-4 rounded-lg border border-[#9b651b]/55 px-7 py-3 text-sm font-extrabold uppercase tracking-[0.14em] text-[#744b15] transition hover:bg-[#071026] hover:text-white"
           >
             Acessar Blog <span aria-hidden="true">→</span>

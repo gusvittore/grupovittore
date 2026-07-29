@@ -1,3 +1,4 @@
+import { after } from "next/server";
 import {
   enqueueLeadBackgroundJob,
   findRecentDuplicateLead,
@@ -14,13 +15,14 @@ export const runtime = "nodejs";
 
 function createApiDebug(
   savedToSupabase: boolean,
-  queuedBackgroundJob: boolean,
+  backgroundStarted: boolean,
   timings: LeadApiTimings,
   enqueueError?: string | null,
 ) {
   return {
     savedToSupabase,
-    queuedBackgroundJob,
+    queuedBackgroundJob: backgroundStarted,
+    backgroundStarted,
     ...(enqueueError ? { enqueueError } : {}),
     timings: { ...timings },
   };
@@ -30,18 +32,25 @@ export async function POST(request: Request) {
   const startedAt = Date.now();
   const timings: LeadApiTimings = {
     totalMs: 0,
+    validationMs: 0,
     supabaseMs: 0,
     enqueueMs: 0,
+    responseMs: 0,
   };
-  const finishTimings = () => {
+  const finishTimings = (backgroundStarted = false) => {
     timings.totalMs = Date.now() - startedAt;
+    timings.responseMs = timings.totalMs;
     console.log("Lead API timing:", {
       totalMs: timings.totalMs,
+      validationMs: timings.validationMs,
       supabaseMs: timings.supabaseMs,
       enqueueMs: timings.enqueueMs,
+      responseMs: timings.responseMs,
+      backgroundStarted,
     });
   };
 
+  const validationStartedAt = Date.now();
   let rawPayload: unknown;
 
   try {
@@ -51,6 +60,7 @@ export async function POST(request: Request) {
   }
 
   const payload = sanitizePayload(rawPayload);
+  timings.validationMs = Date.now() - validationStartedAt;
 
   if (!hasRequiredFields(payload)) {
     finishTimings();
@@ -120,29 +130,39 @@ export async function POST(request: Request) {
     );
   }
 
-  const enqueueStartedAt = Date.now();
-  const enqueueResult = await enqueueLeadBackgroundJob(request, leadId);
-  timings.enqueueMs = Date.now() - enqueueStartedAt;
-  finishTimings();
+  const enqueueScheduledAt = Date.now();
+  after(async () => {
+    const enqueueStartedAt = Date.now();
+    console.log("Lead background enqueue started:", {
+      backgroundStarted: true,
+    });
 
-  if (!enqueueResult.queued && enqueueResult.error) {
-    console.warn(
-      "Lead salvo, mas o processamento em segundo plano nao foi enfileirado:",
-      enqueueResult.error,
-    );
-  }
+    const enqueueResult = await enqueueLeadBackgroundJob(request, leadId);
+    const enqueueMs = Date.now() - enqueueStartedAt;
+    console.log("Lead background enqueue timing:", {
+      enqueueMs,
+      backgroundStarted: true,
+      queued: enqueueResult.queued,
+      status: enqueueResult.status ?? null,
+    });
+
+    if (!enqueueResult.queued && enqueueResult.error) {
+      console.warn(
+        "Lead salvo, mas o processamento em segundo plano nao foi enfileirado:",
+        enqueueResult.error,
+      );
+    }
+  });
+  timings.enqueueMs = Date.now() - enqueueScheduledAt;
+  finishTimings(true);
 
   return Response.json({
     ok: true,
     savedToSupabase: true,
-    queued: enqueueResult.queued,
+    queued: true,
+    backgroundStarted: true,
     leadId,
     redirectTo: qualification.redirectTo,
-    debug: {
-      savedToSupabase: true,
-      queuedBackgroundJob: enqueueResult.queued,
-      ...(enqueueResult.error ? { enqueueError: enqueueResult.error } : {}),
-      timings: { ...timings },
-    },
+    debug: createApiDebug(true, true, timings),
   });
 }

@@ -9,10 +9,12 @@ export const LEAD_TRACKING_STORAGE_KEYS = {
   sessionTouch: "gv_tracking_session_touch",
   sessionId: "gv_tracking_session_id",
   conversionCompleted: "gv_tracking_conversion_completed",
+  newTabHandoff: "gv_tracking_new_tab_handoff",
 } as const;
 
 export const LEAD_TRACKING_CONSENT_EVENT = "gv-cookie-consent-changed";
 const COOKIE_CONSENT_KEY = "cookie-consent-choice";
+const NEW_TAB_HANDOFF_TTL_MS = 2 * 60 * 1000;
 
 export type LeadPageType =
   | "home"
@@ -75,6 +77,17 @@ export type LeadTrackingPayload = {
   landingDeConversao: string;
   quantidadeDeArtigosLidos: number;
   jornadaDoLead: LeadJourneyEntry[];
+};
+
+type LeadTrackingNewTabHandoff = {
+  destinationPath: string;
+  createdAt: string;
+  sessionId: string;
+  firstTouch: LeadTrackingTouch | null;
+  sessionTouch: LeadTrackingTouch | null;
+  journey: LeadJourneyEntry[];
+  lastCta: LeadTrackingCta | null;
+  lastArticle: LeadJourneyEntry | null;
 };
 
 type ExternalOriginInput = {
@@ -261,6 +274,55 @@ function ensureLeadTrackingSession() {
   }
 }
 
+function restoreLeadTrackingNewTabHandoff(path: string, visitedAt: string) {
+  try {
+    if (
+      window.sessionStorage.getItem(LEAD_TRACKING_STORAGE_KEYS.sessionId)
+    ) {
+      return;
+    }
+
+    const handoff = readStorageJson<LeadTrackingNewTabHandoff>(
+      window.localStorage,
+      LEAD_TRACKING_STORAGE_KEYS.newTabHandoff,
+    );
+    if (!handoff) return;
+
+    const handoffTimestamp = Date.parse(handoff.createdAt);
+    const visitTimestamp = Date.parse(visitedAt);
+    const ageMs = visitTimestamp - handoffTimestamp;
+    if (
+      !Number.isFinite(handoffTimestamp) ||
+      !Number.isFinite(visitTimestamp) ||
+      ageMs < -10_000 ||
+      ageMs > NEW_TAB_HANDOFF_TTL_MS
+    ) {
+      window.localStorage.removeItem(LEAD_TRACKING_STORAGE_KEYS.newTabHandoff);
+      return;
+    }
+
+    if (handoff.destinationPath !== path) return;
+
+    const sessionValues: Array<[string, unknown]> = [
+      [LEAD_TRACKING_STORAGE_KEYS.sessionId, handoff.sessionId],
+      [LEAD_TRACKING_STORAGE_KEYS.firstTouch, handoff.firstTouch],
+      [LEAD_TRACKING_STORAGE_KEYS.sessionTouch, handoff.sessionTouch],
+      [LEAD_TRACKING_STORAGE_KEYS.journey, handoff.journey],
+      [LEAD_TRACKING_STORAGE_KEYS.lastCta, handoff.lastCta],
+      [LEAD_TRACKING_STORAGE_KEYS.lastArticle, handoff.lastArticle],
+    ];
+
+    for (const [key, value] of sessionValues) {
+      if (value !== null && value !== "") {
+        writeStorageJson(window.sessionStorage, key, value);
+      }
+    }
+    window.localStorage.removeItem(LEAD_TRACKING_STORAGE_KEYS.newTabHandoff);
+  } catch {
+    // A handoff is best-effort and must never block the destination page.
+  }
+}
+
 export function hasLeadTrackingConsent() {
   if (!hasBrowserStorage()) return false;
 
@@ -315,6 +377,9 @@ export function recordLeadPageVisit(
 ) {
   if (!hasLeadTrackingConsent()) return;
 
+  const visitedAt = context.now || new Date().toISOString();
+  restoreLeadTrackingNewTabHandoff(visit.path, visitedAt);
+
   try {
     const conversionCompleted = window.sessionStorage.getItem(
       LEAD_TRACKING_STORAGE_KEYS.conversionCompleted,
@@ -331,7 +396,6 @@ export function recordLeadPageVisit(
 
   ensureLeadTrackingSession();
 
-  const visitedAt = context.now || new Date().toISOString();
   const search = context.search ?? window.location.search;
   const referrer =
     context.referrer ?? (typeof document !== "undefined" ? document.referrer : "");
@@ -402,6 +466,55 @@ export function recordLeadCta(
     LEAD_TRACKING_STORAGE_KEYS.lastCta,
     { ...cta, capturedAt },
   );
+}
+
+export function prepareLeadTrackingNewTab(
+  href: string,
+  createdAt = new Date().toISOString(),
+) {
+  if (!hasLeadTrackingConsent()) return;
+
+  try {
+    const destination = new URL(href, window.location.origin);
+    if (destination.origin !== window.location.origin) return;
+
+    const sessionId = ensureLeadTrackingSession();
+    if (!sessionId) return;
+
+    const handoff: LeadTrackingNewTabHandoff = {
+      destinationPath: destination.pathname,
+      createdAt,
+      sessionId,
+      firstTouch: readStorageJson<LeadTrackingTouch>(
+        window.sessionStorage,
+        LEAD_TRACKING_STORAGE_KEYS.firstTouch,
+      ),
+      sessionTouch: readStorageJson<LeadTrackingTouch>(
+        window.sessionStorage,
+        LEAD_TRACKING_STORAGE_KEYS.sessionTouch,
+      ),
+      journey:
+        readStorageJson<LeadJourneyEntry[]>(
+          window.sessionStorage,
+          LEAD_TRACKING_STORAGE_KEYS.journey,
+        ) ?? [],
+      lastCta: readStorageJson<LeadTrackingCta>(
+        window.sessionStorage,
+        LEAD_TRACKING_STORAGE_KEYS.lastCta,
+      ),
+      lastArticle: readStorageJson<LeadJourneyEntry>(
+        window.sessionStorage,
+        LEAD_TRACKING_STORAGE_KEYS.lastArticle,
+      ),
+    };
+    writeStorageJson(
+      window.localStorage,
+      LEAD_TRACKING_STORAGE_KEYS.newTabHandoff,
+      handoff,
+    );
+  } catch {
+    // Cross-tab tracking is best-effort and must never interrupt the click.
+  }
 }
 
 export function getLeadTrackingSnapshot(landingPath: string) {

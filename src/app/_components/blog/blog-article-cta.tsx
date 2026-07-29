@@ -20,6 +20,8 @@ export function BlogArticleCta({
   const link = (
     <Link
       href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       data-gv-cta={
         isMaterials
           ? undefined

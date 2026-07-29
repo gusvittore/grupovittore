@@ -47,6 +47,8 @@ function installBrowser(
     location: {
       pathname: "/",
       search: "",
+      origin: "https://www.grupovittore.com.br",
+      href: "https://www.grupovittore.com.br/",
     },
   };
   globalThis.document = { referrer: "" };
@@ -257,6 +259,85 @@ test("CTA and conversion snapshot use session storage and never store form PII",
       ),
     ].join("\n");
     assert.doesNotMatch(allStored, /nome_completo|whatsapp|empresa|faturamento_mensal/);
+  } finally {
+    removeBrowser();
+  }
+});
+
+test("internal new-tab handoff preserves journey and CTA without moving the active cycle out of session storage", () => {
+  assert.equal(typeof tracking.prepareLeadTrackingNewTab, "function");
+  const sourceTab = installBrowser();
+
+  try {
+    tracking.recordLeadPageVisit(
+      { path: "/", type: "home", title: "Grupo Vittore" },
+      { now: "2026-07-29T10:00:00.000Z" },
+    );
+    tracking.recordLeadPageVisit(
+      {
+        path: "/blog/artigo-1",
+        type: "artigo",
+        title: "Artigo 1",
+        slug: "artigo-1",
+        category: "Vendas",
+      },
+      { now: "2026-07-29T10:01:00.000Z" },
+    );
+    tracking.recordLeadCta(
+      {
+        label: "CTA final do artigo para Assessoria Comercial",
+        path: "/blog/artigo-1",
+        article: "artigo-1",
+        category: "Vendas",
+      },
+      "2026-07-29T10:02:00.000Z",
+    );
+    tracking.prepareLeadTrackingNewTab(
+      "/assessoria-comercial",
+      "2026-07-29T10:02:00.000Z",
+    );
+
+    assert.ok(sourceTab.localStorage.getItem("gv_tracking_new_tab_handoff"));
+    assert.ok(sourceTab.sessionStorage.getItem("gv_tracking_journey"));
+  } finally {
+    removeBrowser();
+  }
+
+  const destinationTab = installBrowser("accepted", {
+    localStorage: sourceTab.localStorage,
+    sessionStorage: new MemoryStorage(),
+  });
+  globalThis.window.location.pathname = "/assessoria-comercial";
+
+  try {
+    tracking.recordLeadPageVisit(
+      {
+        path: "/assessoria-comercial",
+        type: "assessoria-comercial",
+        title: "Assessoria Comercial",
+      },
+      { now: "2026-07-29T10:02:05.000Z" },
+    );
+
+    const snapshot = tracking.getLeadTrackingSnapshot(
+      "/assessoria-comercial",
+    );
+    assert.deepEqual(
+      snapshot.jornadaDoLead.map((entry) => entry.path),
+      ["/", "/blog/artigo-1", "/assessoria-comercial"],
+    );
+    assert.equal(snapshot.primeiraPaginaVisitada, "/");
+    assert.equal(snapshot.artigoDeOrigem, "Artigo 1");
+    assert.equal(snapshot.ultimoArtigoLido, "Artigo 1");
+    assert.equal(snapshot.quantidadeDeArtigosLidos, 1);
+    assert.equal(
+      snapshot.ctaDeConversao,
+      "CTA final do artigo para Assessoria Comercial",
+    );
+    assert.equal(
+      destinationTab.localStorage.getItem("gv_tracking_new_tab_handoff"),
+      null,
+    );
   } finally {
     removeBrowser();
   }

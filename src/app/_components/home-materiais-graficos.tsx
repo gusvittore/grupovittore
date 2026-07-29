@@ -56,6 +56,8 @@ export function HomeMateriaisGraficos() {
           </p>
           <Link
             href="/materiais-impressos"
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-10 inline-flex min-h-15 w-fit items-center justify-center gap-5 rounded-lg bg-[linear-gradient(135deg,#f1d18b,#d5a04a)] px-7 py-4 text-sm font-extrabold uppercase tracking-[0.13em] text-[#071026] shadow-[0_12px_28px_rgba(125,82,17,0.18)] transition hover:-translate-y-0.5"
           >
             Conhecer Materiais Gráficos <span aria-hidden="true">›</span>

@@ -50,8 +50,10 @@ test("lead API saves to Supabase first and returns the expected queue redirect c
   assert.match(core, /raw_payload/);
   assert.match(route, /Nao foi possivel salvar o lead\./);
   assert.match(route, /savedToSupabase: true/);
-  assert.match(route, /queued: enqueueResult\.queued/);
-  assert.match(route, /queuedBackgroundJob: enqueueResult\.queued/);
+  assert.match(route, /after\(async \(\) =>/);
+  assert.match(route, /queued: true/);
+  assert.match(route, /queuedBackgroundJob: backgroundStarted/);
+  assert.match(route, /backgroundStarted: true/);
   assert.match(route, /redirectTo/);
 });
 

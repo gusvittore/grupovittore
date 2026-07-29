@@ -114,6 +114,8 @@ function RelatedArticlesList({
           <Link
             key={relatedPost.slug}
             href={`/blog/${relatedPost.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className={
               isSidebar
                 ? "group block py-4 first:pt-0 last:pb-0"
@@ -176,6 +178,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <div className="mx-auto w-full max-w-[1180px] px-5 py-14 sm:px-8 sm:py-18 lg:px-12 lg:py-24">
               <Link
                 href="/blog"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 text-xs font-extrabold uppercase tracking-[0.18em] text-[#e3ad51] transition hover:text-white sm:text-sm"
               >
                 <span aria-hidden="true">←</span> Voltar ao Blog

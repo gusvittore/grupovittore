@@ -39,8 +39,10 @@ export type SupabaseConfig = {
 
 export type LeadApiTimings = {
   totalMs: number;
+  validationMs: number;
   supabaseMs: number;
   enqueueMs: number;
+  responseMs: number;
 };
 
 export type LeadEnqueueResult = {

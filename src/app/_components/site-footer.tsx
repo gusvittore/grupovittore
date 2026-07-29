@@ -3,15 +3,16 @@ import Link from "next/link";
 import { InstagramSocialLink } from "./instagram-social-link";
 
 const mainLinks = [
-  { label: "Início", href: "/" },
-  { label: "Serviços", href: "/#servicos" },
-  { label: "Assessoria Comercial", href: "/assessoria-comercial" },
+  { label: "Início", href: "/", newTab: true },
+  { label: "Serviços", href: "/#servicos", newTab: false },
+  { label: "Assessoria Comercial", href: "/assessoria-comercial", newTab: true },
   {
     label: "Materiais Gráficos Personalizados",
     href: "/materiais-impressos",
+    newTab: true,
   },
-  { label: "Blog", href: "/blog" },
-  { label: "Sobre", href: "/sobre" },
+  { label: "Blog", href: "/blog", newTab: true },
+  { label: "Sobre", href: "/sobre", newTab: true },
 ];
 
 const fronts = [
@@ -55,7 +56,13 @@ export function SiteFooter() {
       <div className="mx-auto w-full max-w-[1500px] px-5 pb-8 pt-16 sm:px-8 sm:pt-20 lg:px-12 xl:px-16">
         <div className="grid gap-12 pb-14 lg:grid-cols-[minmax(300px,1.1fr)_minmax(220px,0.72fr)_minmax(330px,0.9fr)] lg:gap-20">
           <div className="max-w-[500px]">
-            <Link href="/" aria-label="Grupo Vittore - início" className="inline-block">
+            <Link
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Grupo Vittore - início"
+              className="inline-block"
+            >
               <Image
                 src="/assets/home-institucional/brand/logotipo-principal-rodape.png.png"
                 alt="Grupo Vittore"
@@ -95,6 +102,8 @@ export function SiteFooter() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  target={item.newTab ? "_blank" : undefined}
+                  rel={item.newTab ? "noopener noreferrer" : undefined}
                   data-gv-cta={
                     item.href === "/assessoria-comercial" ? "Rodapé" : undefined
                   }

@@ -2,13 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navigation = [
-  { label: "Início", href: "/" },
-  { label: "Serviços", href: "/#servicos" },
-  { label: "Blog", href: "/blog" },
-  { label: "Sobre", href: "/sobre" },
+  { label: "Início", href: "/", newTab: true },
+  { label: "Serviços", href: "/#servicos", newTab: false },
+  { label: "Blog", href: "/blog", newTab: true },
+  { label: "Sobre", href: "/sobre", newTab: true },
   {
     label: "Materiais Gráficos Personalizados",
     href: "/materiais-impressos",
+    newTab: true,
   },
 ];
 
@@ -26,6 +27,8 @@ function NavigationLinks({ mobile = false }: { mobile?: boolean }) {
         <Link
           key={item.href}
           href={item.href}
+          target={item.newTab ? "_blank" : undefined}
+          rel={item.newTab ? "noopener noreferrer" : undefined}
           className={
             mobile
               ? "rounded-lg px-3 py-3 text-sm font-semibold text-[#101a31] transition hover:bg-[#b29157]/10 hover:text-[#8a5b18]"
@@ -43,7 +46,13 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-[#b29157]/20 bg-[#fbf8f4]/96 shadow-[0_8px_30px_rgba(9,14,31,0.045)] backdrop-blur-xl">
       <div className="mx-auto grid min-h-[96px] w-full max-w-[1500px] grid-cols-[auto_1fr_auto] items-center gap-5 px-5 sm:px-8 lg:px-12 xl:px-16">
-        <Link href="/" aria-label="Grupo Vittore - início" className="shrink-0">
+        <Link
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Grupo Vittore - início"
+          className="shrink-0"
+        >
           <Image
             src="/assets/home-institucional/brand/logotipo-principal-rodape.png.png"
             alt="Grupo Vittore"
@@ -59,6 +68,8 @@ export function SiteHeader() {
         <div className="flex items-center justify-end gap-3">
           <Link
             href="/assessoria-comercial"
+            target="_blank"
+            rel="noopener noreferrer"
             data-gv-cta="Botão menu Assessoria Comercial"
             className="hidden min-h-13 items-center justify-center gap-4 rounded-full bg-[#031126] px-6 py-3 text-xs font-extrabold uppercase tracking-[0.11em] text-[#e3ad51] transition hover:-translate-y-0.5 hover:bg-[#0b1d38] sm:inline-flex xl:px-8 xl:text-sm"
           >
@@ -74,6 +85,8 @@ export function SiteHeader() {
               <NavigationLinks mobile />
               <Link
                 href="/assessoria-comercial"
+                target="_blank"
+                rel="noopener noreferrer"
                 data-gv-cta="Botão menu Assessoria Comercial"
                 className="mx-5 mb-5 flex min-h-12 items-center justify-center rounded-full bg-[#031126] px-5 text-center text-xs font-extrabold uppercase tracking-[0.1em] text-[#e3ad51] sm:hidden"
               >

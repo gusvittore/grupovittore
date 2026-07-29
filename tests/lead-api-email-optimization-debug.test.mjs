@@ -61,11 +61,16 @@ test("API returns safe queue debug timings and background logs ClickUp/email tim
   assert.match(route, /console\.log\("Lead API timing:",/);
   assert.match(route, /function createApiDebug/);
   assert.match(route, /debug: createApiDebug/);
-  assert.match(route, /queuedBackgroundJob: enqueueResult\.queued/);
+  assert.match(route, /queuedBackgroundJob: backgroundStarted/);
+  assert.match(route, /after\(async \(\) =>/);
+  assert.match(route, /Lead background enqueue timing:/);
   assert.match(route, /timings:/);
   assert.match(route, /totalMs:/);
+  assert.match(route, /validationMs:/);
   assert.match(route, /supabaseMs:/);
   assert.match(route, /enqueueMs:/);
+  assert.match(route, /responseMs:/);
+  assert.match(route, /backgroundStarted/);
   assert.match(processor, /console\.log\("Lead background timing:",/);
   assert.match(processor, /clickupMs/);
   assert.match(processor, /emailMs/);

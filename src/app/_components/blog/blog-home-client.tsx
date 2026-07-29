@@ -63,6 +63,8 @@ function PostLink({ post }: { post: BlogPostSummary }) {
   return (
     <Link
       href={`/blog/${post.slug}`}
+      target="_blank"
+      rel="noopener noreferrer"
       className="inline-flex items-center gap-3 text-sm font-extrabold uppercase tracking-[0.13em] text-[#8a5b18] transition hover:text-[#031126] group-hover:text-[#e3ad51]"
     >
       Ler artigo <ArrowIcon />
@@ -154,6 +156,8 @@ function SidebarBanner({ href, src, alt, ctaLabel }: { href: string; src: string
   return (
     <Link
       href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       data-gv-cta={ctaLabel}
       className="group block overflow-hidden rounded-[18px] border border-[#b29157]/35 bg-[#031126] shadow-[0_14px_34px_rgba(9,14,31,0.09)] transition hover:-translate-y-0.5 hover:border-[#e3ad51]/70 hover:shadow-[0_18px_42px_rgba(9,14,31,0.16)]"
     >
@@ -209,7 +213,13 @@ function Sidebar({
         <p className="text-xs font-extrabold uppercase tracking-[0.23em] text-[#956119]">Leituras recomendadas</p>
         <div className="mt-4 divide-y divide-[#b29157]/20">
           {recommended.map((post) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`} className="group block py-4 first:pt-0 last:pb-0">
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block py-4 first:pt-0 last:pb-0"
+            >
               <ArticleCardTitle
                 as="p"
                 title={post.title}

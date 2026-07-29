@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   LEAD_TRACKING_CONSENT_EVENT,
   clearLeadTrackingStorage,
+  prepareLeadTrackingNewTab,
   recordLeadCta,
   recordLeadPageVisit,
   type LeadPageType,
@@ -59,16 +60,23 @@ export function LeadJourneyTracker() {
 
       const cta = event.target.closest<HTMLElement>("[data-gv-cta]");
       const label = cta?.dataset.gvCta;
-      if (!cta || !label) return;
+      if (cta && label) {
+        const article = getArticleMetadata();
+        recordLeadCta({
+          label,
+          path: window.location.pathname,
+          ...(cta.dataset.gvSource ? { source: cta.dataset.gvSource } : {}),
+          ...(article?.category ? { category: article.category } : {}),
+          ...(article?.slug ? { article: article.slug } : {}),
+        });
+      }
 
-      const article = getArticleMetadata();
-      recordLeadCta({
-        label,
-        path: window.location.pathname,
-        ...(cta.dataset.gvSource ? { source: cta.dataset.gvSource } : {}),
-        ...(article?.category ? { category: article.category } : {}),
-        ...(article?.slug ? { article: article.slug } : {}),
-      });
+      const newTabLink = event.target.closest<HTMLAnchorElement>(
+        'a[target="_blank"]',
+      );
+      if (newTabLink) {
+        prepareLeadTrackingNewTab(newTabLink.href);
+      }
     }
 
     document.addEventListener("click", handleClick, true);

@@ -18,11 +18,14 @@ const processor = await readFile(
 test("/api/leads only saves, enqueues, and returns the fast redirect contract", () => {
   assert.match(route, /export async function POST\(request: Request\)/);
   assert.match(route, /enqueueLeadBackgroundJob/);
-  assert.match(route, /queued: enqueueResult\.queued/);
-  assert.match(route, /queuedBackgroundJob: enqueueResult\.queued/);
+  assert.match(route, /import \{ after \} from "next\/server"/);
+  assert.match(route, /after\(async \(\) =>/);
+  assert.match(route, /queuedBackgroundJob: backgroundStarted/);
+  assert.match(route, /backgroundStarted: true/);
   assert.match(route, /Lead API timing:/);
   assert.match(route, /supabaseMs/);
   assert.match(route, /enqueueMs/);
+  assert.match(route, /responseMs/);
 
   const postBody = route.slice(route.indexOf("export async function POST"));
   assert.doesNotMatch(postBody, /sendLeadToClickUp/);
