@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import { CookieConsent } from "./_components/cookie-consent";
+import { GoogleAnalytics } from "./_components/google-analytics";
 import { LeadJourneyTracker } from "./_components/lead-journey-tracker";
 import "./globals.css";
 
@@ -38,6 +40,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         {children}
         <LeadJourneyTracker />
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+        </Suspense>
         <CookieConsent />
       </body>
     </html>

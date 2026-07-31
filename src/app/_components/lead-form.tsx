@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type ChangeEventHandler } from "react";
+import { trackGenerateLead } from "./google-analytics";
 import {
   completeLeadTrackingConversion,
   getLeadTrackingSnapshot,
@@ -46,6 +47,10 @@ function getLeadRedirectPath(revenue: string) {
   return revenue === NON_QUALIFIED_REVENUE
     ? "/obrigado"
     : "/obrigado-qualificado";
+}
+
+function getLeadStatus(redirectTo: string): "mql" | "not_qualified" {
+  return redirectTo === "/obrigado" ? "not_qualified" : "mql";
 }
 
 function formatWhatsApp(value: string) {
@@ -197,6 +202,17 @@ export function LeadForm() {
           }
 
           const redirectTo = result.redirectTo || getLeadRedirectPath(revenue);
+          trackGenerateLead({
+            page_path: window.location.pathname,
+            landing_page: tracking.landingDeConversao,
+            form_name: "assessoria_comercial",
+            lead_status: getLeadStatus(redirectTo),
+            utm_source: params.get("utm_source") || tracking.utmSource,
+            utm_medium: params.get("utm_medium") || tracking.utmMedium,
+            utm_campaign: params.get("utm_campaign") || tracking.utmCampaign,
+            utm_content: params.get("utm_content") || tracking.utmContent,
+            utm_term: params.get("utm_term") || tracking.utmTerm,
+          });
           completeLeadTrackingConversion();
           window.location.href = redirectTo;
         } catch (error) {
