@@ -25,6 +25,11 @@ test("GA4 is mounted globally but only loads after accepted cookie consent", () 
   assert.match(analyticsSource, /if \(!measurementId \|\| !hasConsent\) return null/);
   assert.match(analyticsSource, /https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=\$\{measurementId\}/);
   assert.match(analyticsSource, /send_page_view:\s*false/);
+  assert.match(
+    analyticsSource,
+    /function gtag\(\)[\s\S]*?window\.dataLayer\?\.push\(arguments\);/,
+  );
+  assert.doesNotMatch(analyticsSource, /function gtag\(\.\.\.args/);
 });
 
 test("GA4 records SPA page views without using personal data", () => {

@@ -73,8 +73,10 @@ function configureGa(measurementId: string) {
   window.dataLayer = window.dataLayer || [];
   window.gtag =
     window.gtag ||
-    function gtag(...args: unknown[]) {
-      window.dataLayer?.push(args);
+    function gtag() {
+      // The Google tag loader requires an Arguments object, not a rest-parameter Array.
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer?.push(arguments);
     };
 
   setGaDisabled(measurementId, false);
