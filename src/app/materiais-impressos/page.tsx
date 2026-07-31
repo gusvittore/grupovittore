@@ -274,16 +274,23 @@ function WhatsAppButton({
   children,
   className = "",
   message = DEFAULT_WHATSAPP_MESSAGE,
+  buttonLocation,
+  buttonText,
 }: {
   children: React.ReactNode;
   className?: string;
   message?: string;
+  buttonLocation: string;
+  buttonText: string;
 }) {
   return (
     <a
       href={buildWhatsAppUrl(message)}
       target="_blank"
       rel="noopener noreferrer"
+      data-ga-whatsapp-click="true"
+      data-ga-whatsapp-location={buttonLocation}
+      data-ga-whatsapp-text={buttonText}
       aria-label={`Abrir WhatsApp do Grupo Vittore para ${children}`}
       className={`hero-primary-button gap-3 border border-[#4ED06B]/55 shadow-[0_18px_42px_rgba(0,165,61,0.24)] ${className}`}
     >
@@ -476,7 +483,11 @@ function HeroSection() {
             Do conceito ao papel, presença que lidera.
           </p>
           <div className="mt-8 flex flex-col items-stretch gap-3 sm:max-w-[620px] sm:flex-row sm:items-center sm:gap-4">
-            <WhatsAppButton className="materials-hero-primary w-full sm:w-auto">Quero mais informações</WhatsAppButton>
+            <WhatsAppButton
+              className="materials-hero-primary w-full sm:w-auto"
+              buttonLocation="hero"
+              buttonText="solicitar_orcamento_whatsapp"
+            >Quero mais informações</WhatsAppButton>
           </div>
           <p className="mt-5 max-w-[660px] text-sm font-medium uppercase leading-6 tracking-[0.1em] text-[#FBF8F4]/78 sm:text-base">
             Pedidos sob encomenda pelo WhatsApp. Entregamos para <span className="text-[#B29157]">todo o Brasil.</span>
@@ -505,7 +516,11 @@ function HeroSection() {
             Do conceito ao papel, presença que lidera.
           </p>
           <div className="mt-6 flex items-center gap-4">
-            <WhatsAppButton className="materials-hero-primary">Quero mais informações</WhatsAppButton>
+            <WhatsAppButton
+              className="materials-hero-primary"
+              buttonLocation="hero"
+              buttonText="solicitar_orcamento_whatsapp"
+            >Quero mais informações</WhatsAppButton>
           </div>
           <p className="mt-4 max-w-[680px] text-[0.88rem] font-medium uppercase leading-6 tracking-[0.09em] text-[#FBF8F4]/78">
             Pedidos sob encomenda pelo WhatsApp. Entregamos para <span className="text-[#B29157]">todo o Brasil.</span>
@@ -668,7 +683,11 @@ function CustomMadeSection() {
         </div>
 
         <div className="mt-10 flex justify-center xl:mt-9">
-          <WhatsAppButton className="materials-custom-cta w-full sm:w-auto">Quero mais informações</WhatsAppButton>
+          <WhatsAppButton
+            className="materials-custom-cta w-full sm:w-auto"
+            buttonLocation="custom_materials"
+            buttonText="solicitar_orcamento_whatsapp"
+          >Quero mais informações</WhatsAppButton>
         </div>
       </div>
     </section>
@@ -749,7 +768,11 @@ function FinalCtaSection() {
           Materiais gráficos personalizados ajudam sua marca a sair do comum e a ocupar uma presença mais profissional na mente do cliente. Do cartão à pasta, do folder ao bloco de anotações, cada detalhe pode reforçar autoridade, confiança e sofisticação.
         </p>
         <div className="mt-9 flex w-full justify-center sm:w-auto">
-          <WhatsAppButton className="materials-final-cta-button w-full sm:w-auto">Quero mais informações</WhatsAppButton>
+          <WhatsAppButton
+            className="materials-final-cta-button w-full sm:w-auto"
+            buttonLocation="final_cta"
+            buttonText="solicitar_orcamento_whatsapp"
+          >Quero mais informações</WhatsAppButton>
         </div>
         <p className="mt-6 text-base font-medium leading-7 tracking-[0.02em] text-[#B29157] sm:text-lg">
           Fale pelo WhatsApp e solicite seu material sob encomenda.
@@ -765,6 +788,9 @@ function FloatingWhatsAppButton() {
       href={buildWhatsAppUrl()}
       target="_blank"
       rel="noopener noreferrer"
+      data-ga-whatsapp-click="true"
+      data-ga-whatsapp-location="floating_button"
+      data-ga-whatsapp-text="botao_whatsapp_flutuante"
       aria-label="Abrir WhatsApp para solicitar informações sobre materiais gráficos"
       className="materials-floating-whatsapp fixed right-5 z-40 flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-[#25D366] text-white shadow-[0_18px_44px_rgba(0,0,0,0.28)] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B29157] sm:right-8 sm:h-[70px] sm:w-[70px]"
     >

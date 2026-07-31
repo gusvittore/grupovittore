@@ -1,9 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 
 const STORAGE_KEY = "cookie-consent-choice";
+const COOKIE_BANNER_HIDDEN_PATHS = new Set([
+  "/assessoria-comercial",
+  "/materiais-impressos",
+]);
 
 type ConsentChoice = "accepted" | "rejected";
 type ConsentSnapshot = ConsentChoice | "undecided" | "pending";
@@ -34,12 +39,14 @@ function getServerSnapshot(): ConsentSnapshot {
 }
 
 export function CookieConsent() {
+  const pathname = usePathname();
   const storedChoice = useSyncExternalStore(
     subscribe,
     getSnapshot,
     getServerSnapshot,
   );
   const [dismissedChoice, setDismissedChoice] = useState<ConsentChoice | null>(null);
+  const isBannerHidden = COOKIE_BANNER_HIDDEN_PATHS.has(pathname);
 
   function persistChoice(nextChoice: ConsentChoice) {
     try {
@@ -56,6 +63,7 @@ export function CookieConsent() {
   }
 
   if (
+    isBannerHidden ||
     storedChoice === "pending" ||
     storedChoice === "accepted" ||
     storedChoice === "rejected" ||

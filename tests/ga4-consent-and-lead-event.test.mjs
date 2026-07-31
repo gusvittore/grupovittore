@@ -37,7 +37,13 @@ test("GA4 records SPA page views without using personal data", () => {
   assert.match(analyticsSource, /useSearchParams\(\)/);
   assert.match(analyticsSource, /event", "page_view"/);
   assert.match(analyticsSource, /page_path/);
-  assert.doesNotMatch(analyticsSource, /nome_completo|email|telefone|phone|whatsapp|empresa|company|mensagem|message|faturamento_mensal/iu);
+  const pageViewBlock =
+    analyticsSource.match(/function trackPageView[\s\S]*?\n\}/)?.[0] ?? "";
+  assert.ok(pageViewBlock, "page_view helper must exist");
+  assert.doesNotMatch(
+    pageViewBlock,
+    /nome_completo|email|telefone|phone|whatsapp|empresa|company|mensagem|message|faturamento_mensal/iu,
+  );
 });
 
 test("lead form sends generate_lead only after a successful API response and never sends PII", () => {

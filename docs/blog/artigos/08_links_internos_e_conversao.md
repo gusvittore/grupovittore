@@ -1,5 +1,10 @@
 # Links Internos, Conversão Editorial e Integração com Páginas Comerciais
 
+> **Versão atualizada em 31 de julho de 2026**
+>
+> Esta versão incorpora a regra obrigatória de 2 a 3 links comerciais contextuais no corpo dos artigos, com destinos e parâmetros UTM aprovados pelo usuário.
+
+
 ## Finalidade deste documento
 
 Este documento define como os links internos, links comerciais, chamadas para ação e elementos de conversão devem ser implementados nos artigos do blog do Grupo Vittore.
@@ -15,6 +20,8 @@ Ele estabelece regras para:
 - artigos relacionados;
 - clusters temáticos;
 - rastreamento de cliques;
+- regra obrigatória de 2 a 3 links comerciais contextuais;
+- parâmetros UTM aprovados para links comerciais internos;
 - URLs pendentes;
 - preservação da experiência de leitura;
 - responsabilidades do Marco Aurélio;
@@ -95,45 +102,60 @@ O leitor não deve precisar clicar em uma página comercial para receber a respo
 
 ## Responsabilidade do Marco Aurélio
 
-O Marco Aurélio trabalha na camada editorial.
+O Marco Aurélio trabalha na camada editorial e é responsável por entregar o Markdown final com os links comerciais contextuais já inseridos no corpo do artigo.
 
-Ele pode entregar:
+Ele deve:
 
-- destino comercial recomendado;
-- justificativa da escolha;
-- trecho de ligação contextual;
-- texto âncora;
-- CTA editorial;
-- posição recomendada;
-- sugestões de artigos relacionados;
-- plano de links internos;
-- páginas que precisam existir;
-- URLs que ainda precisam ser confirmadas.
+- identificar a categoria principal do artigo;
+- utilizar o slug final do artigo;
+- selecionar o destino comercial obrigatório correspondente à categoria;
+- inserir de 2 a 3 links comerciais contextuais no corpo;
+- criar textos âncora naturais e diferentes entre si;
+- distribuir os links ao longo do conteúdo;
+- utilizar as URLs e UTMs aprovadas neste documento;
+- substituir todos os placeholders pelos valores reais;
+- preservar a tese, a voz, a utilidade e a naturalidade do artigo;
+- realizar auditoria antes da entrega.
 
 O Marco Aurélio não deve:
 
-- inventar URLs;
-- inventar slugs de artigos publicados;
-- inserir links fictícios;
-- criar parâmetros de rastreamento;
+- inventar páginas de destino;
+- criar campanhas UTM diferentes das aprovadas;
+- deixar placeholders no Markdown final;
+- utilizar âncoras genéricas como `clique aqui`;
+- transformar o conteúdo em anúncio;
+- inserir links em títulos ou subtítulos;
+- concentrar links em parágrafos consecutivos;
 - configurar eventos de analytics;
 - criar componentes React;
 - alterar rotas do site;
-- assumir que uma página existe;
 - publicar automaticamente.
+
+As regras detalhadas de destino, UTM, quantidade e distribuição estão na seção `Regra obrigatória de links comerciais contextuais`.
 
 ## Responsabilidade do usuário
 
 O usuário é responsável por:
 
-- aprovar o destino comercial;
-- aprovar o CTA;
-- confirmar a página de destino;
-- informar URLs oficiais;
-- aprovar links para artigos;
+- aprovar as páginas comerciais de destino;
+- aprovar a estrutura de rastreamento;
+- aprovar os artigos e as imagens de capa;
 - autorizar mudanças em artigos publicados;
-- definir quando uma menção comercial deve ser removida;
-- validar o resultado final.
+- definir exceções a esta regra;
+- validar o resultado final;
+- autorizar a publicação.
+
+As seguintes páginas e campanhas já foram confirmadas pelo usuário:
+
+```text
+Assessoria Comercial:
+https://grupovittore.com.br/assessoria-comercial
+
+Materiais Impressos:
+https://grupovittore.com.br/materiais-impressos
+```
+
+Portanto, o Marco Aurélio e o Hermes não devem tratar esses dois destinos como pendentes.
 
 ## Responsabilidade do Hermes
 
@@ -142,21 +164,21 @@ O Hermes trabalha na camada de implementação.
 Ele deve:
 
 - analisar a estrutura atual do projeto;
-- identificar URLs reais;
-- verificar se as páginas existem;
-- inserir links confirmados;
-- preservar o texto aprovado;
-- implementar o CTA visual;
-- configurar rastreamento;
-- validar navegação;
-- validar links;
-- evitar duplicação;
-- manter acessibilidade;
+- ler o Markdown final aprovado;
+- verificar se os links comerciais obrigatórios já estão inseridos;
+- confirmar a categoria, o slug, o destino, a campanha e a numeração;
+- preservar os textos âncora e as URLs aprovadas;
+- verificar se as páginas de destino existem;
+- validar os links em desktop e mobile;
+- preservar a acessibilidade;
+- executar as validações técnicas do projeto;
 - informar tudo que foi alterado.
 
 O Hermes não deve criar a estratégia comercial por iniciativa própria.
 
----
+Quando os links obrigatórios estiverem ausentes, incorretos ou com placeholders, ele deve interromper a conclusão, informar a pendência e solicitar correção editorial. Ele não deve inventar novas frases para encaixar links.
+
+A correção puramente técnica de sintaxe Markdown, URL ou escape pode ser feita quando não alterar o texto aprovado.
 
 # Destinos comerciais principais
 
@@ -275,6 +297,212 @@ Nesses casos, a frente de Materiais Gráficos Personalizados pode ser apresentad
 
 ---
 
+# Regra obrigatória de links comerciais contextuais
+
+Esta seção prevalece sobre orientações genéricas anteriores deste documento.
+
+## Quantidade
+
+Cada artigo deve conter no corpo:
+
+```text
+2 links comerciais contextuais
+```
+
+Artigos mais longos podem conter:
+
+```text
+3 links comerciais contextuais
+```
+
+Nunca utilizar mais de 3 links comerciais no corpo.
+
+Não entram nessa contagem:
+
+- banner;
+- CTA final;
+- menu;
+- sidebar;
+- rodapé;
+- card;
+- link do frontmatter.
+
+## Distribuição
+
+O primeiro link deve aparecer na primeira metade do artigo, depois que o problema já estiver contextualizado.
+
+O segundo link deve aparecer na segunda metade, próximo de diagnóstico, decisão, organização ou próximo passo.
+
+O terceiro link só deve ser usado quando o artigo for longo e existir outro contexto realmente natural.
+
+Não inserir links:
+
+- no primeiro parágrafo;
+- em títulos ou subtítulos;
+- em parágrafos consecutivos;
+- em trechos sem relação com a página de destino.
+
+## Destino para cinco categorias
+
+Artigos das categorias:
+
+```text
+vendas
+marketing
+gestao-comercial
+crescimento-empresarial
+tecnologia-automacoes
+```
+
+devem direcionar para:
+
+```text
+https://grupovittore.com.br/assessoria-comercial
+```
+
+Estrutura obrigatória:
+
+```text
+https://grupovittore.com.br/assessoria-comercial?utm_source=blog&utm_medium=internal_link&utm_campaign=assessoria_comercial&utm_content={{categoria_utm}}__{{slug_do_artigo}}__link-corpo-01
+```
+
+Identificadores obrigatórios de `categoria_utm`:
+
+```text
+vendas
+marketing
+gestao_comercial
+crescimento_empresarial
+tecnologia_automacoes
+```
+
+Os links seguintes usam:
+
+```text
+link-corpo-02
+link-corpo-03
+```
+
+Exemplo:
+
+```text
+https://grupovittore.com.br/assessoria-comercial?utm_source=blog&utm_medium=internal_link&utm_campaign=assessoria_comercial&utm_content=gestao_comercial__crm-nao-e-cadastro__link-corpo-01
+```
+
+## Destino para Materiais Gráficos Personalizados
+
+Artigos da categoria:
+
+```text
+materiais-graficos
+```
+
+devem direcionar para:
+
+```text
+https://grupovittore.com.br/materiais-impressos
+```
+
+Estrutura obrigatória:
+
+```text
+https://grupovittore.com.br/materiais-impressos?utm_source=blog&utm_medium=internal_link&utm_campaign=materiais_impressos&utm_content=materiais_graficos__{{slug_do_artigo}}__link-corpo-01
+```
+
+Os links seguintes usam:
+
+```text
+link-corpo-02
+link-corpo-03
+```
+
+Exemplo:
+
+```text
+https://grupovittore.com.br/materiais-impressos?utm_source=blog&utm_medium=internal_link&utm_campaign=materiais_impressos&utm_content=materiais_graficos__cartao-de-visita-com-qr-code__link-corpo-01
+```
+
+## Formato no Markdown
+
+Usar:
+
+```md
+[texto âncora contextual](URL_COMPLETA_COM_UTM)
+```
+
+Exemplo para Assessoria Comercial:
+
+```md
+Antes de ampliar o investimento em mídia, a empresa precisa verificar se existe uma [estrutura comercial organizada](https://grupovittore.com.br/assessoria-comercial?utm_source=blog&utm_medium=internal_link&utm_campaign=assessoria_comercial&utm_content=marketing__mais-trafego-poucas-vendas__link-corpo-01) capaz de transformar demanda em oportunidades reais.
+```
+
+Exemplo para Materiais Impressos:
+
+```md
+A escolha do acabamento deve considerar a função do cartão e a percepção que os [materiais impressos personalizados](https://grupovittore.com.br/materiais-impressos?utm_source=blog&utm_medium=internal_link&utm_campaign=materiais_impressos&utm_content=materiais_graficos__acabamento-cartao-de-visita__link-corpo-01) precisam transmitir.
+```
+
+## Slug e placeholders
+
+O valor utilizado em `utm_content` deve ser o slug final do artigo.
+
+Todos os placeholders devem ser substituídos antes da entrega e da implementação.
+
+São proibidos no arquivo final:
+
+```text
+{{categoria_utm}}
+{{slug_do_artigo}}
+{{categoria}}
+{{slug}}
+URL_CONFIRMADA
+URL_AQUI
+```
+
+## Textos âncora
+
+As âncoras devem ser naturais, descritivas e diferentes entre si.
+
+Possibilidades para Assessoria Comercial:
+
+- assessoria comercial estruturada;
+- diagnóstico do processo comercial;
+- estrutura comercial organizada;
+- gestão comercial com método;
+- integração entre marketing e vendas;
+- previsibilidade comercial;
+- estruturação do funil;
+- organização da operação de vendas.
+
+Possibilidades para Materiais Impressos:
+
+- materiais impressos personalizados;
+- materiais gráficos profissionais;
+- cartão de visita profissional;
+- produção de materiais impressos;
+- materiais de apresentação da empresa;
+- produção gráfica para empresas.
+
+Essas expressões são referências. A âncora final deve fazer sentido na frase e no tema do artigo.
+
+## Tom
+
+A ligação deve ser educativa, contextual e indireta.
+
+Exemplos proibidos:
+
+```text
+Contrate agora.
+Clique aqui.
+Compre agora.
+Somos a melhor empresa.
+Garanta resultados.
+```
+
+O artigo deve continuar útil mesmo que o leitor não clique.
+
+---
+
 # Artigos híbridos
 
 Alguns artigos podem envolver mais de uma frente.
@@ -304,78 +532,71 @@ Não inclua dois CTAs concorrentes sem necessidade.
 
 # Artigos sem destino comercial direto
 
-Nem todo artigo precisa levar imediatamente a um serviço.
+Para as seis categorias oficiais do blog, existe agora um destino comercial obrigatório por categoria.
 
-Um CTA comercial pode não ser adequado quando o artigo:
+Artigos de:
 
-- é puramente institucional;
-- apresenta uma notícia;
-- comunica uma atualização;
-- trata de um tema distante das soluções;
-- possui intenção exclusivamente navegacional;
-- não criou contexto suficiente;
-- está no início de um cluster;
-- funciona melhor conduzindo para outro artigo;
-- possui risco de parecer oportunista.
+- Vendas;
+- Marketing;
+- Gestão Comercial;
+- Crescimento Empresarial;
+- Tecnologia e Automações;
 
-Nesses casos, o próximo passo pode ser:
+direcionam para Assessoria Comercial.
 
-- outro artigo;
-- uma página de categoria;
-- um guia;
-- a página do autor;
-- uma página institucional;
-- nenhuma ação comercial direta.
+Artigos de:
 
-Não force conversão apenas para cumprir uma regra.
+- Materiais Gráficos Personalizados;
 
----
+direcionam para Materiais Impressos.
+
+Uma exceção só pode ocorrer com autorização expressa do usuário para um artigo específico.
+
+Artigos institucionais, notícias ou conteúdos que não pertençam a essas seis categorias podem não possuir destino comercial direto. Nesses casos, a decisão deve ser registrada no briefing ou no pedido de implementação.
 
 # Estrutura padrão de conversão
 
-Quando o tema permitir, a estrutura recomendada é:
+Para as seis categorias oficiais, a estrutura padrão é:
 
 ```text
-1 ligação contextual dentro do artigo
+2 links comerciais contextuais no corpo
 +
-1 CTA final
+até 1 terceiro link quando o artigo for longo
++
+1 CTA final, quando aprovado
 +
 artigos relacionados
 ```
 
-Essa é uma referência, não uma obrigação matemática.
+Os 2 links no corpo são obrigatórios.
 
-O conteúdo pode precisar de:
+O terceiro link é opcional e depende de contexto natural.
 
-- apenas um CTA final;
-- apenas um link contextual;
-- dois links contextuais;
-- nenhum CTA comercial;
-- mais links editoriais em artigos longos.
-
-A decisão deve preservar naturalidade.
-
----
+O CTA final continua sujeito à estratégia editorial e à aprovação. Banner, CTA final e artigos relacionados não substituem os links obrigatórios no corpo.
 
 # Ligação contextual
 
-A ligação contextual é um trecho dentro do desenvolvimento que conecta o problema discutido a uma possível solução.
+A ligação contextual é um trecho do desenvolvimento que conecta o problema discutido a uma solução relacionada.
+
+Para as seis categorias oficiais, devem existir 2 ligações contextuais no corpo, podendo chegar a 3 em artigos longos.
 
 Exemplo:
 
-> Quando a empresa já gera demanda, mas não consegue acompanhar oportunidades, medir conversão ou organizar o CRM, pode ser necessário revisar a estrutura comercial como um todo. A Assessoria Comercial do Grupo Vittore trabalha justamente sobre esse tipo de diagnóstico e organização.
+> Quando a empresa já gera demanda, mas não consegue acompanhar oportunidades, medir conversão ou organizar o CRM, pode ser necessário revisar a estrutura comercial como um todo.
 
-Quando a URL estiver confirmada, a âncora pode ser aplicada em:
+A âncora deve ser aplicada em uma expressão que já faça sentido editorialmente, como:
 
 ```text
-Assessoria Comercial do Grupo Vittore
+estrutura comercial organizada
 ```
 
-A ligação contextual não deve interromper a explicação.
+ou:
 
-Ela deve aparecer em uma seção na qual a solução seja realmente relevante.
+```text
+diagnóstico do processo comercial
+```
 
----
+A ligação contextual não deve interromper a explicação e não precisa citar o Grupo Vittore de forma explícita em todas as ocorrências.
 
 # Posição da ligação contextual
 
@@ -655,27 +876,35 @@ Não crie dezenas de âncoras artificiais apenas para SEO.
 
 # URLs confirmadas
 
-Um link só pode ser incluído quando a URL estiver confirmada.
+As duas páginas comerciais abaixo estão confirmadas pelo usuário:
 
-A confirmação pode vir de:
+```text
+Assessoria Comercial:
+https://grupovittore.com.br/assessoria-comercial
+```
+
+```text
+Materiais Impressos:
+https://grupovittore.com.br/materiais-impressos
+```
+
+O Hermes deve verificar tecnicamente se:
+
+- a página responde;
+- a rota está correta;
+- não existe erro;
+- o domínio utiliza HTTPS;
+- o destino corresponde à categoria.
+
+A presença de UTM aprovada não torna a URL um destino diferente. O caminho base continua sendo a página comercial confirmada.
+
+Para outras páginas, artigos relacionados e contatos, a confirmação continua podendo vir de:
 
 - rota existente no projeto;
 - mapa de URLs;
 - página publicada;
 - indicação explícita do usuário;
 - configuração oficial do site.
-
-O Hermes deve verificar se:
-
-- a página existe;
-- a rota está correta;
-- não existe redirecionamento desnecessário;
-- a URL final é a versão canônica;
-- o link não retorna erro;
-- a página está publicada;
-- o destino corresponde à âncora.
-
----
 
 # URLs não confirmadas
 
@@ -871,26 +1100,30 @@ O segundo contexto pode ser mais adequado para o link.
 
 # Links repetidos para o mesmo destino
 
-Evite repetir o mesmo link muitas vezes dentro de um artigo.
+A repetição do mesmo destino comercial é obrigatória entre 2 e 3 vezes no corpo dos artigos das seis categorias oficiais.
 
-Uma repetição pode ser aceitável quando:
+Essa repetição é aceitável porque cada link possui:
 
-- o artigo é longo;
-- os links estão muito distantes;
-- um é contextual;
-- outro é CTA;
-- as funções são diferentes.
+- posição diferente;
+- contexto diferente;
+- texto âncora diferente;
+- identificador UTM diferente;
+- função de acompanhamento diferente.
 
-Exemplo aceitável:
+Os sufixos devem ser:
 
-- um link contextual para Assessoria Comercial;
-- um botão final para a mesma página.
+```text
+link-corpo-01
+link-corpo-02
+link-corpo-03
+```
 
 Exemplo inadequado:
 
-- cinco links para a Assessoria Comercial em cinco parágrafos seguidos.
-
----
+- links em parágrafos consecutivos;
+- a mesma âncora repetida;
+- cinco links para a mesma página;
+- links sem relação com o trecho.
 
 # Clusters temáticos
 
@@ -1209,27 +1442,29 @@ Não adicione campos sem implementação real.
 
 # CTA automático por categoria
 
-O projeto não deve associar automaticamente uma categoria a um CTA sem avaliar contexto.
+Os links comerciais no corpo possuem destino obrigatório por categoria, conforme a seção `Regra obrigatória de links comerciais contextuais`.
 
-Exemplo de risco:
+Isso não significa que todos os artigos devem receber o mesmo texto de CTA final.
+
+A distinção é:
 
 ```text
-Todo artigo da categoria Vendas recebe o mesmo CTA.
+Links contextuais no corpo:
+destino obrigatório por categoria
+
+CTA final:
+texto e formato adaptados ao contexto do artigo
 ```
 
-Isso pode gerar:
+O CTA pode variar conforme:
 
-- repetição;
-- mensagem desconectada;
-- excesso comercial;
-- CTA inadequado;
-- baixa relevância.
+- estágio de consciência;
+- tese;
+- conclusão;
+- intenção de busca;
+- ação aprovada.
 
-Um padrão automático pode existir como fallback.
-
-O ideal é permitir adaptação editorial.
-
----
+Não repetir automaticamente o mesmo título e a mesma descrição de CTA em todos os artigos.
 
 # Tom do CTA
 
@@ -1614,59 +1849,85 @@ Essa separação ajuda a compreender qual elemento gera interação.
 
 # Parâmetros de URL
 
-Não acrescente parâmetros à URL sem necessidade.
+Os parâmetros UTM definidos na seção `Regra obrigatória de links comerciais contextuais` foram aprovados pelo usuário e são obrigatórios nos links comerciais do corpo.
 
-Não invente:
+Não criar outros parâmetros por iniciativa própria.
+
+Não alterar:
 
 ```text
-utm_source
-utm_medium
-utm_campaign
+utm_source=blog
+utm_medium=internal_link
 ```
 
-para links internos sem estratégia definida.
+Para Assessoria Comercial, usar:
 
-Parâmetros internos podem:
+```text
+utm_campaign=assessoria_comercial
+```
 
-- poluir URLs;
-- criar duplicação em relatórios;
-- afetar atribuição;
-- gerar URLs desnecessárias;
-- confundir canonicalização.
+Para Materiais Impressos, usar:
 
-Prefira eventos de analytics para rastrear links internos.
+```text
+utm_campaign=materiais_impressos
+```
 
----
+O `utm_content` deve registrar:
+
+```text
+categoria
++
+slug
++
+posição do link
+```
+
+Formato:
+
+```text
+categoria__slug__link-corpo-01
+```
+
+O Hermes deve preservar a URL aprovada e verificar se não existem espaços, acentos, placeholders ou numeração duplicada.
 
 # UTM em links internos
 
-Por padrão, não utilize UTM em links internos.
+Este projeto possui uma exceção documentada ao padrão geral.
 
-UTMs normalmente são destinados a campanhas externas.
+O usuário aprovou o uso de UTM nos links internos comerciais do corpo dos artigos para identificar:
 
-O uso interno pode substituir a origem real da sessão em algumas ferramentas.
+- categoria de origem;
+- artigo de origem;
+- posição do link;
+- campanha comercial.
 
-Quando houver necessidade específica, a decisão deve ser documentada.
+Portanto, os links definidos neste documento devem manter as UTMs.
 
----
+O Hermes não deve removê-las com base em uma regra genérica de analytics.
+
+A decisão pode afetar relatórios de atribuição em algumas ferramentas. Essa possibilidade foi aceita no desenho atual da estratégia.
+
+Essa exceção vale somente para:
+
+- links comerciais do corpo direcionados à Assessoria Comercial;
+- links comerciais do corpo direcionados a Materiais Impressos.
+
+Links comuns entre artigos não devem receber UTM automaticamente.
 
 # Preservação do canonical
 
-Links internos devem apontar para a URL canônica da página.
+Os links comerciais do corpo podem conter as UTMs aprovadas.
 
-Evite linkar para:
+A página de destino deve manter sua própria canonical apontando para a URL canônica sem parâmetros, conforme a implementação existente do site.
 
-- URL com parâmetro desnecessário;
-- redirecionamento;
-- preview;
-- domínio alternativo;
-- versão antiga;
-- rota com erro;
-- URL não canônica.
+O Hermes não deve:
 
-O Hermes deve confirmar a rota final.
+- criar páginas novas para cada UTM;
+- alterar a canonical da página comercial para uma URL parametrizada;
+- incluir versões parametrizadas no sitemap;
+- tratar cada UTM como conteúdo diferente.
 
----
+Links comuns entre artigos devem continuar apontando para a URL canônica, sem parâmetros desnecessários.
 
 # Mudança de URL
 
@@ -1802,13 +2063,17 @@ O Hermes deve:
 
 - ler o artigo;
 - compreender a tese;
-- ler o plano de conversão, quando fornecido;
-- identificar o destino aprovado;
-- verificar URLs;
-- implementar o link;
-- preservar o texto;
-- implementar CTA;
-- configurar rastreamento;
+- verificar a categoria principal;
+- verificar o slug final;
+- confirmar a presença de 2 links comerciais no corpo;
+- aceitar um terceiro link quando houver contexto natural;
+- confirmar o destino correto por categoria;
+- validar campanha, `utm_content` e numeração;
+- preservar as âncoras aprovadas;
+- preservar o texto aprovado;
+- validar os links;
+- implementar o CTA aprovado;
+- configurar rastreamento adicional somente conforme o padrão existente;
 - validar acessibilidade;
 - validar desktop;
 - validar mobile;
@@ -1816,117 +2081,104 @@ O Hermes deve:
 
 O Hermes não deve:
 
-- criar um CTA por conta própria;
+- criar novas frases comerciais;
 - trocar o destino;
+- remover as UTMs aprovadas;
+- alterar categoria ou slug na UTM;
 - adicionar pressão comercial;
-- inserir dois serviços;
+- inserir dois serviços no mesmo artigo;
 - inventar URL;
 - inventar oferta;
 - inventar contato;
-- criar texto publicitário;
 - remover conteúdo para abrir espaço;
-- inserir link em toda palavra-chave;
 - alterar a conclusão;
 - modificar o tom;
 - substituir a âncora aprovada sem motivo;
 - publicar link quebrado.
 
----
+Se o Markdown chegar sem os links obrigatórios ou com placeholders, o Hermes deve informar a pendência e não considerar a implementação concluída.
 
 # Plano de conversão entregue fora do Markdown
 
-O Marco Aurélio pode entregar um plano como:
+O Plínio pode incluir no briefing uma seção de estratégia de links comerciais.
+
+O Marco Aurélio pode utilizar esse plano como orientação editorial.
+
+Entretanto, o artigo final deve ser entregue com os links efetivamente inseridos no próprio Markdown.
+
+Um plano separado pode registrar:
 
 ```text
-Destino principal:
-Assessoria Comercial
-
-Objetivo:
-Conduzir o leitor que identificou falhas no processo para conhecer a atuação do Grupo Vittore.
-
-Ligação contextual:
-Inserir após a seção sobre sinais de desorganização.
-
-Texto âncora:
-Assessoria Comercial do Grupo Vittore
-
-CTA final:
-Conheça como o Grupo Vittore atua na análise e estruturação da operação comercial.
-
-Artigos relacionados:
-CRM não é só cadastro
-Como identificar gargalos comerciais
-
-URLs pendentes:
-Página da Assessoria Comercial
-Artigo sobre gargalos
+Destino principal
+Quantidade
+Momentos sugeridos
+Textos âncora
+URLs completas
+CTA final
+Artigos relacionados
 ```
 
-Esse plano é operacional.
-
-Ele não deve aparecer como texto público no artigo.
-
----
+Esse plano não substitui os links dentro do artigo e não deve aparecer como texto público.
 
 # Implementação do plano
 
-Ao receber o plano, o Hermes deve:
+Ao receber o artigo final e o plano, o Hermes deve:
 
 1. conferir se os destinos existem;
-2. localizar as URLs;
-3. revisar o trecho do artigo;
-4. inserir o link na posição indicada;
-5. implementar o CTA;
-6. configurar rastreamento;
-7. validar artigos relacionados;
-8. executar testes;
-9. informar pendências.
+2. confirmar a categoria e o slug;
+3. localizar os links já inseridos no Markdown;
+4. validar as URLs completas;
+5. verificar `link-corpo-01`, `02` e, quando houver, `03`;
+6. preservar os textos âncora;
+7. implementar o CTA aprovado;
+8. validar artigos relacionados;
+9. executar testes;
+10. informar pendências.
 
-Quando uma URL não existir, implemente apenas as partes confirmadas.
+O Hermes não deve inventar uma nova redação para inserir links que estejam ausentes.
 
-Não crie link fictício.
-
----
+Quando houver ausência editorial, deve solicitar correção ao responsável pelo conteúdo.
 
 # Artigo sem plano de conversão
 
-Quando um artigo não possuir plano:
+A ausência de um plano separado não elimina a regra obrigatória dos links comerciais contextuais.
 
-- não invente estratégia;
-- não adicione CTA automaticamente;
-- verifique se há um padrão aprovado no projeto;
-- informe a ausência;
-- aguarde orientação.
+Se o artigo pertencer a uma das seis categorias oficiais, o Markdown final deve conter os links definidos neste documento.
 
-Um CTA padrão só pode ser utilizado quando isso estiver documentado e aprovado.
+O Marco Aurélio deve aplicar a regra mesmo quando o briefing antigo não possuir uma seção específica de conversão.
 
----
+O Hermes deve validar a execução.
+
+Para CTA final, artigos relacionados e outros elementos não definidos, não inventar estratégia. Informar a ausência e aguardar orientação.
 
 # Preservação do conteúdo aprovado
 
-O Hermes pode inserir um link dentro de uma frase existente quando isso não alterar o texto.
+O Marco Aurélio deve entregar o artigo com os links comerciais já inseridos.
 
-Exemplo:
+O Hermes deve preservar:
 
-Antes:
+- frase;
+- texto âncora;
+- URL;
+- UTM;
+- posição;
+- sentido editorial.
+
+Exemplo aprovado:
 
 ```md
-A Assessoria Comercial do Grupo Vittore atua na organização desse processo.
+A [estrutura comercial organizada](URL_COMPLETA_COM_UTM) ajuda a liderança a entender onde as oportunidades estão parando.
 ```
 
-Depois:
+O Hermes pode corrigir apenas problemas técnicos que não alterem o conteúdo, como:
 
-```md
-A [Assessoria Comercial do Grupo Vittore](URL_CONFIRMADA) atua na organização desse processo.
-```
+- sintaxe Markdown;
+- escape;
+- quebra indevida;
+- caractere inválido;
+- URL truncada.
 
-Isso é uma implementação técnica.
-
-Quando for necessário reescrever a frase para criar a ponte, a alteração deve seguir o conteúdo aprovado.
-
-Não invente a nova redação.
-
----
+Quando for necessário reescrever uma frase para criar uma ponte, a alteração deve voltar para revisão editorial.
 
 # Conteúdo protegido
 
@@ -2018,19 +2270,22 @@ Um CTA visual que leva a outra página deve ser implementado semanticamente como
 
 Antes de concluir:
 
+- o artigo possui pelo menos 2 links comerciais no corpo?
+- o terceiro link, quando existe, possui contexto natural?
+- a página de destino corresponde à categoria?
 - todos os links abrem?
-- apontam para o destino correto?
 - não existem erros 404?
 - não existem placeholders?
-- não existem links para rascunhos?
-- não existem URLs antigas?
-- as âncoras fazem sentido?
-- links internos usam URL canônica?
+- `utm_source` está como `blog`?
+- `utm_medium` está como `internal_link`?
+- `utm_campaign` corresponde ao destino?
+- `utm_content` contém categoria, slug e posição?
+- os sufixos `01`, `02` e `03` não estão duplicados?
+- as âncoras são naturais e diferentes?
+- os links estão distribuídos?
+- não existem links em títulos ou subtítulos?
+- links de artigos relacionados apontam para páginas publicadas?
 - links externos correspondem às fontes?
-- CTAs estão rastreados?
-- artigos relacionados estão publicados?
-
----
 
 # Validação de conversão
 
@@ -2171,29 +2426,34 @@ Leia primeiro:
 docs/blog/artigos/README.md
 docs/blog/artigos/08_links_internos_e_conversao.md
 
-Leia também o artigo e o plano de conversão fornecido.
+Leia também o artigo final fornecido.
 
 Analise a estrutura atual do projeto antes de alterar componentes, rotas ou frontmatter.
 
-Implemente somente:
+Valide no Markdown:
 
-1. links internos confirmados;
-2. link comercial aprovado;
-3. CTA aprovado;
-4. artigos relacionados publicados;
-5. rastreamento conforme o padrão existente.
+1. presença de 2 links comerciais contextuais no corpo;
+2. terceiro link somente quando houver;
+3. destino correto por categoria;
+4. campanha UTM correta;
+5. categoria e slug corretos no utm_content;
+6. sufixos link-corpo-01, link-corpo-02 e, quando houver, link-corpo-03;
+7. ausência de placeholders;
+8. textos âncora naturais;
+9. distribuição dos links;
+10. preservação do conteúdo aprovado.
 
 Não invente URLs.
 
-Não utilize placeholders.
+Não remova as UTMs aprovadas.
 
-Não crie novos textos comerciais.
+Não crie novas frases comerciais.
 
 Não altere a tese, a conclusão ou a voz do artigo.
 
 Não direcione para mais de uma frente comercial sem autorização.
 
-Valide:
+Valide também:
 
 1. links;
 2. URLs;
@@ -2201,43 +2461,45 @@ Valide:
 4. acessibilidade;
 5. desktop;
 6. mobile;
-7. eventos;
+7. eventos existentes;
 8. build.
 
-Ao final, informe os arquivos modificados, testes realizados e pendências.
-```
+Se os links obrigatórios estiverem ausentes ou exigirem reescrita editorial, informe a pendência e não considere a tarefa concluída.
 
----
+Ao final, informe os arquivos modificados, links validados, testes realizados e pendências.
+```
 
 # Checklist estratégico
 
-- O artigo possui destino principal?
-- O destino combina com a tese?
+- O artigo pertence a qual categoria?
+- O destino comercial corresponde à categoria?
+- Existem 2 links comerciais no corpo?
+- O terceiro link é realmente necessário?
 - A intenção do leitor foi respeitada?
-- O conteúdo entrega valor antes do CTA?
-- O CTA continua o raciocínio?
+- O conteúdo entrega valor antes dos links?
+- As âncoras são contextuais?
 - Existe excesso comercial?
 - Existe mais de um destino concorrente?
-- O artigo funciona sem a oferta?
-- A página comercial está confirmada?
+- O artigo funciona sem o clique?
 - A conversão é natural?
-
----
 
 # Checklist de links internos
 
+- Existem 2 links comerciais contextuais no corpo?
+- O terceiro link, quando usado, está justificado?
+- As URLs comerciais estão completas?
+- As UTMs estão corretas?
+- A categoria UTM está padronizada?
+- O slug corresponde ao artigo?
+- A numeração dos links está correta?
+- Não existem placeholders?
+- As âncoras são descritivas?
+- Os links estão distribuídos?
 - Os artigos relacionados existem?
 - Estão publicados?
-- As URLs estão corretas?
-- A relação temática é real?
-- As âncoras são descritivas?
-- Não existem links repetidos excessivamente?
+- As URLs editoriais estão corretas?
 - O artigo não ficará órfão?
-- Os links apontam para URLs canônicas?
-- Não existem placeholders?
-- Não existem rascunhos públicos?
-
----
+- Os links editoriais apontam para URLs canônicas?
 
 # Checklist de CTA
 
@@ -2260,46 +2522,45 @@ Ao final, informe os arquivos modificados, testes realizados e pendências.
 - Os links possuem `href`?
 - O destino retorna corretamente?
 - Não há erro 404?
+- As UTMs comerciais aprovadas foram preservadas?
+- Não existem outras UTMs inventadas?
+- O canonical da página de destino continua sem parâmetros?
 - Não há redirecionamento desnecessário?
-- O canonical está preservado?
-- Os eventos seguem o padrão?
+- Os eventos seguem o padrão existente?
 - O lint passou?
 - O build passou?
 - O console está limpo?
 - O desktop foi validado?
 - O mobile foi validado?
 - O CTA não causa mudança de layout?
-- Não existem UTMs internas indevidas?
-
----
 
 # Definição de concluído
 
 A implementação de links e conversão está concluída quando:
 
 - o destino principal foi respeitado;
-- os links internos são úteis;
+- o artigo possui 2 links comerciais contextuais no corpo;
+- o terceiro link, quando presente, é natural;
 - as URLs são reais;
-- o link contextual está correto;
-- o CTA foi implementado;
-- o CTA não prejudica o conteúdo;
+- as UTMs estão completas e corretas;
+- o slug e a categoria estão corretos;
+- a numeração está correta;
+- não existem placeholders;
+- as âncoras estão preservadas;
+- o CTA aprovado foi implementado;
 - os artigos relacionados funcionam;
-- o rastreamento foi validado;
 - a acessibilidade foi validada;
 - desktop funciona;
 - mobile funciona;
 - o build passa;
-- não existem placeholders;
-- não existem promessas;
+- não existem promessas indevidas;
 - todas as alterações foram informadas.
-
----
 
 # Regra final
 
-O objetivo dos links internos e dos CTAs não é transformar todos os leitores imediatamente em clientes.
+O objetivo dos links comerciais não é transformar todos os leitores imediatamente em clientes.
 
-O objetivo é ajudar o leitor a avançar de forma coerente.
+O objetivo é permitir que o leitor avance de forma coerente depois de compreender o problema.
 
 A progressão deve ser:
 
@@ -2315,19 +2576,19 @@ avaliar
 agir
 ```
 
+Nos artigos das seis categorias oficiais, os links comerciais contextuais são obrigatórios.
+
+A obrigação não elimina a naturalidade.
+
 O artigo deve entregar valor antes de pedir uma ação.
 
-O link deve ajudar antes de vender.
+O link deve complementar o raciocínio, não interrompê-lo.
 
-O CTA deve continuar o raciocínio, não interrompê-lo.
+O Marco Aurélio deve inserir os links no Markdown final.
 
-O Hermes não deve inventar estratégia, URL, oferta ou texto comercial.
+O Hermes deve validar e preservar esses links durante a implementação.
 
-Quando não houver URL confirmada, mantenha o trecho sem link.
-
-Quando não houver CTA aprovado, não crie um.
-
-Quando não houver relação real com uma página comercial, priorize outro conteúdo.
+Quando houver problema editorial, o Hermes deve informar a pendência em vez de inventar uma nova frase.
 
 A conversão deve preservar:
 
@@ -2343,4 +2604,5 @@ naturalidade
 experiência
 ```
 
-O blog do Grupo Vittore deve gerar oportunidades porque ajuda empresários a compreender problemas e tomar decisões melhores, não porque pressiona o leitor.
+O blog do Grupo Vittore deve gerar oportunidades porque ajuda empresários a compreender problemas e tomar decisões melhores.
+

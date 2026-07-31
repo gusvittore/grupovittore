@@ -3,6 +3,7 @@
 import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useSyncExternalStore } from "react";
+import { getLeadTrackingSnapshot } from "@/lib/lead-tracking";
 
 const COOKIE_CONSENT_KEY = "cookie-consent-choice";
 const COOKIE_CONSENT_EVENT = "gv-cookie-consent-changed";
@@ -19,6 +20,19 @@ type GenerateLeadEvent = {
   landing_page: string;
   form_name: "assessoria_comercial";
   lead_status: "mql" | "not_qualified";
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+};
+
+type WhatsAppClickEvent = {
+  page_path: string;
+  landing_page: "materiais-impressos";
+  button_location: string;
+  button_text: string;
+  contact_channel: "whatsapp";
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -102,6 +116,14 @@ export function trackGenerateLead(event: GenerateLeadEvent) {
   window.gtag?.("event", "generate_lead", event);
 }
 
+function trackWhatsAppClick(event: WhatsAppClickEvent) {
+  if (readConsentChoice() !== "accepted" || typeof window.gtag !== "function") {
+    return;
+  }
+
+  window.gtag?.("event", "whatsapp_click", event);
+}
+
 export function GoogleAnalytics() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -127,6 +149,43 @@ export function GoogleAnalytics() {
       trackPageView(pagePath);
     }
   }, [consentChoice, pagePath]);
+
+  useEffect(() => {
+    if (pathname !== "/materiais-impressos") return;
+
+    function handleWhatsAppClick(event: MouseEvent) {
+      if (!(event.target instanceof Element)) return;
+
+      const link = event.target.closest<HTMLAnchorElement>(
+        "a[data-ga-whatsapp-click='true']",
+      );
+      if (!link) return;
+
+      const params = new URLSearchParams(window.location.search);
+      const tracking = getLeadTrackingSnapshot("/materiais-impressos");
+
+      trackWhatsAppClick({
+        page_path: window.location.pathname,
+        landing_page: "materiais-impressos",
+        button_location: link.dataset.gaWhatsappLocation || "unknown",
+        button_text: link.dataset.gaWhatsappText || "falar_no_whatsapp",
+        contact_channel: "whatsapp",
+        utm_source: params.get("utm_source") || tracking.utmSource || undefined,
+        utm_medium: params.get("utm_medium") || tracking.utmMedium || undefined,
+        utm_campaign:
+          params.get("utm_campaign") || tracking.utmCampaign || undefined,
+        utm_content: params.get("utm_content") || tracking.utmContent || undefined,
+        utm_term: params.get("utm_term") || tracking.utmTerm || undefined,
+      });
+    }
+
+    document.addEventListener("click", handleWhatsAppClick, { capture: true });
+    return () => {
+      document.removeEventListener("click", handleWhatsAppClick, {
+        capture: true,
+      });
+    };
+  }, [pathname]);
 
   const hasConsent = consentChoice === "accepted";
   if (!measurementId || !hasConsent) return null;
