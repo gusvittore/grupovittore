@@ -12,13 +12,13 @@ test("ClickUp task creation requests notifications", () => {
   assert.match(processor, /assignees:\s*\[assigneeId\]/);
 });
 
-test("ClickUp WhatsApp field matching accepts common phone field names", () => {
+test("ClickUp WhatsApp field matching requires exact canonical field name", () => {
   assert.match(processor, /function normalizeFieldName/);
   assert.match(processor, /\.normalize\("NFD"\)/);
   assert.match(processor, /\.replace\(\/\[\\u0300-\\u036f\]\/g, ""\)/);
-  assert.match(processor, /includes\("whatsapp"\)/);
-  assert.match(processor, /includes\("telefone"\)/);
-  assert.match(processor, /includes\("phone"\)/);
+  assert.match(processor, /Whatsapp \/ Telefone/);
+  assert.doesNotMatch(processor, /function isWhatsAppFieldName/);
+  assert.doesNotMatch(processor, /includes\("telefone"\)/);
   assert.match(processor, /Campo WhatsApp encontrado:[\s\S]*field\.name[\s\S]*field\.type/);
   assert.match(processor, /Campo WhatsApp \/ Telefone nao encontrado no ClickUp/);
   assert.match(processor, /api\.clickup\.com\/api\/v2\/task\/\$\{taskId\}\/field\/\$\{field\.id\}/);

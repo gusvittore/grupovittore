@@ -85,6 +85,13 @@ function json(value, status = 200) {
   });
 }
 
+function createProcessorTestUrl() {
+  return new URL(
+    `../src/server/.lead-processing-worker-test-${process.pid}-${Date.now()}-${Math.random()}.ts`,
+    import.meta.url,
+  );
+}
+
 test("background worker discovers, caches and writes all eight tracking fields by internal ID", async () => {
   const originalFetch = globalThis.fetch;
   const originalEnv = { ...process.env };
@@ -96,10 +103,7 @@ test("background worker discovers, caches and writes all eight tracking fields b
     "../src/server/lead-processing.ts",
     import.meta.url,
   );
-  const processorTestUrl = new URL(
-    `../src/server/.lead-processing-worker-test-${process.pid}.ts`,
-    import.meta.url,
-  );
+  const processorTestUrl = createProcessorTestUrl();
 
   process.env.SUPABASE_URL = "https://supabase.test";
   process.env.SUPABASE_SERVICE_ROLE_KEY = "supabase-secret";
@@ -255,6 +259,220 @@ test("background worker discovers, caches and writes all eight tracking fields b
       /simulated network failure/,
     );
     assert.doesNotMatch(JSON.stringify(logs), /alerts@example\.test/);
+  } finally {
+    await rm(processorTestUrl, { force: true });
+    globalThis.fetch = originalFetch;
+    process.env = originalEnv;
+    console.log = originalLog;
+    console.warn = originalWarn;
+  }
+});
+
+test("background worker writes phone only to exact Whatsapp / Telefone field", async () => {
+  const originalFetch = globalThis.fetch;
+  const originalEnv = { ...process.env };
+  const originalLog = console.log;
+  const originalWarn = console.warn;
+  const requests = [];
+  const processorSourceUrl = new URL(
+    "../src/server/lead-processing.ts",
+    import.meta.url,
+  );
+  const processorTestUrl = createProcessorTestUrl();
+  const fieldsWithPhoneDuplicates = [
+    { id: "phone-exact", name: "Whatsapp / Telefone", type: "short_text" },
+    { id: "phone-generic-1", name: "Telefone", type: "short_text" },
+    { id: "phone-generic-2", name: "Telefone", type: "short_text" },
+    ...fields,
+  ];
+
+  process.env.SUPABASE_URL = "https://supabase.test";
+  process.env.SUPABASE_SERVICE_ROLE_KEY = "supabase-secret";
+  process.env.CLICKUP_API_TOKEN = "clickup-secret";
+  process.env.CLICKUP_LIST_ID = "list-1";
+  delete process.env.SMTP_USER;
+  delete process.env.SMTP_PASS;
+  process.env.LEAD_NOTIFICATION_EMAIL = "alerts@example.test";
+
+  console.log = () => {};
+  console.warn = () => {};
+
+  globalThis.fetch = async (input, init = {}) => {
+    const url = String(input);
+    const method = init.method || "GET";
+    const body = init.body ? JSON.parse(String(init.body)) : null;
+    requests.push({ url, method, body });
+
+    if (url.includes("supabase.test/rest/v1/leads_assessoria?select=*&")) {
+      return json([
+        {
+          id: "lead-1",
+          nome_completo: "Lead Teste",
+          email: "lead@example.test",
+          whatsapp: "11999999999",
+          empresa: "Empresa Teste",
+          segmento: "Serviço",
+          faturamento_mensal: "De 101 mil a 200 mil",
+          origem_lead: "Landing Page Assessoria Comercial",
+          utm_source: "",
+          utm_medium: "",
+          utm_campaign: "",
+          utm_term: "",
+          utm_content: "",
+          gclid: "",
+          raw_payload: { tracking },
+        },
+      ]);
+    }
+
+    if (url.endsWith("/list/list-1/field")) {
+      return json({ fields: fieldsWithPhoneDuplicates });
+    }
+    if (url.endsWith("/list/list-1/task")) {
+      return json({ id: "task-1", url: "https://app.clickup.test/task-1" });
+    }
+    if (url.includes("/task/task-1/field/")) return json({});
+    if (url.endsWith("/task/task-1") && method === "PUT") return json({});
+    if (url.endsWith("/task/task-1/comment")) return json({});
+    if (url.startsWith("https://supabase.test/") && method === "PATCH") {
+      return new Response(null, { status: 204 });
+    }
+
+    throw new Error(`Unexpected request: ${method} ${url}`);
+  };
+
+  try {
+    const processorSource = (await readFile(processorSourceUrl, "utf8"))
+      .replace('from "./lead-core"', 'from "./lead-core.ts"')
+      .replace(
+        'from "./lead-tracking-clickup"',
+        'from "./lead-tracking-clickup.ts"',
+      );
+    await writeFile(processorTestUrl, processorSource);
+    const { processLeadBackgroundJob } = await import(
+      `${processorTestUrl.href}?phone-exact=${Date.now()}`
+    );
+
+    const result = await processLeadBackgroundJob("lead-1");
+    const phoneUpdates = requests.filter((request) =>
+      request.url.includes("/task/task-1/field/phone"),
+    );
+
+    assert.equal(result.ok, true);
+    assert.deepEqual(
+      phoneUpdates.map((request) => request.url.split("/").at(-1)),
+      ["phone-exact"],
+    );
+    assert.equal(phoneUpdates[0].body.value, "11999999999");
+  } finally {
+    await rm(processorTestUrl, { force: true });
+    globalThis.fetch = originalFetch;
+    process.env = originalEnv;
+    console.log = originalLog;
+    console.warn = originalWarn;
+  }
+});
+
+test("background worker reports explicit phone field error without exact match", async () => {
+  const originalFetch = globalThis.fetch;
+  const originalEnv = { ...process.env };
+  const originalLog = console.log;
+  const originalWarn = console.warn;
+  const requests = [];
+  const processorSourceUrl = new URL(
+    "../src/server/lead-processing.ts",
+    import.meta.url,
+  );
+  const processorTestUrl = createProcessorTestUrl();
+  const fieldsWithoutExactPhone = [
+    { id: "phone-generic-1", name: "Telefone", type: "short_text" },
+    { id: "phone-generic-2", name: "Telefone", type: "short_text" },
+    ...fields,
+  ];
+
+  process.env.SUPABASE_URL = "https://supabase.test";
+  process.env.SUPABASE_SERVICE_ROLE_KEY = "supabase-secret";
+  process.env.CLICKUP_API_TOKEN = "clickup-secret";
+  process.env.CLICKUP_LIST_ID = "list-1";
+  delete process.env.SMTP_USER;
+  delete process.env.SMTP_PASS;
+  process.env.LEAD_NOTIFICATION_EMAIL = "alerts@example.test";
+
+  console.log = () => {};
+  console.warn = () => {};
+
+  globalThis.fetch = async (input, init = {}) => {
+    const url = String(input);
+    const method = init.method || "GET";
+    const body = init.body ? JSON.parse(String(init.body)) : null;
+    requests.push({ url, method, body });
+
+    if (url.includes("supabase.test/rest/v1/leads_assessoria?select=*&")) {
+      return json([
+        {
+          id: "lead-1",
+          nome_completo: "Lead Teste",
+          email: "lead@example.test",
+          whatsapp: "11999999999",
+          empresa: "Empresa Teste",
+          segmento: "Serviço",
+          faturamento_mensal: "De 101 mil a 200 mil",
+          origem_lead: "Landing Page Assessoria Comercial",
+          utm_source: "",
+          utm_medium: "",
+          utm_campaign: "",
+          utm_term: "",
+          utm_content: "",
+          gclid: "",
+          raw_payload: { tracking },
+        },
+      ]);
+    }
+
+    if (url.endsWith("/list/list-1/field")) {
+      return json({ fields: fieldsWithoutExactPhone });
+    }
+    if (url.endsWith("/list/list-1/task")) {
+      return json({ id: "task-1", url: "https://app.clickup.test/task-1" });
+    }
+    if (url.includes("/task/task-1/field/")) return json({});
+    if (url.endsWith("/task/task-1") && method === "PUT") return json({});
+    if (url.endsWith("/task/task-1/comment")) return json({});
+    if (url.startsWith("https://supabase.test/") && method === "PATCH") {
+      return new Response(null, { status: 204 });
+    }
+
+    throw new Error(`Unexpected request: ${method} ${url}`);
+  };
+
+  try {
+    const processorSource = (await readFile(processorSourceUrl, "utf8"))
+      .replace('from "./lead-core"', 'from "./lead-core.ts"')
+      .replace(
+        'from "./lead-tracking-clickup"',
+        'from "./lead-tracking-clickup.ts"',
+      );
+    await writeFile(processorTestUrl, processorSource);
+    const { processLeadBackgroundJob } = await import(
+      `${processorTestUrl.href}?phone-missing=${Date.now()}`
+    );
+
+    const result = await processLeadBackgroundJob("lead-1");
+    const phoneUpdates = requests.filter((request) =>
+      request.url.includes("/task/task-1/field/phone"),
+    );
+    const supabasePatch = requests.find(
+      (request) =>
+        request.url.startsWith("https://supabase.test/") &&
+        request.method === "PATCH",
+    );
+
+    assert.equal(result.ok, true);
+    assert.equal(phoneUpdates.length, 0);
+    assert.match(
+      supabasePatch.body.erro_clickup,
+      /Campo WhatsApp \/ Telefone.*exatamente um campo/i,
+    );
   } finally {
     await rm(processorTestUrl, { force: true });
     globalThis.fetch = originalFetch;

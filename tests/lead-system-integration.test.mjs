@@ -72,15 +72,15 @@ test("background processor creates ClickUp tasks and fills dynamic custom fields
   assert.doesNotMatch(processor, /["']ICP["']\s*:/);
 });
 
-test("background processor maps ClickUp assignee, phone text, and segment dropdown safely", () => {
+test("background processor maps ClickUp assignee, exact phone text, and segment dropdown safely", () => {
   assert.match(processor, /process\.env\.CLICKUP_ASSIGNEE_ID/);
   assert.match(processor, /Number\(process\.env\.CLICKUP_ASSIGNEE_ID\)/);
   assert.match(processor, /assignees: \[assigneeId\]/);
   assert.doesNotMatch(processor, /84823221/);
 
-  assert.match(processor, /Telefone \/ WhatsApp/);
-  assert.match(processor, /Telefone/);
-  assert.match(processor, /WhatsApp/);
+  assert.match(processor, /WHATSAPP_CLICKUP_FIELD_NAME = "Whatsapp \/ Telefone"/);
+  assert.match(processor, /matchedFields\.length !== 1/);
+  assert.doesNotMatch(processor, /function isWhatsAppFieldName/);
   assert.doesNotMatch(processor, /\+55/);
 
   assert.match(processor, /normalize\("NFD"\)/);

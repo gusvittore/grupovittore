@@ -20,6 +20,7 @@ import {
 
 const DEFAULT_CLICKUP_LIST_ID = "901327751514";
 const CLICKUP_FIELD_CACHE_TTL_MS = 10 * 60 * 1000;
+const WHATSAPP_CLICKUP_FIELD_NAME = "Whatsapp / Telefone";
 const clickUpFieldCache = new Map<
   string,
   { expiresAt: number; fieldsPromise: Promise<ClickUpField[]> }
@@ -98,14 +99,7 @@ const clickUpFieldMapping: Array<{
   { names: ["Nome Completo"], payloadKey: "nome_completo" },
   { names: ["E-mail"], payloadKey: "email" },
   {
-    names: [
-      "Whatsapp / Telefone",
-      "WhatsApp / Telefone",
-      "Telefone / WhatsApp",
-      "Telefone",
-      "WhatsApp",
-      "Phone",
-    ],
+    names: [WHATSAPP_CLICKUP_FIELD_NAME],
     payloadKey: "whatsapp",
   },
   { names: ["Empresa"], payloadKey: "empresa" },
@@ -373,16 +367,6 @@ function normalizeFieldType(value: string) {
   return normalizeFieldName(value).replace(/_/g, " ");
 }
 
-function isWhatsAppFieldName(fieldName: string) {
-  const normalizedName = normalizeFieldName(fieldName);
-
-  return (
-    normalizedName.includes("whatsapp") ||
-    normalizedName.includes("telefone") ||
-    normalizedName.includes("phone")
-  );
-}
-
 function isTextLikeClickUpField(field: ClickUpField) {
   if (field.type_config?.options?.length) {
     return false;
@@ -406,7 +390,10 @@ function findClickUpFields(
 ) {
   if (payloadKey === "whatsapp") {
     return fields.filter(
-      (field) => isWhatsAppFieldName(field.name) && isTextLikeClickUpField(field),
+      (field) =>
+        normalizeFieldName(field.name) ===
+          normalizeFieldName(WHATSAPP_CLICKUP_FIELD_NAME) &&
+        isTextLikeClickUpField(field),
     );
   }
 
@@ -422,6 +409,10 @@ function findClickUpFieldsByName(fields: ClickUpField[], names: string[]) {
   );
 
   return field ? [field] : [];
+}
+
+function buildWhatsAppFieldResolutionError(matchedFieldsCount: number) {
+  return `Campo WhatsApp / Telefone nao encontrado no ClickUp: esperado exatamente um campo text-like com nome "${WHATSAPP_CLICKUP_FIELD_NAME}", encontrados ${matchedFieldsCount}.`;
 }
 
 function formatClickUpDiagnosticValue(
@@ -721,6 +712,13 @@ async function fillClickUpCustomFields(
     }
 
     const matchedFields = findClickUpFields(fields, names, payloadKey);
+
+    if (payloadKey === "whatsapp" && matchedFields.length !== 1) {
+      const message = buildWhatsAppFieldResolutionError(matchedFields.length);
+      console.warn(message);
+      fieldErrors.push(message);
+      continue;
+    }
 
     if (!matchedFields.length) {
       const message =
